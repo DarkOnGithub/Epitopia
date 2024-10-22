@@ -10,10 +10,9 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 
-public class RelayManager : MonoBehaviour
+public static class LobbyManager
 {
-    
-    public async Task<string> StartHostWithRelay(int maxConnections=5)
+    public static async Task<string> StartHostAndGetJoinCode(int maxConnections=5)
     {
         await UnityServices.InitializeAsync();
         if (!AuthenticationService.Instance.IsSignedIn)
@@ -32,15 +31,24 @@ public class RelayManager : MonoBehaviour
         var joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
         return NetworkManager.Singleton.StartHost() ? joinCode : null;
     }
-
-    async void Start()
+    public static async Task<bool> StartClient(string joinCode)
     {
-        var key = await StartHostWithRelay();
-        Debug.Log(key);
-    }
+        await UnityServices.InitializeAsync();
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
 
-    void Update()
-    {
-        
+        var joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode);
+        var relayServerData = new RelayServerData(
+            joinAllocation.RelayServer.IpV4, 
+            (ushort)joinAllocation.RelayServer.Port, 
+            joinAllocation.AllocationIdBytes, 
+            joinAllocation.ConnectionData, 
+            joinAllocation.ConnectionData, 
+            joinAllocation.Key, 
+            true);
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+        return !string.IsNullOrEmpty(joinCode) && NetworkManager.Singleton.StartClient();
     }
 }
