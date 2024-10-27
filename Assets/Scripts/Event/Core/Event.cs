@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Event.Core
 {
-    public class Event
+    public abstract class Event
     {
-        public static List<EventListener> Listeners = new();
+        public static List<EventListener> Listeners { get; } = new();
+        public abstract List<EventListener> GetListeners();
         public bool IsCancelled = false;
         public Event() {}
         

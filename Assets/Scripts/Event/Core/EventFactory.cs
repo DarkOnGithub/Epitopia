@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Core;
+using JetBrains.Annotations;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Event.Core
 {
     public static class EventFactory
     {
-        private static LogManager _logger = new(typeof(EventFactory));
+        private static BetterLogger _logger = new(typeof(EventFactory));
         
         /// <summary>
         /// Register a class to the event system
@@ -18,72 +20,75 @@ namespace Event.Core
         /// <warning>Make sure that the class has the SubscribeEvent attribute</warning>
         public static void Register(object T)
         {
-            var type = T.GetType();
-            var attributes = Attribute.GetCustomAttributes(type, typeof(SubscribeEventAttribute));
-            
-            if (attributes.Length == 0)  
-            {
-                _logger.LogWarning($"type <{type.Name}> doesn't contain any listener");
-                return;
-            }
-
+            Type type = T as Type ?? T.GetType();
+            bool isStatic = type == (T as Type);
             foreach (var method in SubscribeEventAttribute.GetMethods(T))
             {
+                var attribute = method.GetCustomAttribute<SubscribeEventAttribute>(true);
+                if (attribute == null)
+                {
+                    continue;
+                }
+                
                 var parameters = method.GetParameters();
                 if(parameters.Length != 1)
                 {
-                    _logger.LogError($"Method <{method.Name}> in type <{type.Name}> must have only one parameter");
-                    return;
+                    _logger.LogWarning($"[Skipping] Method <{method.Name}> in type <{type.Name}> must have only one parameter");
+                    continue;
                 }
                 var eventType = parameters[0].ParameterType;
                 if (!typeof(Event).IsAssignableFrom(eventType))
                 {
-                    _logger.LogError($"Method <{method.Name}> in type <{type.Name}> must have a parameter that inherits from Event");
+                    _logger.LogWarning($"[Skipping] Method <{method.Name}> in type <{type.Name}> must have a parameter that inherits from Event");
                     return;
                 }
-                var priority = method.GetCustomAttribute<SubscribeEventAttribute>(true).Priority;
 
-                var listener = new EventListener(T, method, priority);
-                ((List<EventListener>)eventType.GetField("Listeners").GetValue(null)).Add(listener);                
+                Debug.Log(eventType);
+                Debug.Log(eventType.GetType());
+                Subscribe(eventType, method, attribute, T, isStatic);
+            }
+        }
+
+        public static void Subscribe(Type eventType, MethodInfo method, SubscribeEventAttribute attribute, [CanBeNull] object instance, bool isStatic = false)
+        {
+            var priority = attribute.Priority;
+            var listener = new EventListener(isStatic || method.IsStatic ? null : instance, method, priority);
+            Debug.Log(eventType.GetProperty("Listeners", BindingFlags.Public | BindingFlags.Static));
+            var listeners = ((List<EventListener>)eventType.GetProperty("Listeners")?.GetValue(null));
+            if (listeners == null)
+            {
+                _logger.LogWarning($"Event <{eventType.Name}> isn't initialized");
+                return;
+            }
+            switch (priority)
+            {
+                case EventPriority.High:
+                    listeners.Insert(0, listener);
+                    break;
+                case EventPriority.Normal:
+                    listeners.Insert(
+                        listeners.FindLastIndex(evtListener => evtListener.Priority == EventPriority.High),
+                        listener
+                    );
+                    break;
+                case EventPriority.Low:
+                    listeners.Add(listener);
+                    break;
             }
         }
         
-        /// <summary>
-        /// Register a class to the event system
-        /// </summary>
-        /// <typeparam name="T">The instance that is registered</typeparam>
-        /// <warning>Make sure that the class has the SubscribeEvent attribute</warning>
-        public static void Register<T>()
+        public static void Invoke(Event evt)
         {
-            throw new NotImplementedException();
-            // var type = typeof(T);
-            // var attributes = Attribute.GetCustomAttributes(type, typeof(SubscribeEventAttribute));
-            //
-            // if (attributes.Length == 0)  
-            // {
-            //     _logger.LogWarning($"type <{type.Name}> doesn't contain any listener");
-            //     return;
-            // }
-            //
-            // foreach (var method in SubscribeEventAttribute.GetMethods(T))
-            // {
-            //     var parameters = method.GetParameters();
-            //     if(parameters.Length != 1)
-            //     {
-            //         _logger.LogError($"Method <{method.Name}> in type <{type.Name}> must have only one parameter");
-            //         return;
-            //     }
-            //     var eventType = parameters[0].ParameterType;
-            //     if (!typeof(Event).IsAssignableFrom(eventType))
-            //     {
-            //         _logger.LogError($"Method <{method.Name}> in type <{type.Name}> must have a parameter that inherits from Event");
-            //         return;
-            //     }
-            //     var priority = method.GetCustomAttribute<SubscribeEventAttribute>(true).Priority;
-            //
-            //     var listener = new EventListener(T, method, priority);
-            //     ((List<EventListener>)eventType.GetField("Listeners").GetValue(null)).Add(listener);                
-            // }
+            var listeners = (List<EventListener>)evt.GetType().GetProperty("Listeners", BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+            if (listeners == null)
+            {
+                _logger.LogWarning($"Event <{evt.GetType().Name}> isn't initialized");
+                return;
+            }
+            foreach (var listener in listeners)
+            {
+                listener.Invoke(evt);
+            }
         }
     }
 }

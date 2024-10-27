@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Core
 {
-    public class LogManager
+    public class BetterLogger
     {
         private string _name;
-        public LogManager(Type obj)
+        public BetterLogger(Type obj)
         {
             _name = obj.Name;
         }
@@ -16,7 +16,7 @@ namespace Core
         {
             var time = DateTime.Now;
             var text = content == null ? string.Empty : content.ToString();
-            logFunction($"[{time.ToString("yyyy-MM-dd HH:mm:ss")}] [{_name}]- {text}");
+            logFunction($"[{time.ToString("yyyy-MM-dd HH:mm:ss")}]/[{_name}] : {text}");
         }
         
         public void LogInfo([CanBeNull] object content) => Log(content, Debug.Log);
