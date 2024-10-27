@@ -35,9 +35,8 @@ public static class LobbyManager
     {
         await UnityServices.InitializeAsync();
         if (!AuthenticationService.Instance.IsSignedIn)
-        {
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        }
+            await Authentification.AuthentificateAnonymously();
+        
 
         var joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode);
         var relayServerData = new RelayServerData(
