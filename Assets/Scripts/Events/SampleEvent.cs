@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using Event.Core;
+using Events.EventHandler;
 
-namespace Event
+namespace Events
 {
-    public class SampleEvent : Core.Event, ICancellable
+    public class SampleEvent : Event, ICancellable
     {
         private new static List<EventListener> Listeners { get; } = new();
-        public override List<EventListener> GetListeners() => Listeners;
         public string s;
         public int i;
         public SampleEvent(string s1, int i1) 

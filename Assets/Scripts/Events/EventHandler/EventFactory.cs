@@ -7,12 +7,28 @@ using JetBrains.Annotations;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Event.Core
+namespace Events.EventHandler
 {
     public static class EventFactory
     {
+        public static Dictionary<Type, List<EventListener>> ListenersContainer = new();
         private static BetterLogger _logger = new(typeof(EventFactory));
-        
+        private static List<EventListener> GetListener(Type type) => ListenersContainer[type]; 
+        private static IEnumerable<Type> SearchForEventClasses()
+        {
+            var eventType = typeof(Event);
+            var assembly = eventType.Assembly;
+
+            return assembly.GetTypes().Where(t => t.IsSubclassOf(eventType) && !ListenersContainer.ContainsKey(t));
+        }
+
+        public static void RegisterEvents()
+        {
+            foreach (var eventClass in SearchForEventClasses())
+            {
+                ListenersContainer.TryAdd(eventClass, new());
+            }
+        }
         /// <summary>
         /// Register a class to the event system
         /// </summary>
@@ -22,6 +38,8 @@ namespace Event.Core
         {
             Type type = T as Type ?? T.GetType();
             bool isStatic = type == (T as Type);
+            Debug.Log("a");
+
             foreach (var method in SubscribeEventAttribute.GetMethods(T))
             {
                 var attribute = method.GetCustomAttribute<SubscribeEventAttribute>(true);
@@ -42,9 +60,7 @@ namespace Event.Core
                     _logger.LogWarning($"[Skipping] Method <{method.Name}> in type <{type.Name}> must have a parameter that inherits from Event");
                     return;
                 }
-
-                Debug.Log(eventType);
-                Debug.Log(eventType.GetType());
+                
                 Subscribe(eventType, method, attribute, T, isStatic);
             }
         }
@@ -53,8 +69,7 @@ namespace Event.Core
         {
             var priority = attribute.Priority;
             var listener = new EventListener(isStatic || method.IsStatic ? null : instance, method, priority);
-            Debug.Log(eventType.GetProperty("Listeners", BindingFlags.Public | BindingFlags.Static));
-            var listeners = ((List<EventListener>)eventType.GetProperty("Listeners")?.GetValue(null));
+            var listeners = GetListener(eventType);
             if (listeners == null)
             {
                 _logger.LogWarning($"Event <{eventType.Name}> isn't initialized");
@@ -66,10 +81,8 @@ namespace Event.Core
                     listeners.Insert(0, listener);
                     break;
                 case EventPriority.Normal:
-                    listeners.Insert(
-                        listeners.FindLastIndex(evtListener => evtListener.Priority == EventPriority.High),
-                        listener
-                    );
+                    var index = listeners.FindLastIndex(evtListener => evtListener.Priority == EventPriority.High);
+                    listeners.Insert(index + 1, listener);
                     break;
                 case EventPriority.Low:
                     listeners.Add(listener);
@@ -79,7 +92,7 @@ namespace Event.Core
         
         public static void Invoke(Event evt)
         {
-            var listeners = (List<EventListener>)evt.GetType().GetProperty("Listeners", BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+            var listeners = evt.GetListeners;
             if (listeners == null)
             {
                 _logger.LogWarning($"Event <{evt.GetType().Name}> isn't initialized");
@@ -87,6 +100,7 @@ namespace Event.Core
             }
             foreach (var listener in listeners)
             {
+                Debug.Log(listener.Priority);
                 listener.Invoke(evt);
             }
         }

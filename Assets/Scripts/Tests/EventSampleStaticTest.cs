@@ -1,15 +1,21 @@
-﻿using Event;
-using Event.Core;
+﻿using Events;
+using Events.EventHandler;
 using UnityEngine;
 
 namespace Tests
 {
-    public class EventSampleStaticTest
+    public static class EventSampleStaticTest
     {
-        [SubscribeEvent]
-        public static void Test(SampleEvent evt)
+        [SubscribeEvent(Priority = EventPriority.High)]
+        public static void TestHigh(SampleEvent evt)
         {
             Debug.Log(evt.i);
+        }
+        
+        [SubscribeEvent(Priority = EventPriority.Low)]
+        public static void TestLow(SampleEvent evt)
+        {
+            Debug.Log(evt.s);
         }
     }
 }

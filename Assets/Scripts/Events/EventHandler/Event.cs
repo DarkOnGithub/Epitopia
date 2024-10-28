@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Event.Core
+namespace Events.EventHandler
 {
     public abstract class Event
     {
-        public static List<EventListener> Listeners { get; } = new();
-        public abstract List<EventListener> GetListeners();
+        public List<EventListener> GetListeners => EventFactory.ListenersContainer[this.GetType()];
         public bool IsCancelled = false;
         public Event() {}
         

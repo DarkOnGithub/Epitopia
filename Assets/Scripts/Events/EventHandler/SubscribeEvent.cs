@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Event.Core
+namespace Events.EventHandler
 {
     [System.AttributeUsage(System.AttributeTargets.Method)]
     public class SubscribeEventAttribute : Attribute
@@ -16,7 +16,7 @@ namespace Event.Core
         /// <returns>List of MethodInfo objects that have the specified attribute</returns>
         public static IEnumerable<MethodInfo> GetMethods(object type)
         {
-            return type.GetType()
+            return (type is Type ? (Type)type : type.GetType())
                   .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | 
                               BindingFlags.Instance | BindingFlags.Static)
                   .Where(method => method.GetCustomAttributes(typeof(SubscribeEventAttribute), false).Any());

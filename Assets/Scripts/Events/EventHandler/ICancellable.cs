@@ -1,4 +1,4 @@
-﻿namespace Event.Core
+﻿namespace Events.EventHandler
 {
     public interface ICancellable
     {
