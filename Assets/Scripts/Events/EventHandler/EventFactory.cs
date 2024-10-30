@@ -100,8 +100,10 @@ namespace Events.EventHandler
             }
             foreach (var listener in listeners)
             {
-                Debug.Log(listener.Priority);
+                if (evt.IsCancelled) 
+                    break;
                 listener.Invoke(evt);
+                
             }
         }
     }

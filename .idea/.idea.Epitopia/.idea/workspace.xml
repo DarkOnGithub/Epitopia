@@ -5,27 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventInitializer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventInitializer.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/Event.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Event.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/Event.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Event.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/EventFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/EventFactory.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventFactory.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/EventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventListener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/EventListener.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventListener.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/ICancellable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/ICancellable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/ICancellable.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/ICancellable.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/Priority.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Priority.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/Priority.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Priority.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/SubscribeEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/SubscribeEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/Core/SubscribeEvent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/SubscribeEvent.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/SampleEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/SampleEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Event/SampleEvent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/SampleEvent.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Main.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Main.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/EventSampleStaticTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tests/EventSampleStaticTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Event.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Event.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +27,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/DarkOnGithub/Epitopia.git&quot;,
-    &quot;accountId&quot;: &quot;2b975147-e110-4d10-9a75-98f165f22488&quot;
+    &quot;accountId&quot;: &quot;e7a4e772-7863-4a4a-a156-0ed63083fcfc&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -82,7 +65,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.23f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.24f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\darke\Documents\Unity\Epitopia -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\darke\Documents\Unity\Epitopia" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -90,7 +73,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.23f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.24f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\darke\Documents\Unity\Epitopia -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\darke\Documents\Unity\Epitopia" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -138,6 +121,9 @@
       <workItem from="1730037519551" duration="615000" />
       <workItem from="1730061195077" duration="4787000" />
       <workItem from="1730148648793" duration="2016000" />
+      <workItem from="1730302595854" duration="231000" />
+      <workItem from="1730302862255" duration="77000" />
+      <workItem from="1730302959834" duration="629000" />
     </task>
     <task id="LOCAL-00001" summary="added a few libs">
       <option name="closed" value="true" />

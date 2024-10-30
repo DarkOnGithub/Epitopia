@@ -8,6 +8,7 @@ namespace Events.EventHandler
         public List<EventListener> GetListeners => EventFactory.ListenersContainer[this.GetType()];
         public bool IsCancelled = false;
         public Event() {}
+        public void SetCancelled(bool _) { }
         
     }
 }
