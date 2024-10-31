@@ -37,7 +37,6 @@ public static class LobbyManager
         if (!AuthenticationService.Instance.IsSignedIn)
             await Authentification.AuthentificateAnonymously();
         
-
         var joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode);
         var relayServerData = new RelayServerData(
             joinAllocation.RelayServer.IpV4, 
