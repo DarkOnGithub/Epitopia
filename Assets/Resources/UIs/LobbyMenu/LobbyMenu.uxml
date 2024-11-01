@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/UI/LobbyMenu/LobbyMenu.uss?fileID=7433441132597879392&amp;guid=5d62a27e33842554385285bf5ff11f30&amp;type=3#LobbyMenu" />
-    <ui:TextField text="Label" name="JoinCode" id="JoinCode" />
-    <ui:Button text="Button" name="JoinServer" id="JoinServer"/>
-    <ui:Button text="Button" name="CreateServer" id="CreateServer"/>
+    <ui:TextField text="Server Code" name="JoinCode" id="JoinCode" />
+    <ui:Button text="JoinServer" name="JoinServer" id="JoinServer"/>
+    <ui:Button text="Create Server" name="CreateServer" id="CreateServer"/>
 </ui:UXML>

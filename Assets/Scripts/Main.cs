@@ -11,7 +11,7 @@ using Event = UnityEngine.Event;
 
 public class Main : MonoBehaviour
 {
-    private  async void Awake()
+    private  void Awake()
     {
         new LobbyMenu().Show();
     }

@@ -8,16 +8,20 @@ namespace Gui.Menus
     {
         public LobbyMenu() : base("LobbyMenu")
         {
-            RootVisualElement.Q<Button>("CreateServer").RegisterCallback<MouseDownEvent>(async (evt) => 
+            Debug.Log("a");
+            RootVisualElement.Q<Button>("CreateServer").RegisterCallback<ClickEvent>(async (evt) => 
             {
                 var code = await LobbyManager.StartHostAndGetJoinCode();
                 Debug.Log(code);
             });
             
-            RootVisualElement.Q<Button>("JoinServer").RegisterCallback<MouseDownEvent>(async (evt) => 
+            RootVisualElement.Q<Button>("JoinServer").RegisterCallback<ClickEvent>(async (evt) => 
             {
                 await LobbyManager.StartClient(RootVisualElement.Q<TextField>("JoinCode").value);
             });
+            
+            
+            
         }
     }
 }

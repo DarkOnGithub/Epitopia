@@ -16,6 +16,7 @@ namespace Gui
             GameObject = new GameObject(guiName);
             Asset = Resources.Load<VisualTreeAsset>($"UIs/{guiName}/{guiName}");
             Document = GameObject.AddComponent<UIDocument>();
+            Document.panelSettings = Settings;
             Document.visualTreeAsset = Asset;
             RootVisualElement = Document.rootVisualElement;
         }
