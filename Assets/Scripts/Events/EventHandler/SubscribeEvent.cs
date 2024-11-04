@@ -5,10 +5,11 @@ using System.Reflection;
 
 namespace Events.EventHandler
 {
-    [System.AttributeUsage(System.AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method)]
     public class SubscribeEventAttribute : Attribute
     {
         public EventPriority Priority = EventPriority.Normal;
+
         /// <summary>
         /// Gets all methods that have a specific attribute from a type
         /// </summary>
@@ -17,9 +18,9 @@ namespace Events.EventHandler
         public static IEnumerable<MethodInfo> GetMethods(object type)
         {
             return (type is Type ? (Type)type : type.GetType())
-                  .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | 
-                              BindingFlags.Instance | BindingFlags.Static)
-                  .Where(method => method.GetCustomAttributes(typeof(SubscribeEventAttribute), false).Any());
+                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic |
+                            BindingFlags.Instance | BindingFlags.Static)
+                .Where(method => method.GetCustomAttributes(typeof(SubscribeEventAttribute), false).Any());
         }
     }
 }

@@ -11,11 +11,13 @@ namespace Events.EventHandler
 {
     public static class EventFactory
     {
-             public static Dictionary<Type, List<EventListener>> ListenersContainer = new();
+        public static Dictionary<Type, List<EventListener>> ListenersContainer = new();
         private static BetterLogger _logger = new(typeof(EventFactory));
 
-        private static List<EventListener> GetListener(Type type) => 
-            ListenersContainer.TryGetValue(type, out var listeners) ? listeners : null;
+        private static List<EventListener> GetListener(Type type)
+        {
+            return ListenersContainer.TryGetValue(type, out var listeners) ? listeners : null;
+        }
 
         private static IEnumerable<Type> SearchForEventClasses()
         {
@@ -27,15 +29,13 @@ namespace Events.EventHandler
         public static void RegisterEvents()
         {
             foreach (var eventClass in SearchForEventClasses())
-            {
                 ListenersContainer.TryAdd(eventClass, new List<EventListener>());
-            }
         }
 
         public static void Register(object T)
         {
             var type = T as Type ?? T.GetType();
-            var isStatic = type == (T as Type);
+            var isStatic = type == T as Type;
 
             foreach (var method in SubscribeEventAttribute.GetMethods(T))
             {
@@ -45,14 +45,16 @@ namespace Events.EventHandler
                 var parameters = method.GetParameters();
                 if (parameters.Length != 1)
                 {
-                    _logger.LogWarning($"[Skipping] Method <{method.Name}> in type <{type.Name}> must have only one parameter");
+                    _logger.LogWarning(
+                        $"[Skipping] Method <{method.Name}> in type <{type.Name}> must have only one parameter");
                     continue;
                 }
 
                 var eventType = parameters[0].ParameterType;
                 if (!typeof(Event).IsAssignableFrom(eventType))
                 {
-                    _logger.LogWarning($"[Skipping] Method <{method.Name}> in type <{type.Name}> must have a parameter that inherits from Event");
+                    _logger.LogWarning(
+                        $"[Skipping] Method <{method.Name}> in type <{type.Name}> must have a parameter that inherits from Event");
                     return;
                 }
 
@@ -60,7 +62,8 @@ namespace Events.EventHandler
             }
         }
 
-        public static void Subscribe(Type eventType, MethodInfo method, SubscribeEventAttribute attribute, [CanBeNull] object instance, bool isStatic = false)
+        public static void Subscribe(Type eventType, MethodInfo method, SubscribeEventAttribute attribute,
+            [CanBeNull] object instance, bool isStatic = false)
         {
             var listener = new EventListener(isStatic || method.IsStatic ? null : instance, method, attribute.Priority);
             var listeners = GetListener(eventType);

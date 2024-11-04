@@ -18,7 +18,7 @@ namespace Events.EventHandler
 
         public void Invoke(Event evt)
         {
-            _method.Invoke(_instance, new []{ evt });
+            _method.Invoke(_instance, new[] { evt });
         }
     }
 }

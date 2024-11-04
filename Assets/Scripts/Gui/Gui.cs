@@ -10,7 +10,7 @@ namespace Gui
         protected UIDocument Document;
         public VisualElement RootVisualElement;
         public PanelSettings Settings = Resources.Load<PanelSettings>("UIs/UI Toolkit/PanelSettings");
-        
+
         public Gui(string guiName)
         {
             GameObject = new GameObject(guiName);
@@ -25,7 +25,7 @@ namespace Gui
         {
             RootVisualElement.style.display = DisplayStyle.Flex;
         }
-        
+
         public void Hide()
         {
             RootVisualElement.style.display = DisplayStyle.None;

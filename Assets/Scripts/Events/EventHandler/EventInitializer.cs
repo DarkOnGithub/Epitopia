@@ -1,5 +1,4 @@
-﻿using Tests;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Events.EventHandler
 {
@@ -9,12 +8,10 @@ namespace Events.EventHandler
         {
             EventFactory.RegisterEvents();
             RegisterListeners();
-            EventFactory.Invoke(new SampleEvent("Hello", 727));
         }
 
         private static void RegisterListeners()
         {
-            EventFactory.Register(typeof(EventSampleStaticTest));
         }
     }
 }

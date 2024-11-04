@@ -5,16 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Commands.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/LobbyCommands.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/LobbyCommands.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Packets.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Packets/Packet.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Packets/Packet.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/UIs/LobbyMenu/LobbyMenu.uxml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/UIs/LobbyMenu/LobbyMenu.uxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gui/Gui.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gui/Gui.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gui/Menus/LobbyMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Gui/Menus/LobbyMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/UIs/LobbyMenu.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/UIs/LobbyMenu/LobbyMenu.uss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/UIs/LobbyMenu/LobbyMenu.uss.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/UIs/LobbyMenu/LobbyMenu.uxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/UIs/LobbyMenu/LobbyMenu.uxml.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/UIs/UI Toolkit/PanelSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/UIs/UI Toolkit/PanelSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/BetterLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/BetterLogger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventInitializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/SampleEvent.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/SampleEvent.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gui/Menus/LobbyMenu.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Gui/Menus/LobbyMenu.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Main.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Main.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Lobby/Authentification/Authentification.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Lobby/Authentification/Authentification.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Lobby/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Lobby/LobbyManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/NetworkHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/NetworkHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/EventSampleStaticTest.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/EventSampleStaticTest.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Workspace.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Workspace.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,13 +49,14 @@
     &quot;assignee&quot;: &quot;DarkOnGithub&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/DarkOnGithub/Epitopia.git",
-    "accountId": "2b975147-e110-4d10-9a75-98f165f22488"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DarkOnGithub/Epitopia.git&quot;,
+    &quot;accountId&quot;: &quot;e7a4e772-7863-4a4a-a156-0ed63083fcfc&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a846d985d43b4514a3d8db65dbdc899a1f4200/bb/710619d1/CallbackEventHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Gui/Menus/LobbyMenu.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -49,19 +69,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.C#",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.25f1\Editor\Unity.exe" />
@@ -125,6 +145,15 @@
       <workItem from="1730302959834" duration="940000" />
       <workItem from="1730386671343" duration="4326000" />
       <workItem from="1730479632388" duration="1382000" />
+      <workItem from="1730541353134" duration="2353000" />
+      <workItem from="1730559748794" duration="2615000" />
+      <workItem from="1730646559541" duration="728000" />
+      <workItem from="1730647337216" duration="187000" />
+      <workItem from="1730647559328" duration="4847000" />
+      <workItem from="1730711617911" duration="353000" />
+      <workItem from="1730714434454" duration="217000" />
+      <workItem from="1730714675071" duration="3247000" />
+      <workItem from="1730732807832" duration="5952000" />
     </task>
     <task id="LOCAL-00001" summary="added a few libs">
       <option name="closed" value="true" />
@@ -170,5 +199,9 @@
     <MESSAGE value="adding lobbies" />
     <MESSAGE value="cancel event" />
     <option name="LAST_COMMIT_MESSAGE" value="cancel event" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
