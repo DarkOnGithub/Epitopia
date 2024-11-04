@@ -1,6 +1,7 @@
 ﻿using System;
 using Core;
 using Network.Lobby.Authentification;
+using Network.Packets;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -20,14 +21,11 @@ namespace Network
 
         private async void Awake()
         {
-            if (_instance != null && _instance != this)
-                Destroy(gameObject);
-            else
-                _instance = this;
-
             _networkManager = GetComponent<NetworkManager>();
+            
             await UnityServices.InitializeAsync();
             await Authentification.TrySignIn();
+
             _logger.LogInfo($"Connected as {AuthenticationService.Instance.PlayerId}");
             PlayerId = AuthenticationService.Instance.PlayerId;
             StartCoroutine(LobbyManager.HeartbeatLobby());

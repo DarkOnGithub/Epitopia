@@ -23,7 +23,9 @@ public static class LobbyManager
     private const string JOIN_CODE = "JOIN_CODE";
     [CanBeNull] public static Lobby CurrentLobby { get; private set; }
     private static BetterLogger _logger = new(typeof(LobbyManager));
-
+    /// <summary>
+    /// Infinite loop that sends a heartbeat ping to the lobby every 15 seconds
+    /// </summary>
     public static IEnumerator HeartbeatLobby()
     {
         var waiter = new WaitForSeconds(15);
@@ -36,7 +38,10 @@ public static class LobbyManager
             yield return new WaitUntil(() => task.IsCompleted);
         }
     }
-
+    /// <summary>
+    /// Join the relay using a join code then start the client
+    /// </summary>
+    /// <param name="joinCode">The join code</param>
     private static async Task StartClient(string joinCode)
     {
         try
@@ -57,7 +62,11 @@ public static class LobbyManager
             _logger.LogWarning(e);
         }
     }
-
+    /// <summary>
+    /// Create a new relay allocation then start the host
+    /// </summary>
+    /// <param name="maxPlayers">Max amount of player in the allocation</param>
+    /// <returns>Return a join code</returns>
     private static async Task<string> StartHost(int maxPlayers)
     {
         try
@@ -79,7 +88,11 @@ public static class LobbyManager
             return null;
         }
     }
-
+    /// <summary>
+    /// Create a lobby with a name of size maxPlayers
+    /// </summary>
+    /// <param name="name">The server name</param>
+    /// <param name="maxPlayers">Max size of the server</param>
     public static async Task CreateLobby(string name, int maxPlayers = 1)
     {
         try
@@ -107,7 +120,12 @@ public static class LobbyManager
             _logger.LogWarning(e);
         }
     }
-
+    /// <summary>
+    /// Query lobbies following the optional parameters options
+    /// No options will return all lobbies
+    /// </summary>
+    /// <param name="options">Optional parameter used to query lobbies</param>
+    /// <returns>The result of the query</returns>
     public static async Task<QueryResponse> QueryLobbies(QueryLobbiesOptions options = null)
     {
         try
@@ -120,7 +138,10 @@ public static class LobbyManager
             return null;
         }
     }
-
+    /// <summary>
+    /// Join a lobby by its id
+    /// </summary>
+    /// <param name="lobbyId">The lobby id (not the relay id)</param>
     public static async Task JoinLobbyById(string lobbyId)
     {
         try

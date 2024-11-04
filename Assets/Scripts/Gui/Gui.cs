@@ -10,7 +10,10 @@ namespace Gui
         protected UIDocument Document;
         public VisualElement RootVisualElement;
         public PanelSettings Settings = Resources.Load<PanelSettings>("UIs/UI Toolkit/PanelSettings");
-
+        /// <summary>
+        /// A GUI object
+        /// </summary>
+        /// <param name="guiName">Path to its ui toolkit files</param>
         public Gui(string guiName)
         {
             GameObject = new GameObject(guiName);

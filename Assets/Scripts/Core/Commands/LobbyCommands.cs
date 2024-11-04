@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using QFSW.QC;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
@@ -11,13 +12,14 @@ namespace Core.Commands
         private static BetterLogger _logger = new(typeof(LobbyCommands));
 
         [Command]
-        public static async void CreateLobby(string name, int size = 1)
+        public static async Task CreateLobby(string name, int size = 1)
         {
             await LobbyManager.CreateLobby(name, size);
+            
         }
 
         [Command]
-        public static async void QueryAllLobbies()
+        public static async Task QueryAllLobbies()
         {
             var lobbies = await LobbyManager.QueryLobbies();
             foreach (var lobby in lobbies.Results)
@@ -25,13 +27,13 @@ namespace Core.Commands
         }
 
         [Command]
-        public static async void JoinLobby(string id)
+        public static async Task JoinLobby(string id)
         {
             await LobbyManager.JoinLobbyById(id);
         }
 
         [Command]
-        public static async void JoinLobbyFromName(string name)
+        public static async Task JoinLobbyFromName(string name)
         {
             var lobbies = await LobbyManager.QueryLobbies(new QueryLobbiesOptions
             {

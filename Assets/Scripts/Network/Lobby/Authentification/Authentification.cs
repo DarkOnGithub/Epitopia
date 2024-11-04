@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Core;
 using Unity.Services.Authentication;
+using AuthenticationException = System.Security.Authentication.AuthenticationException;
 
 namespace Network.Lobby.Authentification
 {
@@ -8,7 +9,10 @@ namespace Network.Lobby.Authentification
     {
         private static BetterLogger _logger = new(typeof(Authentification));
         private static int _attempts = 10;
-
+        /// <summary>
+        /// Sign the local user to unity services
+        /// </summary>
+        /// <exception cref="AuthenticationException">Thrown if any error while trying to sign in</exception>
         public static async Task TrySignIn()
         {
             var attemps = 0;
@@ -21,7 +25,7 @@ namespace Network.Lobby.Authentification
             if (AuthenticationService.Instance.IsSignedIn)
                 _logger.LogInfo("Signed in successfully");
             else
-                _logger.LogError("Failed to sign in");
+                throw new AuthenticationException("Failed to sign in");
         }
     }
 }
