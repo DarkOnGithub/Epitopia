@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Core.Commands;
@@ -11,12 +12,17 @@ using Event = UnityEngine.Event;
 
 public class Main : MonoBehaviour
 {
+    private IEnumerator Temp()
+    {
+        yield return new WaitForSeconds(3);
+       
+    
+        Packets.SendPacket("hello");
+    }
     private async void Start()
     {
         new TestPacket();
         await LobbyCommands.CreateLobby("hello");
-        PacketFactory.Initialize();
-
-        Packets.SendPacket("hello");
+        StartCoroutine(Temp());
     }
 }

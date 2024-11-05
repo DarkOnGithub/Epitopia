@@ -22,7 +22,7 @@ namespace Network
         private async void Awake()
         {
             _networkManager = GetComponent<NetworkManager>();
-            
+
             await UnityServices.InitializeAsync();
             await Authentification.TrySignIn();
 

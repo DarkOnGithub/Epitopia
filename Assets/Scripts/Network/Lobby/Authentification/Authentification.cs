@@ -9,6 +9,7 @@ namespace Network.Lobby.Authentification
     {
         private static BetterLogger _logger = new(typeof(Authentification));
         private static int _attempts = 10;
+
         /// <summary>
         /// Sign the local user to unity services
         /// </summary>

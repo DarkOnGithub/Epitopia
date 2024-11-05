@@ -2,6 +2,6 @@
 {
     public enum PacketType
     {
-        NetworkPacket = 0x11,
+        NetworkPacket = 0x00
     }
 }
