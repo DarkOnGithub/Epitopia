@@ -16,7 +16,7 @@ namespace Network
         private static NetworkHandler _instance;
         public static NetworkHandler Instance => _instance;
         [SerializeField] public string serverCode;
-        private BetterLogger _logger = new(typeof(NetworkHandler));
+        private readonly BetterLogger _logger = new(typeof(NetworkHandler));
         private NetworkManager _networkManager;
 
         private async void Awake()
@@ -25,7 +25,9 @@ namespace Network
 
             await UnityServices.InitializeAsync();
             await Authentification.TrySignIn();
-
+            
+            PacketFactory.RegisterAllPackets();
+            
             _logger.LogInfo($"Connected as {AuthenticationService.Instance.PlayerId}");
             PlayerId = AuthenticationService.Instance.PlayerId;
             StartCoroutine(LobbyManager.HeartbeatLobby());

@@ -12,17 +12,9 @@ using Event = UnityEngine.Event;
 
 public class Main : MonoBehaviour
 {
-    private IEnumerator Temp()
-    {
-        yield return new WaitForSeconds(3);
-       
-    
-        Packets.SendPacket("hello");
-    }
+
+   
     private async void Start()
     {
-        new TestPacket();
-        await LobbyCommands.CreateLobby("hello");
-        StartCoroutine(Temp());
     }
 }

@@ -1,37 +1,36 @@
-﻿// using System;
-// using Unity.Netcode;
-// using UnityEngine;
-//
-// namespace Network.Packets
-// {
-//     public struct TextPacket : IPacketData
-//     {
-//         public string Text;
-//         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-//         {
-//             serializer.SerializeValue(ref Text);
-//         }
-//     }
-//
-//     public class TestPacket : NetworkPacket<TextPacket>
-//     {
-//         public override PacketType PacketType { get; }
-//
-//         public override void OnPacketReceived(TextPacket packetData)
-//         {
-//             Debug.Log(packetData.Text);
-//         }
-//
-//         public override void SerializePacket(FastBufferWriter writer, TextPacket packetData)
-//         {
-//             writer.WriteValue(packetData.Text);
-//         }
-//
-//         public override TextPacket DeserializePacket(FastBufferReader reader)
-//         {
-//             var packet = new TextPacket();
-//             reader.ReadValue(out packet.Text);
-//             return packet;
-//         }
-//     }
-// }
+﻿using System;
+using System.Collections.Generic;
+using QFSW.QC;
+using Unity.Netcode;
+using UnityEngine;
+
+namespace Network.Packets
+{
+    public struct TestPacketData : IPacketData
+    {
+        public float ETA;
+        public double[] SoloQ;
+    }
+
+    public class TestPacket : NetworkPacket<TestPacketData>
+    {
+        protected override PacketType PacketType { get; } = PacketType.NetworkPacket;
+        protected override void OnPacketReceived(TestPacketData packetData)
+        {
+            Debug.Log($"Received packet with ETA: {Time.realtimeSinceStartup * 1000 - packetData.ETA} ms");            Debug.Log(packetData.SoloQ.Length);
+        }
+
+        protected override void SerializePacket(FastBufferWriter writer, TestPacketData packetData)
+        {
+            writer.WriteValue(packetData.ETA);
+        }
+        
+        //!TODO Call readValue instead of readValueSafe and Get the size from default size
+        protected override TestPacketData DeserializePacket(FastBufferReader reader)
+        {
+            TestPacketData packetData = new TestPacketData();
+            reader.ReadValueSafe(out packetData.ETA);
+            return packetData;        
+        }
+    }
+}
