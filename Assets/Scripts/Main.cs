@@ -5,6 +5,8 @@ using System.Reflection;
 using Core.Commands;
 using Events;
 using Events.EventHandler;
+using MessagePack;
+using MessagePack.Resolvers;
 using Network.Packets;
 using UnityEngine;
 using Event = UnityEngine.Event;
@@ -13,8 +15,8 @@ using Event = UnityEngine.Event;
 public class Main : MonoBehaviour
 {
 
-   
     private async void Start()
     {
+
     }
 }

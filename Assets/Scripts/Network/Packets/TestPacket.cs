@@ -1,36 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using MessagePack;
 using QFSW.QC;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace Network.Packets
 {
-    public struct TestPacketData : IPacketData
+    [MessagePackObject]
+    public struct TestMessageData : IMessageData
     {
-        public float ETA;
-        public double[] SoloQ;
+        [Key(0)]
+        public float ETA { get; set; }
+        [Key(1)]
+        public double[] SoloQ { get; set; }
+
+        public override string ToString()
+        {
+            return ETA.ToString();
+        }
     }
 
-    public class TestPacket : NetworkPacket<TestPacketData>
+    public class TestPacket : NetworkPacket<TestMessageData>
     {
-        protected override PacketType PacketType { get; } = PacketType.NetworkPacket;
-        protected override void OnPacketReceived(TestPacketData packetData)
+        public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.Network;
+        protected override void OnPacketReceived(TestMessageData messageData)
         {
-            Debug.Log($"Received packet with ETA: {Time.realtimeSinceStartup * 1000 - packetData.ETA} ms");            Debug.Log(packetData.SoloQ.Length);
-        }
-
-        protected override void SerializePacket(FastBufferWriter writer, TestPacketData packetData)
-        {
-            writer.WriteValue(packetData.ETA);
-        }
-        
-        //!TODO Call readValue instead of readValueSafe and Get the size from default size
-        protected override TestPacketData DeserializePacket(FastBufferReader reader)
-        {
-            TestPacketData packetData = new TestPacketData();
-            reader.ReadValueSafe(out packetData.ETA);
-            return packetData;        
+            Debug.Log(messageData);
+            Debug.Log(messageData.ETA);
         }
     }
 }
