@@ -29,7 +29,7 @@ namespace Network.Packets
         public NetworkPacket()
         {
             MessageType = typeof(T);
-            PacketId = MessageFactory.GeneratePacketId<T>(Identifier);
+            PacketId = MessageFactory.GeneratePacketId(Identifier);
             MessageFactory.RegisterPacket(this);
         }
         

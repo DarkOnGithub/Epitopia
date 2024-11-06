@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Core;
 using MessagePack;
+using Network.Packets.Packets.Network;
 using Network.Packets.Packets.Test;
 using Unity.Collections;
 using Unity.Netcode;
@@ -48,6 +49,7 @@ namespace Network.Packets
         public static void RegisterAllPackets()
         {
             new MousePacketTest();
+            new HandShake();
         }
         
         
@@ -56,6 +58,7 @@ namespace Network.Packets
         {
             MessagingManager = NetworkManager.Singleton.CustomMessagingManager;
             MessagingManager.OnUnnamedMessage += OnUnnamedMessageReceived;
+
         }
 
         public static void Dispose()
@@ -97,11 +100,11 @@ namespace Network.Packets
             }
             networkMessage.SendMessage(packetData, null);
         }
-        public static short GeneratePacketId<T>(NetworkMessageIdenfitier idenfitier) where T: IMessageData
+        public static short GeneratePacketId(NetworkMessageIdenfitier idenfitier) 
         {
-            if (!_packetCount.ContainsKey(typeof(T)))
-                _packetCount[typeof(T)] = 0;
-            return (short)((byte)idenfitier << 8 | _packetCount[typeof(T)]++);
+            if (!_packetCount.ContainsKey(idenfitier.GetType()))
+                _packetCount[idenfitier.GetType()] = 0;
+            return (short)((byte)idenfitier << 8 | _packetCount[idenfitier.GetType()]++);
         }
         public static string ToHex(this short packetId)
         {

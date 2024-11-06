@@ -8,6 +8,8 @@ using JetBrains.Annotations;
 using Network;
 using Network.Lobby;
 using Network.Lobby.Authentification;
+using Network.Packets;
+using Network.Packets.Packets.Network;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -25,6 +27,15 @@ public static class LobbyManager
     [CanBeNull] public static Lobby CurrentLobby { get; private set; }
     private static BetterLogger _logger = new(typeof(LobbyManager));
 
+    private static void OnJoin()
+    {
+        
+        var data = new HandShakeData()
+                   {
+                       ClientId = NetworkManager.Singleton.LocalClientId
+                   };
+        MessageFactory.SendPacketToAll(data);
+    }
     /// <summary>
     /// Infinite loop that sends a heartbeat ping to the lobby every 15 seconds
     /// </summary>
@@ -63,6 +74,8 @@ public static class LobbyManager
             var lobby = await LobbyService.Instance.CreateLobbyAsync(name, maxPlayers, lobbyOptions);
             CurrentLobby = lobby;
             Debug.Log($"Lobby <{lobby.Name}> created with id {lobby.Id}, join code {code}");
+            await Task.Delay(500);
+            OnJoin();
         }
         catch (RelayServiceException e)
         {
@@ -112,6 +125,9 @@ public static class LobbyManager
             await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
             await RelayManager.StartClient(lobby.Data[JOIN_CODE].Value);
             _logger.LogWarning($"Joined lobby {CurrentLobby.Name}");
+            await Task.Delay(500);
+
+            OnJoin();            
         }
         catch (LobbyServiceException e)
         {
