@@ -4,4 +4,9 @@
     {
         
     }
+
+    public interface IMessageVariable<T> : IMessageData
+    {
+        T Message { get; set; }
+    }
 }

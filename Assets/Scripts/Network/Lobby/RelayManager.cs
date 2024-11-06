@@ -29,7 +29,7 @@ namespace Network.Lobby
                     allocation.HostConnectionData
                 );
                 NetworkManager.Singleton.StartClient();
-                PacketFactory.Initialize();
+                MessageFactory.Initialize();
             }
             catch (RelayServiceException e)
             {
@@ -55,7 +55,7 @@ namespace Network.Lobby
                     allocation.ConnectionData
                 );
                 NetworkManager.Singleton.StartHost();
-                PacketFactory.Initialize();
+                MessageFactory.Initialize();
                 return await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             }
             catch (RelayServiceException e)

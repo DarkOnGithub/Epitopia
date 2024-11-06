@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Core;
 using MessagePack;
+using Network.Packets.Packets.Test;
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.Services.Relay.Models;
@@ -15,7 +16,7 @@ using Type = System.Type;
 
 namespace Network.Packets
 {
-    public static class PacketFactory
+    public static class MessageFactory
     {
 
         public static readonly HashSet<Type> PrimitivesType = new()
@@ -39,14 +40,14 @@ namespace Network.Packets
         public static readonly Dictionary<short, INetworkMessage> NetworkMessageIds = new();
         public static readonly Dictionary<Type, INetworkMessage> NetworkMessageTypes = new();
         public  static CustomMessagingManager MessagingManager;
-        private static readonly BetterLogger Logger = new(typeof(PacketFactory));
+        private static readonly BetterLogger Logger = new(typeof(MessageFactory));
 
         public static bool IsInitialized => MessagingManager != null;
         
         
         public static void RegisterAllPackets()
         {
-            new TestPacket();
+            new MousePacketTest();
         }
         
         
@@ -65,6 +66,7 @@ namespace Network.Packets
 
         public static void RegisterPacket(INetworkMessage message)
         {
+            Logger.LogInfo($"Registering packet {message.GetType().Name} with id {message.PacketId.ToHex()}");
             NetworkMessageIds[message.PacketId] = message;
             NetworkMessageTypes[message.MessageType] = message;
         }
@@ -79,7 +81,6 @@ namespace Network.Packets
             }
             
             reader.ReadValueSafe(out int bufferSize);
-            Debug.Log(bufferSize);
             if(!reader.TryBeginRead(bufferSize))
                 return;
             var buffer = new byte[bufferSize];

@@ -29,8 +29,8 @@ namespace Network.Packets
         public NetworkPacket()
         {
             MessageType = typeof(T);
-            PacketId = PacketFactory.GeneratePacketId<T>(Identifier);
-            PacketFactory.RegisterPacket(this);
+            PacketId = MessageFactory.GeneratePacketId<T>(Identifier);
+            MessageFactory.RegisterPacket(this);
         }
         
         protected abstract void OnPacketReceived(T messageData);
@@ -43,17 +43,15 @@ namespace Network.Packets
         {
             byte[] message = MessagePackSerializer.Serialize<T>((T)messageData);
             var size = sizeof(short) + sizeof(int) + message.Length;
-            if (PacketFactory.IsInitialized)
+            if (MessageFactory.IsInitialized)
             {
                 using (var writer = new FastBufferWriter(size, Allocator.Temp))
                 {
                     if (!writer.TryBeginWrite(size)) return;
                     writer.WriteValue(PacketId);
                     writer.WriteValue(message.Length);
-                    Debug.Log(message.Length);
-                    Debug.Log(size);
                     writer.WriteBytes(message);
-                    PacketFactory.MessagingManager.SendUnnamedMessageToAll(writer, NetworkDelivery.ReliableFragmentedSequenced);
+                    MessageFactory.MessagingManager.SendUnnamedMessageToAll(writer, NetworkDelivery.ReliableFragmentedSequenced);
                 }
             }
         }

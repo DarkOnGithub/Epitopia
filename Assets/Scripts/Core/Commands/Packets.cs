@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using MessagePack;
+using Network;
 using Network.Packets;
+using Network.Packets.Packets.Test;
 using QFSW.QC;
+using Tests;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -13,9 +17,9 @@ namespace Core.Commands
         [Command]
         public static void SendPacket()
         {
-            var packet = new TestMessageData() { ETA = Time.realtimeSinceStartup * 1000, SoloQ = new double[1] };
-            Debug.Log(packet);
-            PacketFactory.SendPacketToAll(packet);
+            TriangleTest.Instance.T();
+           
+        
         }
     }
 }

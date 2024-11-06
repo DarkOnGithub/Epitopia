@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing.Printing;
 using Core;
 using Network.Lobby.Authentification;
 using Network.Packets;
+using Network.Packets.Packets.Test;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -26,8 +30,8 @@ namespace Network
             await UnityServices.InitializeAsync();
             await Authentification.TrySignIn();
             
-            PacketFactory.RegisterAllPackets();
-            
+            MessageFactory.RegisterAllPackets();
+            _instance = this;
             _logger.LogInfo($"Connected as {AuthenticationService.Instance.PlayerId}");
             PlayerId = AuthenticationService.Instance.PlayerId;
             StartCoroutine(LobbyManager.HeartbeatLobby());
