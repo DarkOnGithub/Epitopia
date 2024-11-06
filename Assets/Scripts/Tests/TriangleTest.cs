@@ -33,7 +33,7 @@ namespace Tests
                                  Y = pos.y,
                                  Time = Time.realtimeSinceStartup * 1000
                              };
-                MessageFactory.SendPacketToAll(packet);
+                MessageFactory.ClientToClients(packet);
             }
         } 
     }

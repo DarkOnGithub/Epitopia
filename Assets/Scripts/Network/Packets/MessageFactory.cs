@@ -6,18 +6,20 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Core;
+using JetBrains.Annotations;
 using MessagePack;
 using Network.Packets.Packets.Network;
 using Network.Packets.Packets.Test;
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.Services.Relay.Models;
+using Utils;
 using Debug = UnityEngine.Debug;
 using Type = System.Type;
 
 namespace Network.Packets
 {
-    public static class MessageFactory
+    public class MessageFactory : NetworkBehaviour
     {
 
         public static readonly HashSet<Type> PrimitivesType = new()
@@ -51,17 +53,16 @@ namespace Network.Packets
             new MousePacketTest();
             new HandShake();
         }
-        
-        
-        
-        public static void Initialize()
+
+
+        public override void OnNetworkSpawn()
         {
             MessagingManager = NetworkManager.Singleton.CustomMessagingManager;
             MessagingManager.OnUnnamedMessage += OnUnnamedMessageReceived;
 
         }
 
-        public static void Dispose()
+        public override void OnNetworkDespawn()
         {
             MessagingManager.OnUnnamedMessage -= OnUnnamedMessageReceived;
             MessagingManager = null;
@@ -76,29 +77,91 @@ namespace Network.Packets
         
         private static void OnUnnamedMessageReceived(ulong clientId, FastBufferReader reader)
         {
+
             reader.ReadValueSafe(out short packetId);
             if (!NetworkMessageIds.TryGetValue(packetId, out var networkMessage))
             {
                 Logger.LogWarning($"Received unknown packet with id {packetId.ToHex()}");
                 return;
             }
-            
+            reader.ReadValueSafe(out byte header);
+            Debug.Log(header);
             reader.ReadValueSafe(out int bufferSize);
             if(!reader.TryBeginRead(bufferSize))
                 return;
             var buffer = new byte[bufferSize];
             reader.ReadBytes(ref buffer, bufferSize);
+            
+            if (NetworkManager.Singleton.IsHost)
+            {
+                if ((header & 0x80) == 1)
+                {
+                    var writer = new FastBufferWriter(bufferSize, Allocator.Temp);
+                    if (!writer.TryBeginWrite(bufferSize))
+                        return;
+                    var length = header & 0x7F;
+                    if(length == 0)
+                        SendBufferTo(writer, null);
+                    else
+                    {
+                        ulong[] clientIds = new ulong[length];
+                        for (int i = 0; i < length; i++)
+                        {
+                            reader.ReadValueSafe(out ulong id);
+                            clientIds[i] = id;
+                        }
+
+                        SendBufferTo(writer, clientIds);
+                    }
+
+                    return;
+                }
+            }
+            
             networkMessage.OnPacketReceived((IMessageData)MessagePackSerializer.Deserialize(networkMessage.MessageType, buffer));
         }
-        
-        public static void SendPacketToAll<T>(T packetData) where T : IMessageData
+
+      
+        public static void ServerToClients<T>(T packetData, [CanBeNull] ulong[] clientIds = null) where T : IMessageData
         {
             if (!NetworkMessageTypes.TryGetValue(packetData.GetType(), out var networkMessage))
             {
                 Logger.LogWarning($"Failed to send packet {packetData.GetType().Name} as it is not registered");
                 return;
             }
-            networkMessage.SendMessage(packetData, null);
+            networkMessage.SendMessageToClients(packetData, clientIds);
+        }
+        public static void ClientToServer<T>(T packetData) where T : IMessageData
+        {
+            if (!NetworkMessageTypes.TryGetValue(packetData.GetType(), out var networkMessage))
+            {
+                Logger.LogWarning($"Failed to send packet {packetData.GetType().Name} as it is not registered");
+                return;
+            }
+            networkMessage.SendMessageToServer(packetData, Array.Empty<ulong>());
+        }
+
+        public static void ClientToClients<T>(T packetData, [CanBeNull] ulong[] clientIds = null) where T : IMessageData
+        {
+            if (!NetworkMessageTypes.TryGetValue(packetData.GetType(), out var networkMessage))
+            {
+                Logger.LogWarning($"Failed to send packet {packetData.GetType().Name} as it is not registered");
+                return;
+            }
+            networkMessage.SendMessageToServer(packetData, clientIds);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="clientIds">ClientIds = null means To All</param>
+        public static void SendBufferTo(FastBufferWriter buffer, [CanBeNull] ulong[] clientIds = null)
+        {
+            if (clientIds == null)
+                MessagingManager.SendUnnamedMessageToAll(buffer,NetworkDelivery.ReliableFragmentedSequenced);
+            else
+                MessagingManager.SendUnnamedMessage(clientIds, buffer, NetworkDelivery.ReliableFragmentedSequenced);
+            buffer.Dispose();
         }
         public static short GeneratePacketId(NetworkMessageIdenfitier idenfitier) 
         {
@@ -106,10 +169,7 @@ namespace Network.Packets
                 _packetCount[idenfitier.GetType()] = 0;
             return (short)((byte)idenfitier << 8 | _packetCount[idenfitier.GetType()]++);
         }
-        public static string ToHex(this short packetId)
-        {
-            return "0x" + packetId.ToString("X");
-        }
+
         
         // public static bool IsSerializableType(object obj)
         // {

@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Unity.Netcode;
 
 namespace Network.Packets
@@ -10,6 +11,9 @@ namespace Network.Packets
 
         short PacketId { get; }
         void OnPacketReceived(IMessageData messageData);
-        void SendMessage(IMessageData messageData, ulong[] clients);
+        void SendMessageToClients(IMessageData messageData, [CanBeNull] ulong[] clients);
+
+        void SendMessageToServer(IMessageData messageData, [CanBeNull] ulong[] clients);
+        
     }
 }

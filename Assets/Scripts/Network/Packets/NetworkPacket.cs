@@ -38,20 +38,30 @@ namespace Network.Packets
         {
             OnPacketReceived((T)messageData);
         }
-
-        void INetworkMessage.SendMessage(IMessageData messageData, [CanBeNull] ulong[] clients)
+        
+        void INetworkMessage.SendMessageToServer(IMessageData messageData, [CanBeNull] ulong[] clients)
+        {
+            
+        }
+        
+        void INetworkMessage.SendMessageToClients(IMessageData messageData, [CanBeNull] ulong[] clients)
         {
             byte[] message = MessagePackSerializer.Serialize<T>((T)messageData);
-            var size = sizeof(short) + sizeof(int) + message.Length;
+            var size = sizeof(byte) + sizeof(short) + sizeof(int) + message.Length;
             if (MessageFactory.IsInitialized)
             {
                 using (var writer = new FastBufferWriter(size, Allocator.Temp))
                 {
                     if (!writer.TryBeginWrite(size)) return;
+                    byte header = 0b0;
+                    if (clients != null && clients.Length > 0)
+                        header = (byte)(clients.Length & 0x7F | 0x80);
+                    
+                    writer.WriteByte(header);
                     writer.WriteValue(PacketId);
                     writer.WriteValue(message.Length);
                     writer.WriteBytes(message);
-                    MessageFactory.MessagingManager.SendUnnamedMessageToAll(writer, NetworkDelivery.ReliableFragmentedSequenced);
+                    MessageFactory.SendBufferTo(writer, clients);
                 }
             }
         }
