@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using MessagePack;
 using Network;
-using Network.Packets;
-using Network.Packets.Packets.Test;
+using Network.Messages;
+using Network.Messages.Packets.Test;
 using QFSW.QC;
 using Tests;
 using Unity.Netcode;

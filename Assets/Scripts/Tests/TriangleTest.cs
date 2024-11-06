@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Network.Messages;
+using Network.Messages.Packets.Network;
+using Network.Messages.Packets.Test;
 using Network.Packets;
-using Network.Packets.Packets.Test;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -16,7 +18,13 @@ namespace Tests
         {
             Instance = this;
         }
-
+        public override void OnNetworkSpawn()
+        {
+            MessageFactory.SendPacket(SendingMode.ClientToClient, new HandShakeData()
+                                                                    {
+                                                                        ClientId = NetworkManager.Singleton.LocalClientId  
+                                                                    });
+        }
         public  void T()
         {
             StartCoroutine(Temp());
@@ -33,7 +41,7 @@ namespace Tests
                                  Y = pos.y,
                                  Time = Time.realtimeSinceStartup * 1000
                              };
-                MessageFactory.ClientToClients(packet);
+                MessageFactory.SendPacket(SendingMode.ClientToClient, packet);
             }
         } 
     }

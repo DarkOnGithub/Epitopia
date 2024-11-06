@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using Unity.Netcode;
 
-namespace Network.Packets
+namespace Network.Messages
 {
     public interface INetworkMessage
     {
@@ -11,9 +11,8 @@ namespace Network.Packets
 
         short PacketId { get; }
         void OnPacketReceived(IMessageData messageData);
-        void SendMessageToClients(IMessageData messageData, [CanBeNull] ulong[] clients);
+        void SendMessageTo(IMessageData messageData, SendingMode mode, ulong author, [CanBeNull] ulong[] clients);
 
-        void SendMessageToServer(IMessageData messageData, [CanBeNull] ulong[] clients);
         
     }
 }

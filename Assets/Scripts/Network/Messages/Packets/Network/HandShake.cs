@@ -1,7 +1,7 @@
 ﻿using MessagePack;
 using UnityEngine;
 
-namespace Network.Packets.Packets.Network
+namespace Network.Messages.Packets.Network
 {
     [MessagePackObject]
     public struct HandShakeData : IMessageData
@@ -14,7 +14,7 @@ namespace Network.Packets.Packets.Network
         public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.Network;
         protected override void OnPacketReceived(HandShakeData messageData)
         {
-            Debug.Log("User" + messageData.ClientId + " has connected");
+            Debug.Log("User " + messageData.ClientId + " has connected");
         }
     }
 }

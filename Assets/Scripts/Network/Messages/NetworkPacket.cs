@@ -10,6 +10,7 @@ using Events.EventHandler;
 using JetBrains.Annotations;
 using MessagePack;
 using Mono.CSharp;
+using Network.Packets.Packets;
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -17,7 +18,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using Event = UnityEngine.Event;
 
-namespace Network.Packets
+namespace Network.Messages
 {
     public abstract class NetworkPacket<T> : INetworkMessage
         where T : IMessageData
@@ -39,30 +40,23 @@ namespace Network.Packets
             OnPacketReceived((T)messageData);
         }
         
-        void INetworkMessage.SendMessageToServer(IMessageData messageData, [CanBeNull] ulong[] clients)
-        {
-            
-        }
+
         
-        void INetworkMessage.SendMessageToClients(IMessageData messageData, [CanBeNull] ulong[] clients)
+        void INetworkMessage.SendMessageTo(IMessageData messageData, SendingMode mode, ulong author, [CanBeNull] ulong[] clients)
         {
             byte[] message = MessagePackSerializer.Serialize<T>((T)messageData);
-            var size = sizeof(byte) + sizeof(short) + sizeof(int) + message.Length;
+            var header = NetworkUtils.GenerateHeader(mode, PacketId, author, clients);
+            
+            var size = sizeof(int) + header.Length + sizeof(int) + message.Length;
+
             if (MessageFactory.IsInitialized)
             {
-                using (var writer = new FastBufferWriter(size, Allocator.Temp))
-                {
-                    if (!writer.TryBeginWrite(size)) return;
-                    byte header = 0b0;
-                    if (clients != null && clients.Length > 0)
-                        header = (byte)(clients.Length & 0x7F | 0x80);
-                    
-                    writer.WriteByte(header);
-                    writer.WriteValue(PacketId);
-                    writer.WriteValue(message.Length);
-                    writer.WriteBytes(message);
-                    MessageFactory.SendBufferTo(writer, clients);
-                }
+                var writer = new FastBufferWriter(size, Allocator.Temp);
+                if (!writer.TryBeginWrite(size)) return;
+                writer.WriteValue(header);
+                writer.WriteValue(message.Length);
+                writer.WriteBytes(message);
+                MessageFactory.SendBufferTo(writer, mode, clients);
             }
         }
     }

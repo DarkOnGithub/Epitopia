@@ -1,7 +1,7 @@
 ﻿using MessagePack;
 using UnityEngine;
 
-namespace Network.Packets.Packets.Test
+namespace Network.Messages.Packets.Test
 {
     [MessagePackObject]
     public struct MousePacketData : IMessageData
@@ -20,7 +20,7 @@ namespace Network.Packets.Packets.Test
         public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.Network;
         protected override void OnPacketReceived(MousePacketData messageData)
         {
-            var mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var mouseWorldPos = Camera.main.ScreenToWorldPoint((new Vector2(messageData.X, messageData.Y)));
             mouseWorldPos.z = 0f; 
             
             GameObject.Find("Triangle").transform.position = mouseWorldPos;        

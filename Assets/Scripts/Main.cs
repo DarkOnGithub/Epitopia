@@ -7,7 +7,7 @@ using Events;
 using Events.EventHandler;
 using MessagePack;
 using MessagePack.Resolvers;
-using Network.Packets;
+using Network.Messages;
 using UnityEngine;
 using Event = UnityEngine.Event;
 

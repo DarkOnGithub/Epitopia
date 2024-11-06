@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Core;
-using Network.Packets;
+using Network.Messages;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Relay;

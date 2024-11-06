@@ -1,4 +1,4 @@
-﻿namespace Network.Packets
+﻿namespace Network.Messages
 {
     public interface IMessageData
     {
