@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Core;
 using Network.Lobby.Authentification;
 using Network.Messages;
-using Network.Packets;
+using Network.Messages;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;

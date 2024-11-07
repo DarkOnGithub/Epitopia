@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Network.Messages;
 using Network.Messages.Packets.Network;
 using Network.Messages.Packets.Test;
-using Network.Packets;
+using Network.Messages;
 using Unity.Netcode;
 using UnityEngine;
 

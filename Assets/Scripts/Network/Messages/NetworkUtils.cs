@@ -3,7 +3,7 @@ using MessagePack;
 using Network.Messages;
 using Unity.Netcode;
 
-namespace Network.Packets.Packets
+namespace Network.Messages.Packets
 {
     public static class NetworkUtils
     {

@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 using MessagePack;
 using Network.Messages.Packets.Network;
 using Network.Messages.Packets.Test;
-using Network.Packets.Packets;
+using Network.Messages.Packets;
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.Services.Relay.Models;

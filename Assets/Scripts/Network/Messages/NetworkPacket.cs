@@ -10,7 +10,7 @@ using Events.EventHandler;
 using JetBrains.Annotations;
 using MessagePack;
 using Mono.CSharp;
-using Network.Packets.Packets;
+using Network.Messages.Packets;
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.VisualScripting;
