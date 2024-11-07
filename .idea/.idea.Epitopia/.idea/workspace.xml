@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="Network">
+    <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="world gen">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/shelf/Uncommitted_changes_before_Update_at_07_11_2024_10_12_am_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/shelf/Uncommitted_changes_before_Update_at_07_11_2024_10_12_am__Changes_.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/Scripts/Blocks.meta" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/Scripts/Blocks/AbstractBlock.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/Scripts/Blocks/AbstractBlock.cs.meta" afterDir="false" />
@@ -207,7 +209,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730904018723</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="world gen">
+      <option name="closed" value="true" />
+      <created>1730976031778</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1730976031782</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -229,7 +239,8 @@
     <MESSAGE value="packet system" />
     <MESSAGE value="Fixing packets" />
     <MESSAGE value="Network" />
-    <option name="LAST_COMMIT_MESSAGE" value="Network" />
+    <MESSAGE value="world gen" />
+    <option name="LAST_COMMIT_MESSAGE" value="world gen" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
