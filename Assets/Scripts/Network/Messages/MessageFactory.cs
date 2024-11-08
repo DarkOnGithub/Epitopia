@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 using Core;
 using JetBrains.Annotations;
 using MessagePack;
 using Network.Messages.Packets.Network;
-using Network.Messages.Packets.Test;
 using Network.Messages.Packets;
 using Unity.Collections;
 using Unity.Netcode;
@@ -51,7 +51,6 @@ namespace Network.Messages
         
         public static void RegisterAllPackets()
         {
-            new MousePacketTest();
             new HandShake();
         }
 
@@ -119,7 +118,7 @@ namespace Network.Messages
                 return;
             var buff = new byte[bufferSize];
             reader.ReadBytes(ref buff, bufferSize);
-            networkMessage.OnPacketReceived((IMessageData)MessagePackSerializer.Deserialize(networkMessage.MessageType, buff));
+            networkMessage.OnPacketReceived(header, (IMessageData)MessagePackSerializer.Deserialize(networkMessage.MessageType, buff));
         }
 
         public static void SendPacket<T>(SendingMode mode, T packetData, [CanBeNull] ulong[] clientIds = null, ulong? author = null) 

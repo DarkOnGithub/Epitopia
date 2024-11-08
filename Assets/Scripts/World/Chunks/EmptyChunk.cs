@@ -19,6 +19,15 @@ namespace World.Chunks
         public override void SetBlock(int localIndex, IBlockState block) { }
 
         public override void RemoveBlock(int localIndex) { }
+        public override void DestroyChunk()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Render()
+        {
+            throw new NotImplementedException();
+        }
 
         public override string ToString()
         {

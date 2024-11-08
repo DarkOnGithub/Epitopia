@@ -12,9 +12,9 @@ namespace Network.Messages.Packets.Network
     public class HandShake : NetworkPacket<HandShakeData>
     {
         public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.Network;
-        protected override void OnPacketReceived(HandShakeData messageData)
+        protected override void OnPacketReceived(NetworkUtils.Header header, HandShakeData body)
         {
-            Debug.Log("User " + messageData.ClientId + " has connected");
+            Debug.Log("User " + body.ClientId + " has connected");
         }
     }
 }

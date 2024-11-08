@@ -17,7 +17,8 @@ namespace Utils
         
         public static Vector2Int ToVector2Int(this int index)
             => new Vector2Int(index % _chunkSize, index / _chunkSize);
-        
+        public static Vector3Int ToVector3Int0(this int index)
+            => new Vector3Int(index % _chunkSize, index / _chunkSize);
         public static int GetNearestIntDivisibleBy(int value, int divisor)
         {
             var q = value / divisor;

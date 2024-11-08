@@ -23,6 +23,7 @@ namespace Network.Messages
     public abstract class NetworkPacket<T> : INetworkMessage
         where T : IMessageData
     {
+        public bool IsHost => NetworkManager.Singleton.IsHost;
         public abstract NetworkMessageIdenfitier Identifier { get; }
         public Type MessageType { get; }
         public short PacketId { get; }
@@ -34,10 +35,10 @@ namespace Network.Messages
             MessageFactory.RegisterPacket(this);
         }
         
-        protected abstract void OnPacketReceived(T messageData);
-        void INetworkMessage.OnPacketReceived(IMessageData messageData)
+        protected abstract void OnPacketReceived(NetworkUtils.Header header, T body);
+        void INetworkMessage.OnPacketReceived(NetworkUtils.Header header, IMessageData body)
         {
-            OnPacketReceived((T)messageData);
+            OnPacketReceived(header, (T)body);
         }
         
 

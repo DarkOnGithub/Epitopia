@@ -1,11 +1,19 @@
-﻿namespace Blocks
+﻿using MessagePack;
+using Unity.VisualScripting.Dependencies.Sqlite;
+
+namespace Blocks
 {
+    [MessagePackObject]
     public struct DefaultBlockState : IBlockState
     {
+        [Key(0)]
         public int Id { get; set; }
-        public AbstractBlock Block { get; set; }
-        public BlockProperties Properties { get; set; }
+        [Key(1)]
         public int State;
+        [IgnoreMember]
+        public AbstractBlock Block { get; set; }
+        [IgnoreMember]
+        public BlockProperties Properties { get; set; }
     }
     public class DefaultBlock : AbstractBlock
     {
