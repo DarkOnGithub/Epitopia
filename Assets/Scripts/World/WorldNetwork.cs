@@ -14,6 +14,7 @@ namespace World
         {
             return MessagePack.MessagePackSerializer.Serialize(chunk.Blocks);
         }
+        
         public void SendChunkToServer(Chunk chunk)
         {
             var packet = new ChunkData

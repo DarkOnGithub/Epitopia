@@ -6,7 +6,7 @@ namespace World.WorldGeneration
     public static class WorldGeneration
     {
         private static int _chunkSize = AbstractChunk.ChunkSize;
-        public static void GenerateChunk(Chunk chunk)
+        public static void GenerateChunk(World worldIn, Chunk chunk)
         {
             var block = Blocks.BlocksRegistry.BLOCK_DIRT.CreateBlockData();
             var random = new System.Random();
@@ -18,6 +18,7 @@ namespace World.WorldGeneration
                         chunk.SetBlock((x, y).ToIndex(), block);
                 }
             }
+            worldIn.SendChunkToServer(chunk);
         }
     }
 }

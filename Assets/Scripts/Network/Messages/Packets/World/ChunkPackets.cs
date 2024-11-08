@@ -59,9 +59,10 @@ namespace Network.Messages.Packets.World
         public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
         protected override void OnPacketReceived(NetworkUtils.Header header, ChunkData body)
         {
-            var chunk = WorldManager.PlayersWorld[header.Author].AddChunk(body.Position, LZ4.Decompress(body.Data));
+            var worldIn = WorldManager.PlayersWorld[header.Author];
+            var chunk = worldIn.AddChunk(body.Position, LZ4.Decompress(body.Data));
             if (chunk.IsEmpty)
-                WorldGeneration.GenerateChunk(chunk);
+                WorldGeneration.GenerateChunk(worldIn, chunk);
             Debug.Log(body.Position);
         }
     }

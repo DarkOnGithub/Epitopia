@@ -2,8 +2,10 @@
 using System.Linq;
 using Blocks;
 using JetBrains.Annotations;
+using MessagePack;
 using Network.Messages;
 using Network.Messages.Packets.World;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.XR;
@@ -51,7 +53,12 @@ namespace World
         public Chunk AddChunk(Vector2Int position, byte[] content)
         {
             if (Chunks.TryGetValue(position, out var _chunk))
+            {
+                if(NetworkManager.Singleton.IsHost)
+                    _chunk.Blocks = MessagePackSerializer.Deserialize<IBlockState[]>(content);
+                Debug.Log("a");
                 return _chunk;
+            }
             var chunk = new Chunk(this, position, content);
             Chunks.TryAdd(position, chunk);
             return chunk;

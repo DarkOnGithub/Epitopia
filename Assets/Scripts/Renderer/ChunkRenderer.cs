@@ -23,6 +23,7 @@ namespace Renderer
             var tiles = new Tile[AbstractChunk.ChunkSizeSquared];
             var origin = chunk.Origin.ToVector3Int();
             var blocks = chunk.Blocks;
+            Debug.Log(blocks[0].Block);
             for (int i = 0; i < AbstractChunk.ChunkSizeSquared; i++)
             {
                 position[i] = origin + i.ToVector3Int0();
