@@ -9,11 +9,8 @@ namespace Network.Messages
     {
         Type MessageType { get; }
         NetworkMessageIdenfitier Identifier { get; }
-
-        short PacketId { get; }
+        int PacketId { get; }
         void OnPacketReceived(NetworkUtils.Header header, IMessageData messageData);
-        void SendMessageTo(IMessageData messageData, SendingMode mode, ulong author, [CanBeNull] ulong[] clients);
-
-        
+        void SendMessageTo(IMessageData messageData, SendingMode mode, ulong author, [CanBeNull] ulong[] clients, NetworkDelivery delivery);
     }
 }

@@ -6,19 +6,29 @@ namespace Utils
 {
     public static class VectorUtils
     {
-        private static int _chunkSize = AbstractChunk.ChunkSize;
-        
+        private static int _chunkSize = Chunk.ChunkSize;
+
         public static int ToIndex(this Vector2Int vector)
-            => vector.x + vector.y * _chunkSize;
-        
+        {
+            return vector.x + vector.y * _chunkSize;
+        }
+
         public static int ToIndex(this (int x, int y) vector)
-            => vector.x + vector.y * _chunkSize;
-        
-        
+        {
+            return vector.x + vector.y * _chunkSize;
+        }
+
+
         public static Vector2Int ToVector2Int(this int index)
-            => new Vector2Int(index % _chunkSize, index / _chunkSize);
+        {
+            return new Vector2Int(index % _chunkSize, index / _chunkSize);
+        }
+
         public static Vector3Int ToVector3Int0(this int index)
-            => new Vector3Int(index % _chunkSize, index / _chunkSize);
+        {
+            return new Vector3Int(index % _chunkSize, index / _chunkSize);
+        }
+
         public static int GetNearestIntDivisibleBy(int value, int divisor)
         {
             var q = value / divisor;
@@ -27,16 +37,18 @@ namespace Utils
             if (Math.Abs(value - n1) < Math.Abs(value - n2)) return n1;
             return n2;
         }
-        
+
         public static Vector2Int GetNearestVectorDivisibleBy(Vector2 value, int divisor)
         {
             return new Vector2Int(
                 GetNearestIntDivisibleBy((int)value.x, divisor),
                 GetNearestIntDivisibleBy((int)value.y, divisor)
-                );
+            );
         }
 
         public static Vector3Int ToVector3Int(this Vector2Int vector)
-            => new Vector3Int(vector.x, vector.y);
+        {
+            return new Vector3Int(vector.x, vector.y);
+        }
     }
 }

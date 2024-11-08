@@ -3,6 +3,6 @@
     public enum NetworkMessageIdenfitier
     {
         Network = 0x00,
-        World = 0x01,
+        World = 0x01
     }
 }

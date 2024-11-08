@@ -10,6 +10,7 @@ namespace Gui
         protected UIDocument Document;
         public VisualElement RootVisualElement;
         public PanelSettings Settings = Resources.Load<PanelSettings>("UIs/UI Toolkit/PanelSettings");
+
         /// <summary>
         /// A GUI object
         /// </summary>

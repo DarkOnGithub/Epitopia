@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Blocks;
 using Core.Commands;
 using Events;
 using Events.EventHandler;
@@ -13,7 +12,6 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Utils.LZ4;
 using World.Chunks;
-using World.Worlds;
 using Event = UnityEngine.Event;
 
 
@@ -24,9 +22,10 @@ public class Main : MonoBehaviour
         yield return new WaitForSeconds(5);
         WorldCommands.SendChunk();
     }
+
     private async void Start()
     {
-        var world = new Overworld();
+
         //StartCoroutine(Temp());
     }
 }

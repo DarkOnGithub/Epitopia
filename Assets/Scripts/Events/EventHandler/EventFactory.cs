@@ -23,7 +23,7 @@ namespace Events.EventHandler
         {
             var eventType = typeof(Event);
             return eventType.Assembly.GetTypes()
-                .Where(t => t.IsSubclassOf(eventType) && !ListenersContainer.ContainsKey(t));
+                            .Where(t => t.IsSubclassOf(eventType) && !ListenersContainer.ContainsKey(t));
         }
 
         public static void RegisterEvents()
@@ -31,10 +31,7 @@ namespace Events.EventHandler
             foreach (var eventClass in SearchForEventClasses())
                 ListenersContainer.TryAdd(eventClass, new List<EventListener>());
         }
-        /// <summary>
-        /// Register an instance or a type to the event handler
-        /// </summary>
-        /// <param name="T">An instance or type (type is used for static classes)</param>
+
         public static void Register(object T)
         {
             var type = T as Type ?? T.GetType();
@@ -64,14 +61,7 @@ namespace Events.EventHandler
                 Subscribe(eventType, method, attribute, T, isStatic);
             }
         }
-        /// <summary>
-        /// Add a listener to the event handler
-        /// </summary>
-        /// <param name="eventType"></param>
-        /// <param name="method"></param>
-        /// <param name="attribute"></param>
-        /// <param name="instance"></param>
-        /// <param name="isStatic"></param>
+
         public static void Subscribe(Type eventType, MethodInfo method, SubscribeEventAttribute attribute,
             [CanBeNull] object instance, bool isStatic = false)
         {
@@ -97,10 +87,7 @@ namespace Events.EventHandler
                     break;
             }
         }
-        /// <summary>
-        /// Call all listeners of an event
-        /// </summary>
-        /// <param name="evt"></param>
+
         public static void Invoke(Event evt)
         {
             var listeners = evt.GetListeners;

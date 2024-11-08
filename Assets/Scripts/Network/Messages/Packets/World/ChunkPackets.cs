@@ -1,69 +1,52 @@
-﻿using MessagePack;
+﻿using Unity.Netcode;
 using UnityEngine;
-using Utils.LZ4;
 using World;
-using World.WorldGeneration;
 
 namespace Network.Messages.Packets.World
 {
-    public enum RequestState
-    {
-        Drop = 0,
-        Request = 1,
-    }
-    [MessagePackObject]
-    public struct ChunkRequestData : IMessageData
-    {
-        [Key(0)]
-        public Vector2Int[] ChunksPosition;
-        [Key(1)]
-        public RequestState State;
-    }
-    public class ChunkRequestHandler : NetworkPacket<ChunkRequestData>
-    {
-        public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
-        protected override void OnPacketReceived(NetworkUtils.Header header, ChunkRequestData body)
-        {
-            if (IsHost)
-            {
-                switch (body.State)
-                {
-                    case RequestState.Drop:
-                        var chunks = WorldManager.PlayersWorld[header.Author].GetChunks(body.ChunksPosition);
-                        foreach (var chunk in chunks)
-                            chunk.RemoveOwner(header.Author);
-                        break;
-                    case RequestState.Request:
-                        var world = WorldManager.PlayersWorld[header.Author];
-                        var chunksToRequest = world.GetChunks(body.ChunksPosition);
-                        foreach (var chunk in chunksToRequest)
-                            world.SendChunkToClient(chunk, new []{ header.Author });
-                        break;
-                }
-            }
-          
-        }
-    }
-    [MessagePackObject]
-    public struct ChunkData : IMessageData
-    {
-        [Key(0)]
-        public Vector2Int Position;
-        [Key(1)]
-        public byte[] Data;
-        [Key(2)] 
-        public bool IsEmpty;
-    }
-    public class ChunkDataTransfer : NetworkPacket<ChunkData>
-    {
-        public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
-        protected override void OnPacketReceived(NetworkUtils.Header header, ChunkData body)
-        {
-            var worldIn = WorldManager.PlayersWorld[header.Author];
-            var chunk = worldIn.AddChunk(body.Position, LZ4.Decompress(body.Data));
-            if (chunk.IsEmpty)
-                WorldGeneration.GenerateChunk(worldIn, chunk);
-            Debug.Log(body.Position);
-        }
-    }
+     public struct ChunkSenderMessage : IMessageData
+     {
+          public Vector2Int Position;
+          public byte[] Data;
+          public WorldIdentifier World;
+     }
+     public class ChunkReceiver : NetworkPacket<ChunkSenderMessage>
+     {
+          public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
+          protected override void OnPacketReceived(NetworkUtils.Header header, ChunkSenderMessage body)
+          {
+               if(header.Author == NetworkManager.ServerClientId)
+                    WorldManager.GetWorld(body.World).ReceiveChunkFromServer(body);
+               else
+                    WorldManager.GetWorld(body.World).ReceiveChunkFromClient(body);
+          }
+     }
+     public enum ChunkRequestType
+     {
+          Request = 0,
+          Drop = 1
+     }
+     public struct ChunkRequestMessage : IMessageData
+     {
+          public ChunkRequestType RequestType;
+          public Vector2Int[] Positions;
+          public WorldIdentifier World;
+     }
+     public class PlayerChunkRequest : NetworkPacket<ChunkRequestMessage>
+     {
+          public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
+          protected override void OnPacketReceived(NetworkUtils.Header header, ChunkRequestMessage body)
+          {
+               switch (body.RequestType)
+               {
+                    case ChunkRequestType.Request:
+                         if(header.Author == NetworkManager.ServerClientId)
+                              WorldManager.GetWorld(body.World).RequestChunks(body.Positions, new[] {header.Author});
+                         break;
+                    case ChunkRequestType.Drop:
+                         break;
+               }    
+          }
+     }
+     
 }

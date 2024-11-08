@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Network.Messages.Packets.World;
 using QFSW.QC;
-using World.Worlds;
+
 
 namespace Core.Commands
 {
@@ -10,7 +9,7 @@ namespace Core.Commands
         [Command]
         public static void SendChunk()
         {
-            Overworld.Instance.SendChunkToServer(Overworld.Instance.Chunks.First().Value);
+   //         Overworld.Instance.SendChunkToServer(Overworld.Instance.Chunks.First().Value);
         }
     }
 }

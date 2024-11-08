@@ -1,49 +1,66 @@
-﻿using Blocks;
-using Renderer;
+﻿using System.Collections.Generic;
+using MessagePack;
 using UnityEngine;
-using Utils.LZ4;
+using World.Blocks;
 
 namespace World.Chunks
 {
-    public class Chunk : AbstractChunk
+    [MessagePackObject]
+    public struct ChunkData
     {
-        public World World;
-        public new IBlockState[] Blocks = new IBlockState[ChunkSize * ChunkSize];
-        public bool IsEmpty = true;
+        [Key(0)] public Vector2Int Center { get; set; }
+
+        [Key(1)]
+        public IBlockState[] BlockStates;
+    }
+    
+    public class Chunk
+    {
+        public const int ChunkSize = 16;
+        public const int ChunkSizeSquared = ChunkSize * ChunkSize;
         
-        public Chunk(World worldIn, Vector2Int position) : base(position)
+        public readonly IBlockState[] BlockStates = new IBlockState[ChunkSizeSquared];
+
+        public Vector2Int Center;
+        public Vector2Int Origin;
+
+        public List<ulong> Owners = new();
+     
+        public bool IsEmpty = true;
+        public Chunk(Vector2Int center)
         {
-            World = worldIn;
-            var blockData = BlocksRegistry.BLOCK_AIR.CreateBlockData();
-            for(int i = 0; i < ChunkSizeSquared; i++)
-                Blocks[i] = blockData;
-            
+            Center = center;
+            Origin = new Vector2Int(center.x - ChunkSize / 2, center.y - ChunkSize / 2);
         }
-        public Chunk(World worldIn, Vector2Int position, byte[] content) : base(position)
+        
+        public Chunk(Vector2Int center, IBlockState[] blockStates)
         {
-            World = worldIn;
-            var blockData = LZ4.Decompress(content);
+            Center = center;
+            Origin = new Vector2Int(center.x - ChunkSize / 2, center.y - ChunkSize / 2);
+            BlockStates = blockStates;
             IsEmpty = false;
         }
-        public override IBlockState GetBlock(int localIndex) => Blocks[localIndex];
-        public T GetBlock<T>(int localIndex) where T: IBlockState=> (T)Blocks[localIndex];
 
-        public override void SetBlock(int localIndex, IBlockState block) => Blocks[localIndex] = block;
+        public T GetBlock<T>(int index) => (T) BlockStates[index];
 
-        public override void RemoveBlock(int localIndex) => 
-            Blocks[localIndex] = BlocksRegistry.BLOCK_AIR.CreateBlockData();
+        public IBlockState GetBlock(int index) => BlockStates[index];
 
-        public override void DestroyChunk()
+        public void SetBlock(int index, IBlockState blockState) => BlockStates[index] = blockState;
+
+        public void RemoveBlock(int index) => BlockStates[index] = null;
+        
+        public ChunkData GetChunkData()
         {
-            Blocks = null;
+            return new ChunkData()
+                   {
+                       Center = Center,
+                       BlockStates = BlockStates
+                   };
         }
-        public override void Draw()
+
+        public void Destroy()
         {
-            ChunkRenderer.RenderChunk(this);
-        }
-        public override string ToString()
-        {
-            return $"Chunk: {Center}";
+            throw new System.NotImplementedException();
         }
     }
 }

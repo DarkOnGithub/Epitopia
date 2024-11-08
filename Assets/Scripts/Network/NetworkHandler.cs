@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Network
 {
-    public class NetworkHandler : MonoBehaviour
+    public class NetworkHandler : NetworkBehaviour
     {
         public static string PlayerId { get; private set; }
         public static ulong ClientId { get; private set; }
@@ -28,13 +28,17 @@ namespace Network
 
             await UnityServices.InitializeAsync();
             await Authentification.TrySignIn();
-            
-            MessageFactory.RegisterAllPackets();
+
             _instance = this;
             _logger.LogInfo($"Connected as {AuthenticationService.Instance.PlayerId}");
             PlayerId = AuthenticationService.Instance.PlayerId;
             ClientId = _networkManager.LocalClientId;
             StartCoroutine(LobbyManager.HeartbeatLobby());
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            
         }
     }
 }
