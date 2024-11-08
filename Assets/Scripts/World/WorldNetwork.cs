@@ -1,6 +1,7 @@
 ﻿using Network.Messages;
 using Network.Messages.Packets.World;
 using Unity.Netcode;
+using UnityEngine;
 using Utils.LZ4;
 using World.Chunks;
 
@@ -13,7 +14,7 @@ namespace World
         {
             return MessagePack.MessagePackSerializer.Serialize(chunk.Blocks);
         }
-        public void SendChunk(Chunk chunk)
+        public void SendChunkToServer(Chunk chunk)
         {
             var packet = new ChunkData
             {

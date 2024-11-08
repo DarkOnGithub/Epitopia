@@ -6,13 +6,17 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
+using System.Threading.Tasks;
 using Core;
 using JetBrains.Annotations;
 using MessagePack;
 using Network.Messages.Packets.Network;
 using Network.Messages.Packets;
+using Network.Messages.Packets.World;
+using Players;
 using Unity.Collections;
 using Unity.Netcode;
+using Unity.Services.Authentication;
 using Unity.Services.Relay.Models;
 using Utils;
 using Debug = UnityEngine.Debug;
@@ -52,16 +56,27 @@ namespace Network.Messages
         public static void RegisterAllPackets()
         {
             new HandShake();
+            new ChunkDataTransfer();
+            new ChunkRequestHandler();
+        }
+        private async Task SendHandshakeData()
+        {
+            var data = new HandShakeData()
+                       {
+                           Username = await AuthenticationService.Instance.GetPlayerNameAsync(),
+                           ClientId = NetworkHandler.ClientId,
+                           PlayerId = NetworkHandler.PlayerId
+                       };
+            SendPacket(SendingMode.ClientToClient, data);
         }
 
-
-        public override void OnNetworkSpawn()
+        public override async void OnNetworkSpawn()
         {
             MessagingManager = NetworkManager.Singleton.CustomMessagingManager;
             MessagingManager.OnUnnamedMessage += OnUnnamedMessageReceived;
-
+            await SendHandshakeData();
         }
-
+     
         public override void OnNetworkDespawn()
         {
             MessagingManager.OnUnnamedMessage -= OnUnnamedMessageReceived;

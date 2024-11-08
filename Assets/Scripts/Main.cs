@@ -11,6 +11,7 @@ using MessagePack.Resolvers;
 using Network.Messages;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Utils.LZ4;
 using World.Chunks;
 using World.Worlds;
 using Event = UnityEngine.Event;
@@ -18,7 +19,11 @@ using Event = UnityEngine.Event;
 
 public class Main : MonoBehaviour
 {
-    
+    public IEnumerator Temp()
+    {
+        yield return new WaitForSeconds(5);
+        WorldCommands.SendChunk();
+    }
     private async void Start()
     {
         var world = new Overworld();
@@ -30,6 +35,7 @@ public class Main : MonoBehaviour
                 world.SetBlock(new Vector2Int(i, z), BlocksRegistry.BLOCK_DIRT.CreateBlockData());
             }
         }    
-        chunk.Render();
+        chunk.Draw();
+        StartCoroutine(Temp());
     }
 }

@@ -29,6 +29,6 @@ namespace World.Chunks
         public abstract void RemoveBlock(int localIndex);
         public abstract void DestroyChunk();
 
-        public abstract void Render();
+        public abstract void Draw();
     }
 }

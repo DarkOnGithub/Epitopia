@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MessagePack;
+using UnityEngine;
 using Utils.LZ4;
 using World;
 
@@ -9,9 +10,12 @@ namespace Network.Messages.Packets.World
         Drop = 0,
         Request = 1,
     }
+    [MessagePackObject]
     public struct ChunkRequestData : IMessageData
     {
+        [Key(0)]
         public Vector2Int[] ChunksPosition;
+        [Key(1)]
         public RequestState State;
     }
     public class ChunkRequestHandler : NetworkPacket<ChunkRequestData>
@@ -24,22 +28,24 @@ namespace Network.Messages.Packets.World
                 switch (body.State)
                 {
                     case RequestState.Drop:
-                        var chunks = WorldQuery.PlayersWorld[header.Author].GetChunks(body.ChunksPosition);
+                        var chunks = WorldManager.PlayersWorld[header.Author].GetChunks(body.ChunksPosition);
                         foreach (var chunk in chunks)
                             chunk.Owners.Remove(header.Author);
                         break;
                     case RequestState.Request:
-                        var chunksToRequest = WorldQuery.PlayersWorld[header.Author].GetChunks(body.ChunksPosition);
+                        var chunksToRequest = WorldManager.PlayersWorld[header.Author].GetChunks(body.ChunksPosition);
                         break;
                 }
             }
           
         }
     }
-
+    [MessagePackObject]
     public struct ChunkData : IMessageData
     {
+        [Key(0)]
         public Vector2Int Position;
+        [Key(1)]
         public byte[] Data;
     }
     public class ChunkDataTransfer : NetworkPacket<ChunkData>
@@ -47,10 +53,10 @@ namespace Network.Messages.Packets.World
         public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
         protected override void OnPacketReceived(NetworkUtils.Header header, ChunkData body)
         {
-            var chunk = WorldQuery.PlayersWorld[header.Author].AddChunk(body.Position, LZ4.Decompress(body.Data));
+            var chunk = WorldManager.PlayersWorld[header.Author].AddChunk(body.Position, LZ4.Decompress(body.Data));
 
             if (!IsHost)
-                chunk.Render();
+                chunk.Draw();
                 
         }
     }

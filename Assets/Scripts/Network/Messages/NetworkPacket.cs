@@ -41,8 +41,6 @@ namespace Network.Messages
             OnPacketReceived(header, (T)body);
         }
         
-
-        
         void INetworkMessage.SendMessageTo(IMessageData messageData, SendingMode mode, ulong author, [CanBeNull] ulong[] clients)
         {
             byte[] message = MessagePackSerializer.Serialize<T>((T)messageData);

@@ -2,18 +2,19 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Utils;
+using World;
 using World.Chunks;
 
 namespace Renderer
 {
     public static class ChunkRenderer
     {
-        public static Tilemap Tilemap = World.World.Tilemap;
+        private static Tilemap _tilemap = WorldManager.Instance.tilemap;
 
         public static void RenderChunk(Chunk chunk)
         {
             var (position, tiles) = ExtractTiles(chunk);
-            Tilemap.SetTiles(position, tiles);
+            _tilemap.SetTiles(position, tiles);
         }
 
         public static (Vector3Int[], Tile[]) ExtractTiles(Chunk chunk)

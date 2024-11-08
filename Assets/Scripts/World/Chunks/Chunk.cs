@@ -32,7 +32,7 @@ namespace World.Chunks
         {
             Blocks = null;
         }
-        public override void Render()
+        public override void Draw()
         {
             ChunkRenderer.RenderChunk(this);
         }

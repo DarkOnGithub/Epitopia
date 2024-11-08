@@ -19,7 +19,7 @@ namespace Blocks
     {
         public DefaultBlock(string name, BlockProperties properties) : base(name, properties)
         {
-            
+                
         }
         
         public DefaultBlockState CreateBlockData(int state = 0)

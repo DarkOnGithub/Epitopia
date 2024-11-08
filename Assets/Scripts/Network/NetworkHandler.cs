@@ -15,7 +15,7 @@ namespace Network
     public class NetworkHandler : MonoBehaviour
     {
         public static string PlayerId { get; private set; }
-
+        public static ulong ClientId { get; private set; }
         private static NetworkHandler _instance;
         public static NetworkHandler Instance => _instance;
         [SerializeField] public string serverCode;
@@ -33,6 +33,7 @@ namespace Network
             _instance = this;
             _logger.LogInfo($"Connected as {AuthenticationService.Instance.PlayerId}");
             PlayerId = AuthenticationService.Instance.PlayerId;
+            ClientId = _networkManager.LocalClientId;
             StartCoroutine(LobbyManager.HeartbeatLobby());
         }
     }

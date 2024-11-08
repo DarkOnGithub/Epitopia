@@ -24,7 +24,7 @@ namespace World.Chunks
             throw new NotImplementedException();
         }
 
-        public override void Render()
+        public override void Draw()
         {
             throw new NotImplementedException();
         }

@@ -13,8 +13,7 @@ namespace World
     public abstract partial class World
     {
         public readonly Dictionary<Vector2Int, Chunk> Chunks = new();
-        public static readonly Tilemap Tilemap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
-        public static readonly Grid Grid = GameObject.Find("Grid").GetComponent<Grid>();
+        
         public World()
         {
 

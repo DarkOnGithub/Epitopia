@@ -8,7 +8,6 @@ namespace World
 {
     public static class WorldQuery
     {
-        public static Dictionary<ulong, World> PlayersWorld = new();
         private static int _chunkSize = AbstractChunk.ChunkSize;
         public static bool FindNearestChunk(World world, Vector2 worldPosition, out Chunk chunk)
         {

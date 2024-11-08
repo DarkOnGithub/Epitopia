@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using QFSW.QC;
+using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -44,6 +45,12 @@ namespace Core.Commands
                 }
             });
             await LobbyManager.JoinLobbyById(lobbies.Results[0]?.Id);
+        }
+
+        [Command]
+        public static async Task SetUsername(string name)
+        {
+            await AuthenticationService.Instance.UpdatePlayerNameAsync(name);
         }
     }
 }
