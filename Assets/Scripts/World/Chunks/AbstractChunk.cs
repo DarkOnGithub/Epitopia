@@ -29,6 +29,15 @@ namespace World.Chunks
         public abstract void RemoveBlock(int localIndex);
         public abstract void DestroyChunk();
 
+        public void AddOwner(ulong clientId)
+        {
+            Owners.Add(clientId);
+        }
+        
+        public void RemoveOwner(ulong clientId)
+        {
+            Owners.Remove(clientId);
+        }
         public abstract void Draw();
     }
 }

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Utils.LZ4;
 using World;
+using World.WorldGeneration;
 
 namespace Network.Messages.Packets.World
 {
@@ -30,10 +31,13 @@ namespace Network.Messages.Packets.World
                     case RequestState.Drop:
                         var chunks = WorldManager.PlayersWorld[header.Author].GetChunks(body.ChunksPosition);
                         foreach (var chunk in chunks)
-                            chunk.Owners.Remove(header.Author);
+                            chunk.RemoveOwner(header.Author);
                         break;
                     case RequestState.Request:
-                        var chunksToRequest = WorldManager.PlayersWorld[header.Author].GetChunks(body.ChunksPosition);
+                        var world = WorldManager.PlayersWorld[header.Author];
+                        var chunksToRequest = world.GetChunks(body.ChunksPosition);
+                        foreach (var chunk in chunksToRequest)
+                            world.SendChunkToClient(chunk, new []{ header.Author });
                         break;
                 }
             }
@@ -47,6 +51,8 @@ namespace Network.Messages.Packets.World
         public Vector2Int Position;
         [Key(1)]
         public byte[] Data;
+        [Key(2)] 
+        public bool IsEmpty;
     }
     public class ChunkDataTransfer : NetworkPacket<ChunkData>
     {
@@ -54,10 +60,9 @@ namespace Network.Messages.Packets.World
         protected override void OnPacketReceived(NetworkUtils.Header header, ChunkData body)
         {
             var chunk = WorldManager.PlayersWorld[header.Author].AddChunk(body.Position, LZ4.Decompress(body.Data));
-
-            if (!IsHost)
-                chunk.Draw();
-                
+            if (chunk.IsEmpty)
+                WorldGeneration.GenerateChunk(chunk);
+            Debug.Log(body.Position);
         }
     }
 }

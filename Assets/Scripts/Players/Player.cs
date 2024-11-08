@@ -1,4 +1,5 @@
 ﻿using Unity.Services.Authentication;
+using UnityEngine;
 using World;
 using World.Worlds;
 
@@ -10,6 +11,7 @@ namespace Players
         public string PlayerId { get; set; }
         public string Username { get; set; }
         public ulong ClientId { get; set; }
+        public Vector2 Position { get; set; }
         public Player()
         {
             World = Overworld.Instance;

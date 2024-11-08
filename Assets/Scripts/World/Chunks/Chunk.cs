@@ -9,16 +9,21 @@ namespace World.Chunks
     {
         public World World;
         public new IBlockState[] Blocks = new IBlockState[ChunkSize * ChunkSize];
+        public bool IsEmpty = true;
         
         public Chunk(World worldIn, Vector2Int position) : base(position)
         {
-            World = worldIn;   
+            World = worldIn;
+            var blockData = BlocksRegistry.BLOCK_AIR.CreateBlockData();
+            for(int i = 0; i < ChunkSizeSquared; i++)
+                Blocks[i] = blockData;
+            
         }
         public Chunk(World worldIn, Vector2Int position, byte[] content) : base(position)
         {
             World = worldIn;
             var blockData = LZ4.Decompress(content);
-            
+            IsEmpty = false;
         }
         public override IBlockState GetBlock(int localIndex) => Blocks[localIndex];
         public T GetBlock<T>(int localIndex) where T: IBlockState=> (T)Blocks[localIndex];

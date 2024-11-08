@@ -2,6 +2,8 @@
 using System.Linq;
 using Blocks;
 using JetBrains.Annotations;
+using Network.Messages;
+using Network.Messages.Packets.World;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.XR;
@@ -25,9 +27,17 @@ namespace World
             return Chunks.GetValueOrDefault(position, null);
         }
 
-        public IEnumerable<Chunk> GetChunks(Vector2Int[] positions)
+        public List<Chunk> GetChunks(IEnumerable<Vector2Int> positions)
         {
-            return positions.Select(GetChunk).Where(chunk => chunk != null);
+            var chunks = new List<Chunk>();
+            foreach (var position in positions)
+            {
+                if (!Chunks.TryGetValue(position, out var chunk))
+                    chunk = GenerateChunk(position);
+                
+                chunks.Add(chunk);
+            }
+            return chunks;
         }
         public Chunk GenerateChunk(Vector2Int position)
         {
@@ -46,13 +56,22 @@ namespace World
             Chunks.TryAdd(position, chunk);
             return chunk;
         }
+
+        public void RequestChunk(List<Vector2Int> positions)
+        {
+            MessageFactory.SendPacket(SendingMode.ClientToServer, new ChunkRequestData
+            {
+                ChunksPosition = positions.ToArray(),
+                State = RequestState.Request
+            });
+            
+        }
         public bool SetBlock(Vector2Int worldPosition, IBlockState block)
         {
             if (WorldQuery.SetBlock(this, worldPosition, block))
             {
                return true;       
             }
-
             return false;
         }
     }

@@ -27,15 +27,6 @@ public class Main : MonoBehaviour
     private async void Start()
     {
         var world = new Overworld();
-        var chunk = world.GenerateChunk(new Vector2Int(0, 0));
-        for (int i = -16; i < 16; i++)
-        {
-            for(int z = -16; z < 16; z++)
-            {
-                world.SetBlock(new Vector2Int(i, z), BlocksRegistry.BLOCK_DIRT.CreateBlockData());
-            }
-        }    
-        chunk.Draw();
-        StartCoroutine(Temp());
+        //StartCoroutine(Temp());
     }
 }

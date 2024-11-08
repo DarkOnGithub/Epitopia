@@ -19,9 +19,21 @@ namespace World
             var packet = new ChunkData
             {
                 Position = chunk.Center,
-                Data = LZ4.Compress(SerializeChunk(chunk))
+                Data = LZ4.Compress(SerializeChunk(chunk)),
+                IsEmpty = chunk.IsEmpty
             };
             MessageFactory.SendPacket(SendingMode.ClientToServer, packet);
+        }
+        
+        public void SendChunkToClient(Chunk chunk, ulong[] clients)
+        {
+            var packet = new ChunkData
+            {
+                Position = chunk.Center,
+                Data = LZ4.Compress(SerializeChunk(chunk)),
+                IsEmpty = chunk.IsEmpty
+            };
+            MessageFactory.SendPacket(SendingMode.ServerToClient, packet, clients);
         }
     }
 }

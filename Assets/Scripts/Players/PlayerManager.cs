@@ -6,5 +6,6 @@ namespace Players
     {
         public static Player LocalPlayer { get; set; }
         public static List<Player> Players = new();
+        
     }
 }
