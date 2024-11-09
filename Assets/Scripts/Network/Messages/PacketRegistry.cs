@@ -9,9 +9,8 @@ namespace Network.Messages
         public static void RegisterPackets()
         {
             new ConnectionPacket();
-            new PlayerChunkRequest();
-            new ChunkReceiver();
-
+            new ChunkRequestPacket();
+            new ChunkTransferPacket();
         }
     }
 }

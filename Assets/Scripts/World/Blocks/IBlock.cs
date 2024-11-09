@@ -12,5 +12,7 @@ namespace World.Blocks
         
         public IBlockState GetDefaultState();
         public IBlockState GetState(object state);
+        public IBlockState FromIBlockState(IBlockState state);
+
     }
 }

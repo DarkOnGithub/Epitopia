@@ -26,19 +26,30 @@ namespace World.Chunks
         public Vector2Int Center { get; }
         public Vector2Int Origin { get; }
         public bool IsDrawn { get; private set; }
-        public bool IsEmpty { get; private set; }
+        public bool IsEmpty { get; set; }
+        public ulong CurrentGenerator;
         public IReadOnlyList<ulong> Owners => _owners;
 
         public Chunk(AbstractWorld worldIn, Vector2Int center)
             : this(worldIn, center, new IBlockState[ChunkSizeSquared])
         {
             IsEmpty = true;
+            var air = BlockRegistry.BLOCK_AIR.DefaultState;
+            for (var i = 0; i < ChunkSizeSquared; i++)
+            {
+                BlockStates[i] = air;
+            }
         }
         
         public Chunk(AbstractWorld worldIn, Vector2Int center, IBlockState[] states)
         {
             World = worldIn ?? throw new ArgumentNullException(nameof(worldIn));
-            BlockStates = states ?? throw new ArgumentNullException(nameof(states));
+            for (int i = 0; i < ChunkSizeSquared; i++)
+            {
+                var state = states[i];
+                Debug.Log(state.Id);
+                BlockRegistry.GetBlock(state.Id).FromIBlockState(state);
+            } 
             _owners = new List<ulong>();
             
             Center = center;
@@ -127,10 +138,13 @@ namespace World.Chunks
             SetBlock(0, BlockRegistry.BLOCK_DIRT.DefaultState);
         }
 
-        public void Draw() 
+        public void TryDraw()
         {
+            if (IsDrawn) 
+                return;
             IsDrawn = true;
             ChunkRenderer.RenderChunk(this);
+            Debug.Log("a");
         }
 
         public ChunkData GetChunkData() => new()

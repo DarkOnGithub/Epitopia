@@ -1,5 +1,8 @@
-﻿namespace World.Blocks
+﻿using MessagePack;
+
+namespace World.Blocks
 {
+    [Union(0, typeof(DefaultBlockState))]
     public interface IBlockState
     {
         public int Id { get; }

@@ -41,7 +41,6 @@ namespace Network
 
         public async void OnClientAdded(ulong client)
         {
-            Debug.Log("a");
             if (client != ClientId) return;
             MessageFactory.SendPacket(SendingMode.ClientToClient, new ConnectionMessage
             {

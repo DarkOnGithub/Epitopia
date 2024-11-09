@@ -1,13 +1,20 @@
-﻿using Unity.VisualScripting;
+﻿using MessagePack;
+using Unity.VisualScripting;
 
 namespace World.Blocks
 {
+    [MessagePackObject]
     public struct DefaultBlockState : IBlockState
     {
+        [Key(0)]
         public int Id { get; set; }
+        [IgnoreMember]
         public string Name { get; set; }
+        [IgnoreMember]
         public BlockProperties Properties { get; set; }
+        [IgnoreMember]
         public IBlock Block { get; set; }
+        [Key(1)]
         public int State { get; set; }
     }
     
@@ -27,6 +34,11 @@ namespace World.Blocks
                 Block = this,
                 State = 0
             };
+        }
+
+        public override DefaultBlockState FromState(DefaultBlockState state)
+        {
+            return GetState(state.State);
         }
 
         public override DefaultBlockState GetState(object state)

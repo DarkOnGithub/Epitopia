@@ -1,4 +1,6 @@
 ﻿
+using Events.EventHandler;
+using Events.Events;
 using UnityEngine;
 using World;
 
@@ -19,6 +21,7 @@ namespace Players
             PlayerId = playerId;
             ClientId = clientId;
             PlayerManager.Players.Add(this);
+            EventFactory.Invoke(new PlayerAddedEvent(this));
         }
         
     }

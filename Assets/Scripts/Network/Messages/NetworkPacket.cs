@@ -20,6 +20,12 @@ using Event = UnityEngine.Event;
 
 namespace Network.Messages
 {
+    public enum PacketSouce
+    {
+        Server,
+        Client
+    }
+    
     public abstract class NetworkPacket<T> : INetworkMessage
         where T : IMessageData
     {

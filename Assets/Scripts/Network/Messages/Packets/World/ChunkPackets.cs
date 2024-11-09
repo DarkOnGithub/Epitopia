@@ -5,62 +5,68 @@ using World;
 
 namespace Network.Messages.Packets.World
 {
-     [MessagePackObject]
-     public struct ChunkSenderMessage : IMessageData
-     {
-          [Key(0)]
-          public Vector2Int Position;
-          [Key(1)]
-          public byte[] Data;
-          [Key(2)]
-          public WorldIdentifier World;
-          [Key(3)]
-          public bool IsEmpty;
-     }
-     public class ChunkReceiver : NetworkPacket<ChunkSenderMessage>
-     {
-          public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
-          protected override void OnPacketReceived(NetworkUtils.Header header, ChunkSenderMessage body)
-          {
-               if(header.Author == NetworkManager.ServerClientId)
-                    WorldManager.GetWorld(body.World).ReceiveChunkFromServer(body);
-               else
-                    WorldManager.GetWorld(body.World).ReceiveChunkFromClient(body);
-          }
-     }
+    [MessagePackObject]
+    public struct ChunkTransferMessage : IMessageData
+    {
+        [Key(0)]
+        public byte[] ChunkData;
+        [Key(1)]
+        public Vector2Int Center;
+        [Key(2)]
+        public PacketSouce Source;
 
-     public enum ChunkRequestType
-     {
-          Request = 0,
-          Drop = 1
-     }
-     [MessagePackObject]
-     public struct ChunkRequestMessage : IMessageData
-     {
-          [Key(0)]
-          public ChunkRequestType RequestType;
-          [Key(1)]
-          public Vector2Int[] Positions;
-          [Key(2)]
-          public WorldIdentifier World;
-     }
-     public class PlayerChunkRequest : NetworkPacket<ChunkRequestMessage>
-     {
-          public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
-          protected override void OnPacketReceived(NetworkUtils.Header header, ChunkRequestMessage body)
-          {
-               switch (body.RequestType)
-               {
-                    case ChunkRequestType.Request:
-                         if(header.Author == NetworkManager.ServerClientId)
-                              WorldManager.GetWorld(body.World).RequestChunksHandler(body.Positions, new[] {header.Author});
-                         break;
-                    case ChunkRequestType.Drop:
-                         if(header.Author == NetworkManager.ServerClientId)
-                              WorldManager.GetWorld(body.World).DropChunks(body.Positions, new[] {header.Author});
-                         break;
-               }    
-          }
-     }
-     
+        [Key(3)] public bool IsEmpty;
+        [Key(4)]
+        public WorldIdentifier World;
+    }
+    public class ChunkTransferPacket : NetworkPacket<ChunkTransferMessage>
+    {
+        public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
+        protected override void OnPacketReceived(NetworkUtils.Header header, ChunkTransferMessage body)
+        {
+            switch (body.Source)
+            {
+                case PacketSouce.Server:
+                    WorldManager.GetWorld(body.World).HostController.OnChunkReceived(body.ChunkData, body.Center, header.Author);
+                    break;
+                case PacketSouce.Client:
+                    WorldManager.GetWorld(body.World).OnChunkReceived(body.ChunkData, body.Center, body.IsEmpty);
+                    break;
+            }
+        }
+    }
+
+    public enum ChunkRequestType
+    {
+        Drop = 0,
+        Request = 1
+    }
+
+    [MessagePackObject]
+    public struct ChunkRequestMessage : IMessageData
+    {
+        [Key(0)]
+        public Vector2Int[] Positions;
+        [Key(1)]
+        public ChunkRequestType Type;
+        [Key(2)]
+        public WorldIdentifier World;
+    }
+    public class ChunkRequestPacket : NetworkPacket<ChunkRequestMessage>
+    {
+        public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
+        protected override void OnPacketReceived(NetworkUtils.Header header, ChunkRequestMessage body)
+        {
+            if (!IsHost) return;
+            switch (body.Type)
+            {
+                case ChunkRequestType.Drop:
+                    //!TODO
+                    break;
+                case ChunkRequestType.Request:
+                    WorldManager.GetWorld(body.World).HostController.GetChunksInRange(body.Positions, header.Author);
+                    break;
+            }
+        }
+    }
 }

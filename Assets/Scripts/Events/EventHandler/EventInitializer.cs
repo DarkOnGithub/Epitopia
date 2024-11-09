@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using World;
 
 namespace Events.EventHandler
 {
@@ -12,6 +13,7 @@ namespace Events.EventHandler
 
         private static void RegisterListeners()
         {
+            EventFactory.Register(typeof(Scanner));
         }
     }
 }

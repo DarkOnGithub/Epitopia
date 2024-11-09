@@ -51,7 +51,6 @@ namespace Network.Messages
             var headerBytes = new byte[headerSize];
             reader.ReadBytes(ref headerBytes, headerSize);
             var header = MessagePackSerializer.Deserialize<NetworkUtils.Header>(headerBytes);
-            Debug.Log(header.SendingMode);
             switch (header.SendingMode)
             {
                 case (byte)SendingMode.ClientToClient:
@@ -72,10 +71,7 @@ namespace Network.Messages
                     }
 
                     return;
-                case (byte)SendingMode.ClientToServer:
-                    if (!NetworkManager.Singleton.IsHost)
-                        return;
-                    break;
+
             }
 
             if (!NetworkMessageIds.TryGetValue(header.PacketId, out var networkMessage))
