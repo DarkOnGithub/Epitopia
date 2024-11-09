@@ -1,4 +1,5 @@
 ﻿using MessagePack;
+using UnityEngine;
 using Utils.LZ4;
 using World.Blocks;
 
@@ -6,34 +7,18 @@ namespace World.Chunks
 {
     public static class ChunkUtils
     {
-        public static byte[] CompressChunkContent(byte[] content)
-        {
-            return LZ4.Compress(content);
-        }
+        private static readonly MessagePackSerializerOptions Options = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
 
-        public static byte[] SerializeChunk(ChunkData data)
+        public static byte[] SerializeChunk(Chunk chunk)
         {
-           return MessagePackSerializer.Serialize(data);
-        }
-        
-        public static byte[] SerializeAndCompressChunk(Chunk chunk)
-        {
-            return CompressChunkContent(SerializeChunk(chunk.GetChunkData()));
+            var data = chunk.GetChunkData();
+           return MessagePackSerializer.Serialize(data, Options);
         }
         
         public static ChunkData DeserializeChunk(byte[] data)
         {
-            return MessagePackSerializer.Deserialize<ChunkData>(data);
+            return MessagePackSerializer.Deserialize<ChunkData>(data, Options);
         }
 
-        public static byte[] DecompressChunkContent(byte[] content)
-        {
-            return LZ4.Decompress(content);
-        }
-        
-        public static ChunkData DeserializeAndDecompressChunk(byte[] data)
-        {
-            return DeserializeChunk(DecompressChunkContent(data));
-        }
     }
 }

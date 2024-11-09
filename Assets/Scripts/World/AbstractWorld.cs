@@ -30,9 +30,14 @@ namespace World
         {
             foreach (var position in positions)
             {
-                if (Chunks.TryGetValue(position, out var chunk))
-                    SendChunkToClients(chunk, new[] {client});
-                SendChunkToClients(new Chunk(_world, position), new[] {client});
+                Chunk chunk;
+                if (!Chunks.TryGetValue(position, out chunk))
+                {
+                    chunk = new Chunk(_world, position);
+                    Chunks.TryAdd(position, chunk);
+                }
+                chunk.CurrentGenerator = client;
+                SendChunkToClients(chunk, new[] {client});
                 //!TODO Search in db
             }
         }
@@ -40,10 +45,10 @@ namespace World
         {
             if (Chunks.TryGetValue(center, out var chunk))
             {
-                if (chunk.IsEmpty && chunk.CurrentGenerator == client)
+                if ((chunk.IsEmpty && chunk.CurrentGenerator == client) || !chunk.IsEmpty)
                 {
-                    var data = ChunkUtils.DecompressChunkContent(chunkData);
-                    chunk.BlockStates = MessagePackSerializer.Deserialize<IBlockState[]>(data);
+                    var data = ChunkUtils.DeserializeChunk(chunkData);
+                    chunk.BlockStates = data.BlockStates;
                     chunk.IsEmpty = false;
                     SendChunkToClients(chunk, chunk.Owners.Where(id => id != client).ToArray());
                 }
@@ -54,10 +59,10 @@ namespace World
         {
             var packet = new ChunkTransferMessage
             {
-                ChunkData = ChunkUtils.SerializeAndCompressChunk(chunk),
+                ChunkData = ChunkUtils.SerializeChunk(chunk),
                 Center = chunk.Center,
                 IsEmpty = chunk.IsEmpty,
-                Source = PacketSouce.Client
+                Source = PacketSouce.Server
             };
             MessageFactory.SendPacket(SendingMode.ServerToClient, packet, null, null, NetworkDelivery.ReliableFragmentedSequenced);
         }
@@ -85,6 +90,16 @@ namespace World
         [CanBeNull] public Chunk GetChunk(Vector2Int position)
         {
             return Chunks.GetValueOrDefault(position, null);
+        }
+        
+        public Chunk GetChunkOrCreate(Vector2Int position)
+        {
+            if (!Chunks.TryGetValue(position, out var chunk))
+            {
+                chunk = new Chunk(this, position);
+                Chunks.TryAdd(position, chunk);
+            }
+            return chunk;
         }
         
         public bool TryGetChunk(Vector2Int position, [CanBeNull] out Chunk chunk)

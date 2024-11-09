@@ -18,11 +18,6 @@ using Event = UnityEngine.Event;
 
 public class Main : MonoBehaviour
 {
-    public IEnumerator Temp()
-    {
-        yield return new WaitForSeconds(5);
-        WorldCommands.SendChunk();
-    }
 
     private async void Start()
     {

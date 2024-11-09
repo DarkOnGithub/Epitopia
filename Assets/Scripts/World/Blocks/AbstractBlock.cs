@@ -19,7 +19,7 @@ namespace World.Blocks
             Id = id;
             Name = name;
             Properties = properties;
-            Tile = SpriteUtils.GetTileFromSprite(Resources.Load<Sprite>(properties.SpritePath));
+            Tile = SpriteUtils.GetTileFromSprite(Resources.Load<Sprite>($"Sprites/Blocks/{properties.SpritePath}"));
         }
         public abstract T GetState(object state);
         public abstract T GetDefaultState();

@@ -32,7 +32,7 @@ namespace World.Blocks
         private static T RegisterBlock<T>(string blockName, BlockProperties properties) where T : IBlock
         {
             var instance = Activator.CreateInstance(typeof(T), new object[]{
-                          _blockCount++, blockName, properties
+                          _blockCount, blockName, properties
                       });
             _blocks[_blockCount++] = (IBlock)instance;
             return (T)instance;
@@ -40,13 +40,7 @@ namespace World.Blocks
         
         public static IBlock GetBlock(int id)
         {
-            return id switch
-                   {
-                       0 => BLOCK_AIR,
-                       1 => BLOCK_NULL,
-                       2 => BLOCK_DIRT,
-                       _ => BLOCK_NULL
-                   };
+            return _blocks[id] ?? BLOCK_NULL;
         }
     }
 }

@@ -34,14 +34,15 @@ namespace Network
             _instance = this;
             _logger.LogInfo($"Connected as {AuthenticationService.Instance.PlayerId}");
             PlayerId = AuthenticationService.Instance.PlayerId;
-            ClientId = _networkManager.LocalClientId;
             StartCoroutine(LobbyManager.HeartbeatLobby());
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientAdded;
         }
 
         public async void OnClientAdded(ulong client)
         {
-            if (client != ClientId) return;
+            Debug.Log(_networkManager.LocalClientId);
+            if (client != NetworkManager.Singleton.LocalClientId) return;
+            ClientId = client;
             MessageFactory.SendPacket(SendingMode.ClientToClient, new ConnectionMessage
             {
                 State = ConnectionState.Connecting,

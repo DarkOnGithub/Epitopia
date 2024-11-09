@@ -21,7 +21,7 @@ namespace World
         {
             var packet = new ChunkTransferMessage
             {
-                ChunkData = ChunkUtils.SerializeAndCompressChunk(chunk),
+                ChunkData = ChunkUtils.SerializeChunk(chunk),
                 Center = chunk.Center,
                 IsEmpty = chunk.IsEmpty,
                 Source = PacketSouce.Client
@@ -29,7 +29,7 @@ namespace World
             MessageFactory.SendPacket(SendingMode.ClientToServer, packet, null, null, NetworkDelivery.ReliableFragmentedSequenced);
         }
         
-        public void OnChunkReceived(byte[] chunkData, Vector2Int center, bool isEmpty)
+        public void OnChunkReceived(byte[] chunkData, Vector2Int center, bool isEmpty, AbstractWorld worldIn)
         {
             Chunk chunk;
             if (isEmpty)
@@ -38,9 +38,13 @@ namespace World
                 WorldGeneration.WorldGeneration.GenerateChunk(this, chunk);
             }
             else
-                chunk = new Chunk(this, center, ChunkUtils.DeserializeAndDecompressChunk(chunkData).BlockStates);
-            Scanner.RequestedChunks.Remove(center);
+            {
+                chunk = worldIn.GetChunkOrCreate(center);
+                chunk.UpdateContent(ChunkUtils.DeserializeChunk(chunkData).BlockStates);
+            }
             AddChunk(chunk);   
+            Scanner.RequestedChunks.Remove(center);
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using UnityEngine.Tilemaps;
 using Utils;
 using World;
+using World.Blocks;
 using World.Chunks;
 
 namespace Renderer
@@ -22,7 +23,6 @@ namespace Renderer
             var tiles = new Tile[Chunk.ChunkSizeSquared];
             var origin = chunk.Origin.ToVector3Int();
             var blocks = chunk.BlockStates;
-            Debug.Log(blocks[0].Block);
             for (int i = 0; i < Chunk.ChunkSizeSquared; i++)
             {
                 position[i] = origin + i.ToVector3Int0();

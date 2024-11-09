@@ -19,8 +19,8 @@ namespace World.Chunks
         public const int ChunkSize = 16;
         public const int ChunkSizeSquared = ChunkSize * ChunkSize;
         
-        public IBlockState[] BlockStates;
-        private readonly List<ulong> _owners;
+        public IBlockState[] BlockStates = new IBlockState[ChunkSizeSquared];
+        public List<ulong> Owners = new();
         public readonly AbstractWorld World;
         
         public Vector2Int Center { get; }
@@ -28,29 +28,34 @@ namespace World.Chunks
         public bool IsDrawn { get; private set; }
         public bool IsEmpty { get; set; }
         public ulong CurrentGenerator;
-        public IReadOnlyList<ulong> Owners => _owners;
 
+        public void UpdateContent(IBlockState[] states)
+        {
+            var air = BlockRegistry.BLOCK_AIR.GetDefaultState();
+            for (int i = 0; i < ChunkSizeSquared; i++)
+            {
+                var state = states[i];
+                if (state != null)
+                    BlockStates[i] = BlockRegistry.GetBlock(state.Id).FromIBlockState(state);
+                else
+                    BlockStates[i] = air;
+            }
+        }
         public Chunk(AbstractWorld worldIn, Vector2Int center)
             : this(worldIn, center, new IBlockState[ChunkSizeSquared])
         {
             IsEmpty = true;
-            var air = BlockRegistry.BLOCK_AIR.DefaultState;
-            for (var i = 0; i < ChunkSizeSquared; i++)
-            {
-                BlockStates[i] = air;
-            }
         }
         
         public Chunk(AbstractWorld worldIn, Vector2Int center, IBlockState[] states)
         {
+            var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            go.name = $"Chunk {center}";
+            go.transform.position = new Vector3(center.x, center.y);
+            go.transform.localScale = new Vector3(ChunkSize, ChunkSize, 1);
+            
             World = worldIn ?? throw new ArgumentNullException(nameof(worldIn));
-            for (int i = 0; i < ChunkSizeSquared; i++)
-            {
-                var state = states[i];
-                Debug.Log(state.Id);
-                BlockRegistry.GetBlock(state.Id).FromIBlockState(state);
-            } 
-            _owners = new List<ulong>();
+            UpdateContent(states);
             
             Center = center;
             Origin = new Vector2Int(center.x - ChunkSize / 2, center.y - ChunkSize / 2);
@@ -109,42 +114,35 @@ namespace World.Chunks
 
         public void AddOwners(IEnumerable<ulong> clientIds)
         {
-            _owners.AddRange(clientIds);
+            Owners.AddRange(clientIds);
             OnOwnersUpdated();
         }
         
         public void AddOwner(ulong clientId)
         {
-            _owners.Add(clientId);
+            Owners.Add(clientId);
             OnOwnersUpdated();
         }
         
         public void RemoveOwners(IEnumerable<ulong> clientIds)
         {
             foreach (var clientId in clientIds)
-                _owners.Remove(clientId);
+                Owners.Remove(clientId);
             OnOwnersUpdated();
         }
         
         public void RemoveOwner(ulong clientId)
         {
-            _owners.Remove(clientId);
+            Owners.Remove(clientId);
             OnOwnersUpdated();
         }
-
-        public void Generate()
-        {
-            IsEmpty = false;
-            SetBlock(0, BlockRegistry.BLOCK_DIRT.DefaultState);
-        }
-
+        
         public void TryDraw()
         {
-            if (IsDrawn) 
-                return;
+            // if (IsDrawn) 
+            //     return;
             IsDrawn = true;
             ChunkRenderer.RenderChunk(this);
-            Debug.Log("a");
         }
 
         public ChunkData GetChunkData() => new()
@@ -155,7 +153,7 @@ namespace World.Chunks
 
         private void OnOwnersUpdated()
         {
-            if (_owners.Count == 0)
+            if (Owners.Count == 0)
                 Destroy();
         }
 

@@ -26,11 +26,12 @@ namespace Network.Messages.Packets.World
         {
             switch (body.Source)
             {
-                case PacketSouce.Server:
+                case PacketSouce.Client:
                     WorldManager.GetWorld(body.World).HostController.OnChunkReceived(body.ChunkData, body.Center, header.Author);
                     break;
-                case PacketSouce.Client:
-                    WorldManager.GetWorld(body.World).OnChunkReceived(body.ChunkData, body.Center, body.IsEmpty);
+                case PacketSouce.Server:
+                    var world = WorldManager.GetWorld(body.World);
+                    world.OnChunkReceived(body.ChunkData, body.Center, body.IsEmpty, world);
                     break;
             }
         }
