@@ -6,6 +6,7 @@ using MessagePack;
 using Network.Messages.Packets;
 using Unity.Collections;
 using Unity.Netcode;
+using UnityEngine;
 using Utils;
 using Type = System.Type;
 
@@ -50,6 +51,7 @@ namespace Network.Messages
             var headerBytes = new byte[headerSize];
             reader.ReadBytes(ref headerBytes, headerSize);
             var header = MessagePackSerializer.Deserialize<NetworkUtils.Header>(headerBytes);
+            Debug.Log(header.SendingMode);
             switch (header.SendingMode)
             {
                 case (byte)SendingMode.ClientToClient:

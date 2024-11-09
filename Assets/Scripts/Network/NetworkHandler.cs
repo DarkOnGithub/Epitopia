@@ -5,6 +5,7 @@ using Core;
 using Network.Lobby.Authentification;
 using Network.Messages;
 using Network.Messages;
+using Network.Messages.Packets.Network;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -12,7 +13,7 @@ using UnityEngine;
 
 namespace Network
 {
-    public class NetworkHandler : NetworkBehaviour
+    public class NetworkHandler : MonoBehaviour
     {
         public static string PlayerId { get; private set; }
         public static ulong ClientId { get; private set; }
@@ -28,17 +29,27 @@ namespace Network
 
             await UnityServices.InitializeAsync();
             await Authentification.TrySignIn();
+            PacketRegistry.RegisterPackets();
 
             _instance = this;
             _logger.LogInfo($"Connected as {AuthenticationService.Instance.PlayerId}");
             PlayerId = AuthenticationService.Instance.PlayerId;
             ClientId = _networkManager.LocalClientId;
             StartCoroutine(LobbyManager.HeartbeatLobby());
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientAdded;
         }
 
-        public override void OnNetworkSpawn()
+        public async void OnClientAdded(ulong client)
         {
-            
+            Debug.Log("a");
+            if (client != ClientId) return;
+            MessageFactory.SendPacket(SendingMode.ClientToClient, new ConnectionMessage
+            {
+                State = ConnectionState.Connecting,
+                PlayerName = await AuthenticationService.Instance.GetPlayerNameAsync(),
+                PlayerId = AuthenticationService.Instance.PlayerId,
+                ClientId = ClientId
+            });
         }
     }
 }

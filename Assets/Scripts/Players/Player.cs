@@ -1,5 +1,6 @@
 ﻿
-using System.Numerics;
+using UnityEngine;
+using World;
 
 namespace Players
 {
@@ -9,12 +10,15 @@ namespace Players
         public string PlayerId;
         public ulong ClientId;
         public Vector2 Position;
+        public AbstractWorld World;
+        
         
         public Player(string playerName, string playerId, ulong clientId)
         {
             PlayerName = playerName;
             PlayerId = playerId;
             ClientId = clientId;
+            PlayerManager.Players.Add(this);
         }
         
     }

@@ -38,7 +38,7 @@ namespace World
                 Logger.LogWarning($"Chunk at {center} already exists");
                 return null;
             }
-            var chunk = new Chunk(center);
+            var chunk = new Chunk(this, center);
             Chunks.TryAdd(center, chunk);
             return chunk;
         }
@@ -50,7 +50,7 @@ namespace World
                 Logger.LogWarning($"Chunk at {center} already exists");
                 return null;
             }
-            var chunk = new Chunk(center, data.BlockStates);
+            var chunk = new Chunk(this, center, data.BlockStates);
             Chunks.TryAdd(center, chunk);
             return chunk;
 
