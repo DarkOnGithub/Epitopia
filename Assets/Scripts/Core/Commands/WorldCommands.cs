@@ -15,8 +15,10 @@ namespace Core.Commands
         public static void RegenWorld()
         {
             var player = PlayerManager.LocalPlayer;
-            foreach (var chunk in player.World.Chunks.Values)
+            var chunks = player.World.Chunks.Values.ToArray();
+            for(int i=0; i< chunks.Length; i++)
             {
+                var chunk = chunks[i];
                 var random = new System.Random().Next(-2,2);
                 for (int x = 0; x < Chunk.ChunkSize; x++)
                 {

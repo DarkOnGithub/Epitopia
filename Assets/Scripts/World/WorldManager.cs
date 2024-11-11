@@ -20,7 +20,6 @@ namespace World
         {
             RegisterWorlds();
             Instance = this;
-         
         }
         public void RegisterWorlds()
         {

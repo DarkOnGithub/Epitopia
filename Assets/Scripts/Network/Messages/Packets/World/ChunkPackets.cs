@@ -62,7 +62,13 @@ namespace Network.Messages.Packets.World
             switch (body.Type)
             {
                 case ChunkRequestType.Drop:
-                    //!TODO
+                    foreach (var position in body.Positions)
+                    {
+                        if(WorldManager.GetWorld(body.World).TryGetChunk(position, out var chunk))
+                        {
+                            chunk.RemoveOwner(header.Author);
+                        }
+                    }
                     break;
                 case ChunkRequestType.Request:
                     WorldManager.GetWorld(body.World).HostController.GetChunksInRange(body.Positions, header.Author);

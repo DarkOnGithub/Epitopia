@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using MessagePack;
 using Renderer;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using Utils;
 using World.Blocks;
 
 namespace World.Chunks
@@ -20,45 +23,43 @@ namespace World.Chunks
         public const int ChunkSizeSquared = ChunkSize * ChunkSize;
         
         public IBlockState[] BlockStates = new IBlockState[ChunkSizeSquared];
-        public List<ulong> Owners = new();
+        public HashSet<ulong> Players = new();
         public readonly AbstractWorld World;
+        private bool _isRendered;
         
         public Vector2Int Center { get; }
-        public Vector2Int Origin { get; }
-        public bool IsDrawn { get; private set; }
-        public bool IsEmpty { get; set; }
-        public ulong CurrentGenerator;
 
-        public void UpdateContent(IBlockState[] states)
+        public Vector2Int Origin
+        {
+            get
+            {
+                var half = ChunkSize / 2;
+                return new Vector2Int(Center.x - half, Center.y - half);   
+            }
+        }
+
+        public bool IsEmpty { get; set; } = true;
+
+        public void UpdateContent(IBlockState[] newContent)
         {
             var air = BlockRegistry.BLOCK_AIR.GetDefaultState();
             for (int i = 0; i < ChunkSizeSquared; i++)
             {
-                var state = states[i];
-                if (state != null)
-                    BlockStates[i] = BlockRegistry.GetBlock(state.Id).FromIBlockState(state);
-                else
-                    BlockStates[i] = air;
+                var newState = newContent[i];
+                BlockStates[i] = BlockRegistry.GetBlock(newState.Id).FromIBlockState(newState) ?? air;
             }
         }
         public Chunk(AbstractWorld worldIn, Vector2Int center)
             : this(worldIn, center, new IBlockState[ChunkSizeSquared])
         {
-            IsEmpty = true;
+            
         }
         
         public Chunk(AbstractWorld worldIn, Vector2Int center, IBlockState[] states)
         {
-            var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            go.name = $"Chunk {center}";
-            go.transform.position = new Vector3(center.x, center.y);
-            go.transform.localScale = new Vector3(ChunkSize, ChunkSize, 1);
-            
             World = worldIn ?? throw new ArgumentNullException(nameof(worldIn));
             UpdateContent(states);
-            
             Center = center;
-            Origin = new Vector2Int(center.x - ChunkSize / 2, center.y - ChunkSize / 2);
             IsEmpty = false;
         }
 
@@ -112,50 +113,15 @@ namespace World.Chunks
             }
         }
 
-        public void AddOwners(IEnumerable<ulong> clientIds)
-        {
-            Owners.AddRange(clientIds);
-            OnOwnersUpdated();
-        }
-        
-        public void AddOwner(ulong clientId)
-        {
-            Owners.Add(clientId);
-            OnOwnersUpdated();
-        }
-        
-        public void RemoveOwners(IEnumerable<ulong> clientIds)
-        {
-            foreach (var clientId in clientIds)
-                Owners.Remove(clientId);
-            OnOwnersUpdated();
-        }
-        
-        public void RemoveOwner(ulong clientId)
-        {
-            Owners.Remove(clientId);
-            OnOwnersUpdated();
-        }
-        
-        public void TryDraw()
-        {
-            // if (IsDrawn) 
-            //     return;
-            IsDrawn = true;
-            ChunkRenderer.RenderChunk(this);
-        }
+      
+
 
         public ChunkData GetChunkData() => new()
         {
             Center = Center,
             BlockStates = BlockStates
         };
-
-        private void OnOwnersUpdated()
-        {
-            if (Owners.Count == 0)
-                Destroy();
-        }
+        
 
         private static bool IsValidIndex(int index) 
             => index >= 0 && index < ChunkSizeSquared;
@@ -167,10 +133,20 @@ namespace World.Chunks
                     $"Index must be between 0 and {ChunkSizeSquared - 1}");
         }
 
+        public void Render()
+        {
+            
+        }
+        
+        public void UnRender()
+        {
+            
+        }
         public void Destroy()
         {
-            // Implementation needed
-            throw new NotImplementedException();
+           World.Query.RemoveChunk(Center);
+           if(_isRendered)
+                UnRender();    
         }
     }
 }

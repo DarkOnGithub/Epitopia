@@ -17,6 +17,16 @@ namespace Renderer
             _tilemap.SetTiles(position, tiles);
         }
 
+        public static void ClearChunk(Chunk chunk)
+        {
+            var origin = chunk.Origin.ToVector3Int();
+
+            var positions = new Vector3Int[Chunk.ChunkSizeSquared];
+            for (int i = 0; i < Chunk.ChunkSizeSquared; i++)
+                positions[i] = origin + i.ToVector3Int0();
+            
+            _tilemap.SetTiles(positions, null);
+        }
         public static (Vector3Int[], Tile[]) ExtractTiles(Chunk chunk)
         {
             var position = new Vector3Int[Chunk.ChunkSizeSquared];

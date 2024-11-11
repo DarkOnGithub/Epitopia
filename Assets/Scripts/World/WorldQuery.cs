@@ -1,48 +1,41 @@
-﻿using UnityEngine;
-using Utils;
-using World.Blocks;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using World.Chunks;
 
 namespace World
 {
-
-    public static class WorldQuery
+    public class WorldQuery
     {
-        private static int _chunkSize = Chunk.ChunkSize;
-        public static Vector2Int FindNearestChunkPosition(Vector2 worldPosition)
+        private readonly AbstractWorld _worldIn;
+        public readonly Dictionary<Vector2Int, Chunk> Chunks = new();
+        public WorldQuery(AbstractWorld worldIn)
         {
-            return VectorUtils.GetNearestVectorDivisibleBy(worldPosition, _chunkSize);
+            _worldIn = worldIn;
         }
-        public static bool FindNearestChunk(AbstractWorld worldIn, Vector2 worldPosition, out Chunk chunk)
+        
+        public void RemoveChunk(Vector2Int chunkPosition) => Chunks.Remove(chunkPosition);
+        public void AddChunk(Chunk chunk) => Chunks.Add(chunk.Center, chunk);
+        public void TryAddChunk(Chunk chunk)
         {
-            var chunkPosition = VectorUtils.GetNearestVectorDivisibleBy(worldPosition, _chunkSize);
-            return worldIn.Chunks.TryGetValue(chunkPosition, out chunk);
-        }
-
-        public static Vector2Int WorldToLocalPosition(Vector2 worldPosition, Vector2Int chunkPosition)
-        {
-            return Vector2Int.FloorToInt(worldPosition) - chunkPosition;
-        }
-
-        public static bool SetBlock(AbstractWorld worldIn, Vector2 worldPosition, IBlockState block)
-        {
-            if (!FindNearestChunk(worldIn, worldPosition, out var chunk)) return false;
-            var localIndex = WorldToLocalPosition(worldPosition, chunk.Origin).ToIndex();
-            chunk.SetBlock(localIndex, block);
-            return true;
+            if (!Chunks.TryGetValue(chunk.Center, out var _))
+                Chunks.Add(chunk.Center, chunk);
         }
 
-        public static bool GetBlock(AbstractWorld worldIn, Vector2 worldPosition, out IBlockState block)
+        public Chunk GetChunk(Vector2Int chunkPosition) => Chunks[chunkPosition];
+        public bool TryGetChunk(Vector2Int chunkPosition, out Chunk chunk) => Chunks.TryGetValue(chunkPosition, out chunk);
+        public Chunk GetChunkOrCreate(Vector2Int chunkPosition)
         {
-            if (!FindNearestChunk(worldIn, worldPosition, out var chunk))
+            if (!Chunks.TryGetValue(chunkPosition, out var chunk))
             {
-                block = null;
-                return false;
+                chunk = new Chunk(_worldIn, chunkPosition);
+                Chunks.Add(chunkPosition, chunk);
             }
-
-            var localIndex = WorldToLocalPosition(worldPosition, chunk.Origin).ToIndex();
-            block = chunk.GetBlock(localIndex);
-            return true;
+            return chunk;
+        }
+        public bool FindNearestChunk(Vector2 worldPosition, out Chunk chunk)
+        {
+            var chunkPosition = WorldUtils.FindNearestChunkPosition(worldPosition);
+            return Chunks.TryGetValue(chunkPosition, out chunk);
         }
     }
 }
