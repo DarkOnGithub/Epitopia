@@ -20,9 +20,9 @@ namespace World
             chunkData.Center = message.Center;
             var chunk = WorldIn.Query.GetChunkOrCreate(chunkData.Center);   
             var content = chunkData.BlockStates;
-            if(message.IsEmpty)
-                content = WorldGeneration.WorldGeneration.GenerateChunk(, WorldIn);
-            chunk.UpdateContent();
+            if (message.IsEmpty)
+                content = WorldGeneration.WorldGeneration.GenerateChunk(WorldIn, chunk.Origin); 
+            chunk.UpdateContent(content);
         }
 
         public void SendChunk(Chunk chunk) => MessageFactory.SendPacket(SendingMode.ClientToServer,

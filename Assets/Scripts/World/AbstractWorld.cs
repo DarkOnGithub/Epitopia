@@ -77,14 +77,16 @@ namespace World
         protected BetterLogger Logger = new BetterLogger(typeof(AbstractWorld));
         public  readonly WorldIdentifier Identifier;
         public WorldQuery Query;
-//        public WorldHostController HostController;
   
         public AbstractWorld(WorldIdentifier identifier)
         {
             Identifier = identifier;
             Query = new WorldQuery(this);
-  //          HostController = new WorldHostController(this);
         }
-        
+
+        public void OnChunkUpdated(Chunk chunk)
+        {
+            
+        }
     }
 }

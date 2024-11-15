@@ -33,8 +33,8 @@ namespace World.WorldGeneration
                     }
                 }
             }
-            chunk.IsEmpty = false;
-            worldIn.SendChunkToServer(chunk);
+
+            return chunkData;
         }
     }
 }

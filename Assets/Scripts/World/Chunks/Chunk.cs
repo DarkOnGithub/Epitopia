@@ -113,9 +113,6 @@ namespace World.Chunks
             }
         }
 
-      
-
-
         public ChunkData GetChunkData() => new()
         {
             Center = Center,
@@ -142,6 +139,8 @@ namespace World.Chunks
         {
             
         }
+
+
         public void Destroy()
         {
            World.Query.RemoveChunk(Center);
