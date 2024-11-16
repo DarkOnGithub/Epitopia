@@ -136,11 +136,11 @@ namespace World
                         basePosition + new Vector2Int(x, y) * Chunk.ChunkSize
                     );
 
-                    if (localPlayer.World.TryGetChunk(chunkPosition, out var chunk))
+                    if (localPlayer.World.Query.TryGetChunk(chunkPosition, out var chunk))
                     {
                         if (chunk != null)
                         {
-                            chunk.TryDraw();
+                            //    chunk.TryDraw();
                             LoadedChunks.Add(chunk);
                             loadedChunksCopy.Remove(chunk);
                         }

@@ -16,7 +16,7 @@ namespace World
         public static bool FindNearestChunk(AbstractWorld worldIn, Vector2 worldPosition, out Chunk chunk)
         {
             var chunkPosition = VectorUtils.GetNearestVectorDivisibleBy(worldPosition, _chunkSize);
-            return worldIn.Chunks.TryGetValue(chunkPosition, out chunk);
+            return worldIn.Query.Chunks.TryGetValue(chunkPosition, out chunk);
         }
 
         public static Vector2Int WorldToLocalPosition(Vector2 worldPosition, Vector2Int chunkPosition)
