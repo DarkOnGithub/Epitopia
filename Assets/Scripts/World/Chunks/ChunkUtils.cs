@@ -7,17 +7,17 @@ namespace World.Chunks
 {
     public static class ChunkUtils
     {
-        private static readonly MessagePackSerializerOptions Options = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
+        public static readonly MessagePackSerializerOptions Options = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
 
-        public static byte[] SerializeChunk(Chunk chunk)
+        public static byte[] SerializeChunk(Chunk chunk, bool compress = true)
         {
             var data = chunk.GetChunkData();
-           return MessagePackSerializer.Serialize(data, Options);
+           return MessagePackSerializer.Serialize(data, compress ? Options : null);
         }
         
-        public static ChunkData DeserializeChunk(byte[] data)
+        public static ChunkData DeserializeChunk(byte[] data, bool compress = true)
         {
-            return MessagePackSerializer.Deserialize<ChunkData>(data, Options);
+            return MessagePackSerializer.Deserialize<ChunkData>(data, compress ? Options : null);
         }
 
     }

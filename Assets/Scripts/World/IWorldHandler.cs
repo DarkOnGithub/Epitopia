@@ -1,4 +1,5 @@
-﻿using Network.Messages.Packets.World;
+﻿using Network.Messages;
+using Network.Messages.Packets.World;
 using World.Chunks;
 
 namespace World
@@ -6,8 +7,8 @@ namespace World
     public interface IWorldHandler
     {
         AbstractWorld WorldIn { get; }
-        void OnPacketReceived(ChunkTransferMessage message);
-        void SendChunk(Chunk chunk);
+        void OnPacketReceived(NetworkUtils.Header header, ChunkTransferMessage message);
+        void SendChunk(Chunk chunk, ulong[] client);
         void RemoveChunk(Chunk chunk);
     }
 }

@@ -35,3 +35,5 @@ public class Main : MonoBehaviour
         StartCoroutine(Temp());
     }
 }
+
+//!TODO CREATE WORLD WHEN NEEDED NOT AT START 

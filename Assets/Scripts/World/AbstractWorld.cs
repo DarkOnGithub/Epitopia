@@ -75,13 +75,17 @@ namespace World
     public abstract partial class AbstractWorld
     {
         protected BetterLogger Logger = new BetterLogger(typeof(AbstractWorld));
-        public  readonly WorldIdentifier Identifier;
+        public readonly WorldIdentifier Identifier;
+        public ClientWorldHandler ClientHandler;
+        public ServerWorldHandler ServerHandler;
         public WorldQuery Query;
   
         public AbstractWorld(WorldIdentifier identifier)
         {
             Identifier = identifier;
             Query = new WorldQuery(this);
+            ClientHandler = new ClientWorldHandler(this);
+            ServerHandler = new ServerWorldHandler(this);
         }
 
         public void OnChunkUpdated(Chunk chunk)

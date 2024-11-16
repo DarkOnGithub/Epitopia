@@ -11,7 +11,6 @@ namespace World
     {
         public static WorldManager Instance;
         public static Dictionary<WorldIdentifier, AbstractWorld> Worlds = new();
-
         
         [SerializeField] public Tilemap tilemap;
 

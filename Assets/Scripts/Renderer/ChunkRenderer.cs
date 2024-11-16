@@ -41,5 +41,17 @@ namespace Renderer
 
             return (position, tiles);
         }
+        
+        public static void UnRenderChunk(Chunk chunk)
+        {
+            var origin = chunk.Origin.ToVector3Int();
+            Debug.Log("a");
+            var positions = new Vector3Int[Chunk.ChunkSizeSquared];
+            for (int i = 0; i < Chunk.ChunkSizeSquared; i++)
+                positions[i] = origin + i.ToVector3Int0();
+
+    
+            _tilemap.SetTiles(positions, new TileBase[Chunk.ChunkSizeSquared]);
+        }
     }
 }

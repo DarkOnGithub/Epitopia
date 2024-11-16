@@ -116,7 +116,7 @@ namespace World
                 yield return _scanWaiter;
             }
         }
-
+        //!TODO REWRITE THIS IS UGLY AF
         private void Scan()
         {
             var localPlayer = PlayerManager.LocalPlayer;
@@ -140,7 +140,7 @@ namespace World
                     {
                         if (chunk != null)
                         {
-                            //    chunk.TryDraw();
+                            chunk.Render();
                             LoadedChunks.Add(chunk);
                             loadedChunksCopy.Remove(chunk);
                         }
@@ -153,13 +153,11 @@ namespace World
                 }
             }
 
-            // Only send request if we have chunks to request
             if (requestCount > 0)
             {
                 RequestChunks(localPlayer.World.Identifier, _scanPositionsBuffer, requestCount);
             }
 
-            // Cleanup unneeded chunks
             foreach (var chunk in loadedChunksCopy)
             {
                 chunk.Destroy();

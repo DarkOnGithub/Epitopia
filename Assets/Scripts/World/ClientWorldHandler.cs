@@ -14,7 +14,7 @@ namespace World
             WorldIn = worldIn;
         }
         
-        public void OnPacketReceived(ChunkTransferMessage message)
+        public void OnPacketReceived(NetworkUtils.Header header, ChunkTransferMessage message)
         {
             var chunkData = ChunkUtils.DeserializeChunk(message.ChunkData);
             chunkData.Center = message.Center;
@@ -23,21 +23,33 @@ namespace World
             if (message.IsEmpty)
                 content = WorldGeneration.WorldGeneration.GenerateChunk(WorldIn, chunk.Origin); 
             chunk.UpdateContent(content);
+            SendChunk(chunk);
         }
 
-        public void SendChunk(Chunk chunk) => MessageFactory.SendPacket(SendingMode.ClientToServer,
+        public void SendChunk(Chunk chunk, ulong[] client = null) => MessageFactory.SendPacket(SendingMode.ClientToServer,
             new ChunkTransferMessage
             {
                 ChunkData = ChunkUtils.SerializeChunk(chunk),
                 Center = chunk.Center,
                 IsEmpty = chunk.IsEmpty,
-                Source = PacketSouce.Client 
+                Source = PacketSource.Client
             }
         );
-
+        
+        public void DropChunks(Vector2Int[] positions)
+        {
+            MessageFactory.SendPacket(SendingMode.ClientToServer, new ChunkRequestMessage
+            {
+                Positions = positions,
+                Type = ChunkRequestType.Drop,
+                World = WorldIn.Identifier
+            });
+        }
+        
         public void RemoveChunk(Chunk chunk)
         {
             WorldIn.Query.RemoveChunk(chunk.Center);
+            DropChunks(new []{chunk.Center});   
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MessagePack;
 using Renderer;
+using Storage;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -25,6 +26,7 @@ namespace World.Chunks
         public IBlockState[] BlockStates = new IBlockState[ChunkSizeSquared];
         public HashSet<ulong> Players = new();
         public readonly AbstractWorld World;
+        public ulong ChunkGeneratorPlayerId;
         private bool _isRendered;
         
         public Vector2Int Center { get; }
@@ -46,13 +48,17 @@ namespace World.Chunks
             for (int i = 0; i < ChunkSizeSquared; i++)
             {
                 var newState = newContent[i];
-                BlockStates[i] = BlockRegistry.GetBlock(newState.Id).FromIBlockState(newState) ?? air;
+                if(newState == null)
+                    BlockStates[i] = air;
+                else
+                    BlockStates[i] = BlockRegistry.GetBlock(newState.Id).FromIBlockState(newState) ?? air;
             }
         }
         public Chunk(AbstractWorld worldIn, Vector2Int center)
-            : this(worldIn, center, new IBlockState[ChunkSizeSquared])
         {
-            
+            World = worldIn ?? throw new ArgumentNullException(nameof(worldIn));
+            UpdateContent(new IBlockState[ChunkSizeSquared]);
+            Center = center;
         }
         
         public Chunk(AbstractWorld worldIn, Vector2Int center, IBlockState[] states)
@@ -129,23 +135,25 @@ namespace World.Chunks
                 throw new ArgumentOutOfRangeException(nameof(index), 
                     $"Index must be between 0 and {ChunkSizeSquared - 1}");
         }
-
+        
         public void Render()
         {
+            _isRendered = true;
+            ChunkRenderer.RenderChunk(this);
             
         }
         
         public void UnRender()
         {
-            
+            ChunkRenderer.UnRenderChunk(this);
         }
 
-
+        //CALL IT ONLY FROM  THE CLIENT
         public void Destroy()
         {
-           World.Query.RemoveChunk(Center);
            if(_isRendered)
-                UnRender();    
+                UnRender(); 
+           World.ClientHandler.RemoveChunk(this);
         }
     }
 }

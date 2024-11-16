@@ -8,30 +8,25 @@ namespace Network.Messages.Packets.World
     [MessagePackObject]
     public struct ChunkTransferMessage : IMessageData
     {
-        [Key(0)]
-        public byte[] ChunkData;
-        [Key(1)]
-        public Vector2Int Center;
-        [Key(2)]
-        public PacketSouce Source;
-
+        [Key(0)] public byte[] ChunkData;
+        [Key(1)] public Vector2Int Center;
+        [Key(2)] public PacketSource Source;
         [Key(3)] public bool IsEmpty;
-        [Key(4)]
-        public WorldIdentifier World;
+        [Key(4)] public WorldIdentifier World;
     }
     public class ChunkTransferPacket : NetworkPacket<ChunkTransferMessage>
     {
         public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
         protected override void OnPacketReceived(NetworkUtils.Header header, ChunkTransferMessage body)
         {
+            var world = WorldManager.GetWorld(body.World);
             switch (body.Source)
             {
-                case PacketSouce.Client:
-                    WorldManager.GetWorld(body.World).HostController.OnChunkReceived(body.ChunkData, body.Center, header.Author);
+                case PacketSource.Server:
+                    world.ClientHandler.OnPacketReceived(header, body);
                     break;
-                case PacketSouce.Server:
-                    var world = WorldManager.GetWorld(body.World);
-                    world.OnChunkReceived(body.ChunkData, body.Center, body.IsEmpty, world);
+                case PacketSource.Client:
+                    world.ServerHandler.OnPacketReceived(header, body);
                     break;
             }
         }
@@ -52,27 +47,23 @@ namespace Network.Messages.Packets.World
         public ChunkRequestType Type;
         [Key(2)]
         public WorldIdentifier World;
+        
     }
     public class ChunkRequestPacket : NetworkPacket<ChunkRequestMessage>
     {
         public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.World;
         protected override void OnPacketReceived(NetworkUtils.Header header, ChunkRequestMessage body)
         {
-            if (!IsHost) return;
             switch (body.Type)
             {
-                case ChunkRequestType.Drop:
-                    foreach (var position in body.Positions)
-                    {
-                        if(WorldManager.GetWorld(body.World).TryGetChunk(position, out var chunk))
-                        {
-                            chunk.RemoveOwner(header.Author);
-                        }
-                    }
-                    break;
                 case ChunkRequestType.Request:
-                    WorldManager.GetWorld(body.World).HostController.GetChunksInRange(body.Positions, header.Author);
+                    WorldManager.GetWorld(body.World).ServerHandler.PlayerRequestChunks(header.Author, body.Positions);
                     break;
+                case ChunkRequestType.Drop:
+                    var handler = WorldManager.GetWorld(body.World).ServerHandler;
+                    foreach (var chunk in handler.Query.LazyGetChunks(body.Positions))
+                        handler.RemovePlayerFromChunk(chunk, header.Author);
+                    break;                    
             }
         }
     }

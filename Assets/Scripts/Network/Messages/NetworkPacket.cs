@@ -20,7 +20,7 @@ using Event = UnityEngine.Event;
 
 namespace Network.Messages
 {
-    public enum PacketSouce
+    public enum PacketSource
     {
         Server,
         Client
