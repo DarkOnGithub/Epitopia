@@ -96,18 +96,23 @@ namespace World
         {
             if (Storage.TryGet(position, out var bytes))
             {
+                
                 chunk = Query.CreateChunk(position, ChunkUtils.DeserializeChunk(bytes, false).BlockStates);
                 return true;
             }
             chunk = null;
             return false;
         }
+
+        public bool GetChunkFromMemoryOrStorage(Vector2Int position, out Chunk chunk) =>
+            Query.TryGetChunk(position, out chunk) || GetChunkFromStorage(position, out chunk);
+        
         //Lazy loading
         public IEnumerable<Chunk> LoadChunksInRange(Vector2Int[] positions)
         {
             foreach (var position in positions)
             {
-                if (Query.TryGetChunk(position, out Chunk chunk) || GetChunkFromStorage(position, out chunk))
+                if (GetChunkFromMemoryOrStorage(position, out var chunk))
                     yield return chunk;                 
                 else 
                     yield return Query.CreateEmptyChunk(position);

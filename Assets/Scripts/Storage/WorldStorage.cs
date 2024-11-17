@@ -16,7 +16,7 @@ namespace Storage
 
         public WorldStorage(string path)
         {
-            var fPath = $"Database/{path}";
+            var fPath = $"{Application.persistentDataPath}/DBs/{path}";
             Directory.CreateDirectory(fPath);
             _database = RocksDb.Open(Options, fPath);
         }
@@ -29,7 +29,6 @@ namespace Storage
         
         public void Put(Vector2Int key, byte[] value)
         {
-            Debug.Log("aa");
             _database.Put(BitConverter.GetBytes(key.Serialize()), value);
         }
 

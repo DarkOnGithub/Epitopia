@@ -19,21 +19,21 @@ using Event = UnityEngine.Event;
 
 public class Main : MonoBehaviour
 {
-    IEnumerator Temp()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(1 / 20f);
-            if(PlayerManager.LocalPlayer == null) continue;
-            Camera.main.transform.position += new Vector3(2, 0, 0);
-            PlayerManager.LocalPlayer.Position = Camera.main.transform.position;
-        }
-    }
-    private async void Start()
-    {
-        BlockRegistry.RegisterBlocks();
-        StartCoroutine(Temp());
-    }
+    // IEnumerator Temp()
+    // {
+    //     while (true)
+    //     {
+    //         yield return new WaitForSeconds(1 / 20f);
+    //         if(PlayerManager.LocalPlayer == null) continue;
+    //         Camera.main.transform.position += new Vector3(2, 0, 0);
+    //         PlayerManager.LocalPlayer.Position = Camera.main.transform.position;
+    //     }
+    // }
+    // private async void Start()
+    // {
+    //     BlockRegistry.RegisterBlocks();
+    //     StartCoroutine(Temp());
+    // }
 }
 
 //!TODO CREATE WORLD WHEN NEEDED NOT AT START 

@@ -49,6 +49,7 @@ namespace World
         public Chunk CreateChunk(Vector2Int chunkPosition, IBlockState[] data)
         {
             var chunk = new Chunk(_worldIn, chunkPosition, data);
+            Debug.Log(chunk.BlockStates[48].Id);
             Chunks.Add(chunkPosition, chunk);
             return chunk;
         }
