@@ -37,6 +37,8 @@ namespace Renderer
             {
                 position[i] = origin + i.ToVector3Int0();
                 tiles[i] = blocks[i].Block.Tile;
+                if(blocks[i].Block.Tile == null)
+                    Debug.Log("Tile is null");
             }
 
             return (position, tiles);
@@ -45,7 +47,6 @@ namespace Renderer
         public static void UnRenderChunk(Chunk chunk)
         {
             var origin = chunk.Origin.ToVector3Int();
-            Debug.Log("a");
             var positions = new Vector3Int[Chunk.ChunkSizeSquared];
             for (int i = 0; i < Chunk.ChunkSizeSquared; i++)
                 positions[i] = origin + i.ToVector3Int0();

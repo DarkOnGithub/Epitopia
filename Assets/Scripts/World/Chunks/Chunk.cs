@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MessagePack;
 using Renderer;
 using Storage;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -63,6 +64,8 @@ namespace World.Chunks
         
         public Chunk(AbstractWorld worldIn, Vector2Int center, IBlockState[] states)
         {
+            var s = NetworkManager.Singleton.IsServer ? "Host" : "Client";
+            new GameObject($"{center} - {s}");
             World = worldIn ?? throw new ArgumentNullException(nameof(worldIn));
             UpdateContent(states);
             Center = center;
@@ -140,7 +143,6 @@ namespace World.Chunks
         {
             _isRendered = true;
             ChunkRenderer.RenderChunk(this);
-            
         }
         
         public void UnRender()
@@ -151,6 +153,7 @@ namespace World.Chunks
         //CALL IT ONLY FROM  THE CLIENT
         public void Destroy()
         {
+            GameObject.Destroy(GameObject.Find($"{Center} - Client"));
            if(_isRendered)
                 UnRender(); 
            World.ClientHandler.RemoveChunk(this);

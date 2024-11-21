@@ -29,11 +29,10 @@ public class Main : MonoBehaviour
     //         PlayerManager.LocalPlayer.Position = Camera.main.transform.position;
     //     }
     // }
-    // private async void Start()
-    // {
-    //     BlockRegistry.RegisterBlocks();
-    //     StartCoroutine(Temp());
-    // }
+    private async void Start()
+    {
+        BlockRegistry.RegisterBlocks();
+    }
 }
 
 //!TODO CREATE WORLD WHEN NEEDED NOT AT START 

@@ -1,3 +1,4 @@
+using Players;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,6 +29,8 @@ public class CameraDrag : MonoBehaviour
 
         _difference = GetMousePosition - transform.position;
         transform.position = _origin - _difference;
+        if(_mainCamera == null || PlayerManager.LocalPlayer == null) return;
+        PlayerManager.LocalPlayer.Position = _mainCamera.transform.position;
     }
 
     private Vector3 GetMousePosition => _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());

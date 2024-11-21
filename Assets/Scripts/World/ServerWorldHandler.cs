@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Core;
 using Network.Messages;
@@ -88,6 +89,7 @@ namespace World
 
         private void DestroyChunk(Chunk chunk)
         {
+            GameObject.Destroy(GameObject.Find($"{chunk.Center} - Host"));
             Query.RemoveChunk(chunk.Center);
             Storage.Put(chunk.Center, ChunkUtils.SerializeChunk(chunk, false));
         }
@@ -98,6 +100,7 @@ namespace World
             {
                 
                 chunk = Query.CreateChunk(position, ChunkUtils.DeserializeChunk(bytes, false).BlockStates);
+                Console.WriteLine(chunk.BlockStates[32].Id);
                 return true;
             }
             chunk = null;

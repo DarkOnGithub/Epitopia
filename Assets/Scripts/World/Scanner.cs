@@ -127,7 +127,6 @@ namespace World
 
             Vector2 basePosition = localPlayer.Position;
             
-            // Use pre-allocated buffer instead of creating new list
             for (int x = -_scanRangeHorizontal; x < _scanRangeHorizontal; x++)
             {
                 for (int y = -_scanRangeVertical; y < _scanRangeVertical; y++)
