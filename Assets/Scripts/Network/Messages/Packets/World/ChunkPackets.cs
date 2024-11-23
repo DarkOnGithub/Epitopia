@@ -26,7 +26,7 @@ namespace Network.Messages.Packets.World
                     world.ClientHandler.OnPacketReceived(header, body);
                     break;
                 case PacketSource.Client:
-                    world.ServerHandler.OnPacketReceived(header, body);
+                    WorldManager.PacketQueue.Enqueue((header, body));
                     break;
             }
         }
@@ -62,7 +62,10 @@ namespace Network.Messages.Packets.World
                 case ChunkRequestType.Drop:
                     var handler = WorldManager.GetWorld(body.World).ServerHandler;
                     foreach (var chunk in handler.Query.LazyGetChunks(body.Positions))
+                    {
                         handler.RemovePlayerFromChunk(chunk, header.Author);
+                        
+                    }
                     break;                    
             }
         }

@@ -1,12 +1,14 @@
-﻿using Network.Messages;
+﻿using System;
+using Network.Messages;
 using Network.Messages.Packets.World;
 using UnityEngine;
 using World.Chunks;
 
 namespace World
 {
-    public class ClientWorldHandler : IWorldHandler
-    {
+    public class ClientWorldHandler : IWorldHandler, IDisposable
+    {   
+        private bool _disposed = false;
         public AbstractWorld WorldIn { get; }
         
         public ClientWorldHandler(AbstractWorld worldIn)
@@ -51,5 +53,33 @@ namespace World
             WorldIn.Query.RemoveChunk(chunk.Center);
             DropChunks(new []{chunk.Center});   
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                foreach (var chunk in this.WorldIn.Query.Chunks.Values)
+                {
+                    chunk.Dispose();
+                }
+            }
+            _disposed = true;
+        }
+
+        ~ClientWorldHandler()
+        {
+            Dispose(false);
+        }
+        
+        
     }
 }

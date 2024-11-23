@@ -16,7 +16,6 @@ namespace Network
     public class NetworkHandler : MonoBehaviour
     {
         public static string PlayerId { get; private set; }
-        public static ulong ClientId { get; private set; }
         private static NetworkHandler _instance;
         public static NetworkHandler Instance => _instance;
         [SerializeField] public string serverCode;
@@ -35,21 +34,8 @@ namespace Network
             _logger.LogInfo($"Connected as {AuthenticationService.Instance.PlayerId}");
             PlayerId = AuthenticationService.Instance.PlayerId;
             StartCoroutine(LobbyManager.HeartbeatLobby());
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientAdded;
         }
 
-        public async void OnClientAdded(ulong client)
-        {
-            Debug.Log(_networkManager.LocalClientId);
-            if (client != NetworkManager.Singleton.LocalClientId) return;
-            ClientId = client;
-            MessageFactory.SendPacket(SendingMode.ClientToClient, new ConnectionMessage
-            {
-                State = ConnectionState.Connecting,
-                PlayerName = await AuthenticationService.Instance.GetPlayerNameAsync(),
-                PlayerId = AuthenticationService.Instance.PlayerId,
-                ClientId = ClientId
-            });
-        }
+      
     }
 }

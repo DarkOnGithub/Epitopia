@@ -1,4 +1,5 @@
-﻿using MessagePack;
+﻿using System.Linq;
+using MessagePack;
 using UnityEngine;
 using Utils.LZ4;
 using World.Blocks;
@@ -12,7 +13,7 @@ namespace World.Chunks
         public static byte[] SerializeChunk(Chunk chunk, bool compress = true)
         {
             var data = chunk.GetChunkData();
-           return MessagePackSerializer.Serialize(data, compress ? Options : null);
+            return MessagePackSerializer.Serialize(data, compress ? Options : null);
         }
         
         public static ChunkData DeserializeChunk(byte[] data, bool compress = true)

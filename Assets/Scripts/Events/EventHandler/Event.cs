@@ -5,7 +5,7 @@ namespace Events.EventHandler
 {
     public abstract class Event
     {
-        public List<EventListener> GetListeners => EventFactory.ListenersContainer[GetType()];
+        public List<EventListener> GetListeners => EventFactory.GetListener(GetType());
         public bool IsCancelled = false;
 
         public Event()

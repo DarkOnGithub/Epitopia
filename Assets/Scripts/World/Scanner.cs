@@ -62,14 +62,6 @@ namespace World
             _scanPositionsBuffer = new Vector2Int[maxPositions];
         }
 
-        [SubscribeEvent]
-        public static void OnPlayerAdded(PlayerAddedEvent e)
-        {
-            if (e.Player.ClientId == NetworkManager.Singleton.LocalClientId)
-            {
-                StartScheduler();
-            }
-        }
 
         public static void StartScheduler()
         {
@@ -122,7 +114,7 @@ namespace World
             var localPlayer = PlayerManager.LocalPlayer;
             if (localPlayer?.World == null) return;
 
-            var loadedChunksCopy = new HashSet<Chunk>(LoadedChunks);
+            var chunksToRemove = new HashSet<Chunk>(LoadedChunks);
             int requestCount = 0;
 
             Vector2 basePosition = localPlayer.Position;
@@ -134,14 +126,15 @@ namespace World
                     Vector2Int chunkPosition = WorldUtils.FindNearestChunkPosition(
                         basePosition + new Vector2Int(x, y) * Chunk.ChunkSize
                     );
-
+                    
                     if (localPlayer.World.Query.TryGetChunk(chunkPosition, out var chunk))
                     {
                         if (chunk != null)
                         {
                             chunk.Render();
                             LoadedChunks.Add(chunk);
-                            loadedChunksCopy.Remove(chunk);
+                            chunksToRemove.Remove(chunk);
+                            RequestedChunks.Remove(chunkPosition);
                         }
                     }
                     else if (!RequestedChunks.Contains(chunkPosition))
@@ -156,11 +149,11 @@ namespace World
             {
                 RequestChunks(localPlayer.World.Identifier, _scanPositionsBuffer, requestCount);
             }
-
-            foreach (var chunk in loadedChunksCopy)
+            
+            foreach (var chunk in chunksToRemove)
             {
-                chunk.Destroy();
                 LoadedChunks.Remove(chunk);
+                chunk.Dispose();
             }
         }
     }

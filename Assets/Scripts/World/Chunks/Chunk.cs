@@ -19,8 +19,8 @@ namespace World.Chunks
         [Key(1)] public IBlockState[] BlockStates { get; set; }
     }
     
-    public class Chunk
-    {
+    public class Chunk : IDisposable
+    { 
         public const int ChunkSize = 16;
         public const int ChunkSizeSquared = ChunkSize * ChunkSize;
         
@@ -29,6 +29,7 @@ namespace World.Chunks
         public readonly AbstractWorld World;
         public ulong ChunkGeneratorPlayerId;
         private bool _isRendered;
+        private bool _disposed;
         
         public Vector2Int Center { get; }
 
@@ -52,7 +53,7 @@ namespace World.Chunks
                 if(newState == null)
                     BlockStates[i] = air;
                 else
-                    BlockStates[i] = BlockRegistry.GetBlock(newState.Id).FromIBlockState(newState) ?? air;
+                    BlockStates[i] = BlockRegistry.GetBlock(newState.Id).FromIBlockState(newState);
             }
         }
         public Chunk(AbstractWorld worldIn, Vector2Int center)
@@ -64,8 +65,6 @@ namespace World.Chunks
         
         public Chunk(AbstractWorld worldIn, Vector2Int center, IBlockState[] states)
         {
-            var s = NetworkManager.Singleton.IsServer ? "Host" : "Client";
-            new GameObject($"{center} - {s}");
             World = worldIn ?? throw new ArgumentNullException(nameof(worldIn));
             UpdateContent(states);
             Center = center;
@@ -88,14 +87,12 @@ namespace World.Chunks
         {
             ValidateIndex(index);
             BlockStates[index] = state;
-            World.OnChunkUpdated(this);
         }
 
         public void RemoveBlock(int index)
         {
             ValidateIndex(index);
             BlockStates[index] = null;
-            World.OnChunkUpdated(this);
         }
         
         public T GetBlockSafe<T>(int index) where T : IBlockState
@@ -109,7 +106,6 @@ namespace World.Chunks
             if (IsValidIndex(index))
             {
                 BlockStates[index] = state;
-                World.OnChunkUpdated(this);
             }
         }
         
@@ -118,7 +114,6 @@ namespace World.Chunks
             if (IsValidIndex(index))
             {
                 BlockStates[index] = null;
-                World.OnChunkUpdated(this);
             }
         }
 
@@ -141,6 +136,8 @@ namespace World.Chunks
         
         public void Render()
         {
+            if(_disposed)return;
+            if(_isRendered)return;
             _isRendered = true;
             ChunkRenderer.RenderChunk(this);
         }
@@ -152,11 +149,37 @@ namespace World.Chunks
 
         //CALL IT ONLY FROM  THE CLIENT
         public void Destroy()
-        {
-            GameObject.Destroy(GameObject.Find($"{Center} - Client"));
+        { 
+            GameObject.Destroy(GameObject.Find($"{Center}"));
            if(_isRendered)
                 UnRender(); 
            World.ClientHandler.RemoveChunk(this);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+            Destroy();
+            if (disposing)
+            {
+                Players.Clear();
+                BlockStates = null;
+            }
+
+            
+            _disposed = true;
+        }
+
+        ~Chunk()
+        {
+            Dispose(false);
         }
     }
 }

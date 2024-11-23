@@ -7,6 +7,7 @@ namespace Network.Lobby.Authentification
 {
     public static class Authentification
     {
+        public static string LocalPlayerId;
         private static BetterLogger _logger = new(typeof(Authentification));
         private static int _attempts = 10;
 
@@ -27,6 +28,7 @@ namespace Network.Lobby.Authentification
                 _logger.LogInfo("Signed in successfully");
             else
                 throw new AuthenticationException("Failed to sign in");
+            LocalPlayerId = AuthenticationService.Instance.PlayerId;
         }
     }
 }

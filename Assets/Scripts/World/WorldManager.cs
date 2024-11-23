@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using Network;
+using Network.Messages;
+using Network.Messages.Packets.World;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using World.Chunks;
+using Network.Server;
 
 namespace World
 {
     public class WorldManager : MonoBehaviour
     {
         public static WorldManager Instance;
-        public static Dictionary<WorldIdentifier, AbstractWorld> Worlds = new();
+        public static ConcurrentDictionary<WorldIdentifier, AbstractWorld> Worlds = new();
         private static Dictionary<WorldIdentifier, Type> _worlds = new();
+        public static readonly ConcurrentQueue<(NetworkUtils.Header header, ChunkTransferMessage message)> PacketQueue = new();
+        
         [SerializeField] public Tilemap tilemap;
 
         [SerializeField] public Grid Grid;
@@ -32,22 +39,23 @@ namespace World
         }
 
 
-        public static void LoadWorlds(Server server)
+        public static void LoadWorlds()
         {
-            
+            UnloadWorlds();
             foreach (var world in _worlds)
             {
-                var instance = (AbstractWorld) Activator.CreateInstance(world.Value);
-                Worlds.Add(world.Key, instance);
+                Debug.Log("aa");
+                var instance = (AbstractWorld) Activator.CreateInstance(world.Value, new object[] { world.Key });
+                Debug.Log("bb");
+                Worlds.TryAdd(world.Key, instance);
             }
         }
         
         public static void UnloadWorlds()
         {
             foreach (var world in Worlds)
-            {
-                world.Value.Dispose();
-            }
+               world.Value.Dispose();
+            
             Worlds.Clear();
         }
         public static AbstractWorld GetWorld(WorldIdentifier identifier)
@@ -55,6 +63,19 @@ namespace World
             if (Worlds.TryGetValue(identifier, out var world))
                 return world;
             throw new Exception($"World {identifier} not found");
+        }
+        
+        public static void StartWorldTread()
+        {
+            while (true)
+            {
+                Thread.Sleep(100 / 3);
+                if (PacketQueue.TryDequeue(out var result))
+                {
+                    var handler = GetWorld(result.message.World).ServerHandler;
+                    handler.OnPacketReceived(result.header, result.message);
+                }
+            }
         }
     }
 }

@@ -37,8 +37,6 @@ namespace Renderer
             {
                 position[i] = origin + i.ToVector3Int0();
                 tiles[i] = blocks[i].Block.Tile;
-                if(blocks[i].Block.Tile == null)
-                    Debug.Log("Tile is null");
             }
 
             return (position, tiles);

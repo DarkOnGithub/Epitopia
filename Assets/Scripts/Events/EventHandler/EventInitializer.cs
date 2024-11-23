@@ -13,7 +13,7 @@ namespace Events.EventHandler
 
         private static void RegisterListeners()
         {
-            EventFactory.Register(typeof(Scanner));
+            
         }
     }
 }

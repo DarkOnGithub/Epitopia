@@ -1,85 +1,102 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Core;
 using JetBrains.Annotations;
-using NUnit.Framework;
-using UnityEngine;
 
 namespace Events.EventHandler
 {
     public static class EventFactory
     {
-        public static Dictionary<Type, List<EventListener>> ListenersContainer = new();
-        private static BetterLogger _logger = new(typeof(EventFactory));
+        private static readonly ConcurrentDictionary<Type, List<EventListener>> ListenersContainer = new();
+        private static readonly BetterLogger Logger = new(typeof(EventFactory));
 
-        private static List<EventListener> GetListener(Type type)
-        {
-            return ListenersContainer.TryGetValue(type, out var listeners) ? listeners : null;
-        }
+        public static List<EventListener> GetListener(Type type) => 
+            ListenersContainer.GetValueOrDefault(type);
 
         private static IEnumerable<Type> SearchForEventClasses()
         {
             var eventType = typeof(Event);
             return eventType.Assembly.GetTypes()
-                            .Where(t => t.IsSubclassOf(eventType) && !ListenersContainer.ContainsKey(t));
+                .Where(t => t.IsSubclassOf(eventType) && !ListenersContainer.ContainsKey(t));
         }
 
         public static void RegisterEvents()
         {
             foreach (var eventClass in SearchForEventClasses())
+            {
                 ListenersContainer.TryAdd(eventClass, new List<EventListener>());
+            }
         }
 
-        public static void Register(object T)
+        public static void Register([NotNull] object target)
         {
-            var type = T as Type ?? T.GetType();
-            var isStatic = type == T as Type;
+            var type = target as Type ?? target.GetType();
+            var isStatic = target is Type;
 
-            foreach (var method in SubscribeEventAttribute.GetMethods(T))
+            foreach (var method in SubscribeEventAttribute.GetMethods(target))
             {
                 var attribute = method.GetCustomAttribute<SubscribeEventAttribute>(true);
                 if (attribute == null) continue;
 
-                var parameters = method.GetParameters();
-                if (parameters.Length != 1)
-                {
-                    _logger.LogWarning(
-                        $"[Skipping] Method <{method.Name}> in type <{type.Name}> must have only one parameter");
-                    continue;
-                }
+                if (!ValidateMethod(method, type)) continue;
 
-                var eventType = parameters[0].ParameterType;
-                if (!typeof(Event).IsAssignableFrom(eventType))
-                {
-                    _logger.LogWarning(
-                        $"[Skipping] Method <{method.Name}> in type <{type.Name}> must have a parameter that inherits from Event");
-                    return;
-                }
-
-                Subscribe(eventType, method, attribute, T, isStatic);
+                var eventType = method.GetParameters()[0].ParameterType;
+                Subscribe(eventType, method, attribute, target, isStatic);
             }
         }
 
-        public static void Subscribe(Type eventType, MethodInfo method, SubscribeEventAttribute attribute,
-            [CanBeNull] object instance, bool isStatic = false)
+        private static bool ValidateMethod(MethodInfo method, Type type)
         {
-            var listener = new EventListener(isStatic || method.IsStatic ? null : instance, method, attribute.Priority);
-            var listeners = GetListener(eventType);
-            if (listeners == null)
+            var parameters = method.GetParameters();
+            if (parameters.Length != 1)
             {
-                _logger.LogWarning($"Event <{eventType.Name}> isn't initialized");
+                Logger.LogWarning($"[Skipping] Method '{method.Name}' in type '{type.Name}' must have exactly one parameter");
+                return false;
+            }
+
+            var eventType = parameters[0].ParameterType;
+            if (!typeof(Event).IsAssignableFrom(eventType))
+            {
+                Logger.LogWarning($"[Skipping] Method '{method.Name}' in type '{type.Name}' must have a parameter that inherits from Event");
+                return false;
+            }
+
+            return true;
+        }
+
+        public static void Subscribe(
+            [NotNull] Type eventType,
+            [NotNull] MethodInfo method,
+            [NotNull] SubscribeEventAttribute attribute,
+            [CanBeNull] object instance,
+            bool isStatic = false)
+        {
+            if (!ListenersContainer.TryGetValue(eventType, out var listeners))
+            {
+                Logger.LogWarning($"Event '{eventType.Name}' isn't initialized");
                 return;
             }
 
-            switch (attribute.Priority)
+            var listener = new EventListener(isStatic || method.IsStatic ? null : instance, method, attribute.Priority);
+
+            lock (listeners)
+            {
+                InsertListener(listeners, listener, attribute.Priority);
+            }
+        }
+
+        private static void InsertListener(List<EventListener> listeners, EventListener listener, EventPriority priority)
+        {
+            switch (priority)
             {
                 case EventPriority.High:
                     listeners.Insert(0, listener);
                     break;
                 case EventPriority.Normal:
-                    var index = listeners.FindLastIndex(evtListener => evtListener.Priority == EventPriority.High);
+                    var index = listeners.FindLastIndex(l => l.Priority == EventPriority.High);
                     listeners.Insert(index + 1, listener);
                     break;
                 case EventPriority.Low:
@@ -88,19 +105,28 @@ namespace Events.EventHandler
             }
         }
 
-        public static void Invoke(Event evt)
+        public static void Invoke([NotNull] Event evt)
         {
-            var listeners = evt.GetListeners;
+            var listeners = GetListener(evt.GetType());
             if (listeners == null)
             {
-                _logger.LogWarning($"Event <{evt.GetType().Name}> isn't initialized");
+                Logger.LogWarning($"Event '{evt.GetType().Name}' isn't initialized");
                 return;
             }
 
-            foreach (var listener in listeners)
+            // Create a snapshot of listeners to prevent modification during iteration
+            var snapshot = listeners.ToArray();
+            foreach (var listener in snapshot)
             {
                 if (evt.IsCancelled) break;
-                listener.Invoke(evt);
+                try
+                {
+                    listener.Invoke(evt);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogWarning($"Error invoking event listener: {ex.Message}");
+                }
             }
         }
     }

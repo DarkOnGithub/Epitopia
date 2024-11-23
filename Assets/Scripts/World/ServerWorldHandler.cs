@@ -4,19 +4,22 @@ using System.Linq;
 using Core;
 using Network.Messages;
 using Network.Messages.Packets.World;
+using PimDeWitte.UnityMainThreadDispatcher;
 using Storage;
+using Unity.VisualScripting;
 using UnityEngine;
 using World.Chunks;
 
 namespace World
 {
-    public class ServerWorldHandler : IWorldHandler
+    public class ServerWorldHandler : IWorldHandler, IDisposable
     {
         private static BetterLogger _logger = new BetterLogger(typeof(ServerWorldHandler));
         public AbstractWorld WorldIn { get; }
         private Dictionary<Vector2Int, Chunk> _chunks = new();
         public WorldStorage Storage;
         public WorldQuery Query;
+        private bool _disposed = false;
         public ServerWorldHandler(AbstractWorld worldIn)
         {
             WorldIn = worldIn;
@@ -32,6 +35,14 @@ namespace World
                 {
                     var content = ChunkUtils.DeserializeChunk(message.ChunkData).BlockStates;
                     chunk.UpdateContent(content);
+                    var c = 0;
+                    foreach (var VARIABLE in chunk.BlockStates)
+                    {
+                        if (VARIABLE.Id == 2)
+                            c++;
+                    }
+
+                    Debug.Log(c);
                     chunk.IsEmpty = false;
                     var players = chunk.Players
                                        .Where(plr => plr != header.Author)
@@ -40,12 +51,10 @@ namespace World
                         SendChunk(chunk, players);
                 }
             }
-            else
-                _logger.LogWarning($"Chunk {message.Center} not found in memory nor in storage");
-            
         }
 
-        public void SendChunk(Chunk chunk, ulong[] clients) => MessageFactory.SendPacket(SendingMode.ServerToClient,
+        public void SendChunk(Chunk chunk, ulong[] clients) => 
+            UnityMainThreadDispatcher.Instance().Enqueue(() => MessageFactory.SendPacket(SendingMode.ServerToClient,
             new ChunkTransferMessage
             {
                 ChunkData = ChunkUtils.SerializeChunk(chunk),
@@ -53,7 +62,7 @@ namespace World
                 IsEmpty = chunk.IsEmpty,
                 Source = PacketSource.Server 
             }, clients
-        );
+        ));
 
         public void RemoveChunk(Chunk chunk)
         {
@@ -81,27 +90,25 @@ namespace World
         
         public void RemovePlayerFromChunk(Chunk chunk, ulong player)
         {
+
             chunk.Players.Remove(player);
             if (chunk.Players.Count == 0)
                 DestroyChunk(chunk);
-            
         }
 
         private void DestroyChunk(Chunk chunk)
         {
-            GameObject.Destroy(GameObject.Find($"{chunk.Center} - Host"));
             Query.RemoveChunk(chunk.Center);
             Storage.Put(chunk.Center, ChunkUtils.SerializeChunk(chunk, false));
+            chunk.Dispose();
         }
         
         private bool GetChunkFromStorage(Vector2Int position, out Chunk chunk)
         {
             if (Storage.TryGet(position, out var bytes))
             {
-                
-                chunk = Query.CreateChunk(position, ChunkUtils.DeserializeChunk(bytes, false).BlockStates);
-                Console.WriteLine(chunk.BlockStates[32].Id);
-                return true;
+                // chunk = Query.CreateChunk(position, ChunkUtils.DeserializeChunk(bytes, false).BlockStates);
+                // return true;
             }
             chunk = null;
             return false;
@@ -120,6 +127,32 @@ namespace World
                 else 
                     yield return Query.CreateEmptyChunk(position);
             }            
+        }
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                foreach (var chunk in _chunks.Values)
+                    DestroyChunk(chunk);
+                _chunks = null;
+                Storage.Close();
+            }
+            _disposed = true;
+        }
+
+        ~ServerWorldHandler()
+        {
+            Dispose(false);
         }
     }
 }

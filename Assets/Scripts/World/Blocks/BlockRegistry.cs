@@ -40,7 +40,7 @@ namespace World.Blocks
         
         public static IBlock GetBlock(int id)
         {
-            return _blocks[id] ?? BLOCK_NULL;
+            return _blocks.GetValueOrDefault(id,BLOCK_NULL);
         }
     }
 }

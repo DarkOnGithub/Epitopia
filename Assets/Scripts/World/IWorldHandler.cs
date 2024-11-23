@@ -1,10 +1,11 @@
-﻿using Network.Messages;
+﻿using System;
+using Network.Messages;
 using Network.Messages.Packets.World;
 using World.Chunks;
 
 namespace World
 {
-    public interface IWorldHandler
+    public interface IWorldHandler : IDisposable
     {
         AbstractWorld WorldIn { get; }
         void OnPacketReceived(NetworkUtils.Header header, ChunkTransferMessage message);
