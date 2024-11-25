@@ -4,12 +4,12 @@
     {
         bool IsCanceled()
         {
-            return ((Event)this).IsCancelled;
+            return ((IEvent)this).IsCancelled;
         }
 
         void SetCanceled(bool canceled)
         {
-            ((Event)this).IsCancelled = canceled;
+            ((IEvent)this).IsCancelled = canceled;
         }
     }
 }

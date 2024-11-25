@@ -1,66 +1,33 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Core;
 using JetBrains.Annotations;
 using MessagePack;
-using Network.Messages.Packets.Network;
-using Network.Messages.Packets.Test;
-using Network.Packets.Packets;
+using Network.Messages.Packets;
 using Unity.Collections;
 using Unity.Netcode;
-using Unity.Services.Relay.Models;
+using UnityEngine;
 using Utils;
-using Debug = UnityEngine.Debug;
 using Type = System.Type;
 
 namespace Network.Messages
 {
     public class MessageFactory : NetworkBehaviour
     {
-
-        public static readonly HashSet<Type> PrimitivesType = new()
-          {
-              typeof(bool),
-              typeof(byte),
-              typeof(sbyte),
-              typeof(char),
-              typeof(short),
-              typeof(ushort),
-              typeof(int),
-              typeof(uint),
-              typeof(long),
-              typeof(ulong),
-              typeof(float),
-              typeof(double),
-              typeof(decimal),
-          };
-
-        private static Dictionary<Type, byte> _packetCount = new();
-        public static readonly Dictionary<short, INetworkMessage> NetworkMessageIds = new();
-        public static readonly Dictionary<Type, INetworkMessage> NetworkMessageTypes = new();
-        public  static CustomMessagingManager MessagingManager;
+       
+        private static readonly Dictionary<Type, byte> PacketsCount = new();
+        private static readonly Dictionary<int, INetworkMessage> NetworkMessageIds = new();
+        private static readonly Dictionary<Type, INetworkMessage> NetworkMessageTypes = new();
+        public static CustomMessagingManager MessagingManager;
         private static readonly BetterLogger Logger = new(typeof(MessageFactory));
 
         public static bool IsInitialized => MessagingManager != null;
-        
-        
-        public static void RegisterAllPackets()
-        {
-            new MousePacketTest();
-            new HandShake();
-        }
 
-
+        
         public override void OnNetworkSpawn()
         {
             MessagingManager = NetworkManager.Singleton.CustomMessagingManager;
             MessagingManager.OnUnnamedMessage += OnUnnamedMessageReceived;
-
         }
 
         public override void OnNetworkDespawn()
@@ -75,11 +42,11 @@ namespace Network.Messages
             NetworkMessageIds[message.PacketId] = message;
             NetworkMessageTypes[message.MessageType] = message;
         }
-        
+
         private static void OnUnnamedMessageReceived(ulong clientId, FastBufferReader reader)
         {
             reader.ReadValueSafe(out int headerSize);
-            if(!reader.TryBeginRead(headerSize))
+            if (!reader.TryBeginRead(headerSize))
                 return;
             var headerBytes = new byte[headerSize];
             reader.ReadBytes(ref headerBytes, headerSize);
@@ -100,14 +67,13 @@ namespace Network.Messages
                             return;
                         NetworkUtils.WriteBytesToWriter(ref buffer, newHeader);
                         NetworkUtils.WriteBytesToWriter(ref buffer, body);
-                        SendBufferTo(buffer, SendingMode.ServerToClient, header.TargetIds);
+                        SendBufferTo(buffer, SendingMode.ServerToClient, NetworkDelivery.ReliableFragmentedSequenced, header.TargetIds);
                     }
+
                     return;
-                case (byte)SendingMode.ClientToServer:
-                    if(!NetworkManager.Singleton.IsHost)
-                        return;
-                    break;
+
             }
+
             if (!NetworkMessageIds.TryGetValue(header.PacketId, out var networkMessage))
             {
                 Logger.LogWarning($"Received unknown packet with id {header.PacketId.ToHex()}");
@@ -115,14 +81,16 @@ namespace Network.Messages
             }
 
             reader.ReadValueSafe(out int bufferSize);
-            if(!reader.TryBeginRead(bufferSize))
+            if (!reader.TryBeginRead(bufferSize))
                 return;
             var buff = new byte[bufferSize];
             reader.ReadBytes(ref buff, bufferSize);
-            networkMessage.OnPacketReceived((IMessageData)MessagePackSerializer.Deserialize(networkMessage.MessageType, buff));
+            networkMessage.OnPacketReceived(
+                header, (IMessageData)MessagePackSerializer.Deserialize(networkMessage.MessageType, buff));
         }
 
-        public static void SendPacket<T>(SendingMode mode, T packetData, [CanBeNull] ulong[] clientIds = null, ulong? author = null) 
+        public static void SendPacket<T>(SendingMode mode, T packetData, [CanBeNull] ulong[] clientIds = null,
+            ulong? author = null, NetworkDelivery delivery = NetworkDelivery.Reliable)
             where T : IMessageData
         {
             if (!NetworkMessageTypes.TryGetValue(packetData.GetType(), out var networkMessage))
@@ -131,40 +99,41 @@ namespace Network.Messages
                 return;
             }
 
-            networkMessage.SendMessageTo(packetData, mode, author.GetValueOrDefault(NetworkManager.Singleton.LocalClientId), clientIds);
+            networkMessage.SendMessageTo(packetData, mode,
+                                         author.GetValueOrDefault(NetworkManager.Singleton.LocalClientId), clientIds, delivery);
         }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="clientIds">ClientIds = null means To All</param>
-        public static void SendBufferTo(FastBufferWriter buffer, SendingMode mode, [CanBeNull] ulong[] clientIds = null)
+
+
+        public static void SendBufferTo(FastBufferWriter buffer, SendingMode mode,  NetworkDelivery delivery, [CanBeNull] ulong[] clientIds = null)
         {
             switch (mode)
             {
                 case SendingMode.ClientToClient:
-                    MessagingManager.SendUnnamedMessage(NetworkManager.ServerClientId, buffer, NetworkDelivery.ReliableFragmentedSequenced);
+                    MessagingManager.SendUnnamedMessage(NetworkManager.ServerClientId, buffer,
+                                                        delivery);
                     break;
                 case SendingMode.ClientToServer:
-                    MessagingManager.SendUnnamedMessage(NetworkManager.ServerClientId, buffer, NetworkDelivery.ReliableFragmentedSequenced);
+                    MessagingManager.SendUnnamedMessage(NetworkManager.ServerClientId, buffer,
+                                                        delivery);
                     break;
                 case SendingMode.ServerToClient:
                     if (clientIds == null)
-                        MessagingManager.SendUnnamedMessageToAll(buffer, NetworkDelivery.ReliableFragmentedSequenced);
+                        MessagingManager.SendUnnamedMessageToAll(buffer, delivery);
                     else
-                        MessagingManager.SendUnnamedMessage(clientIds, buffer, NetworkDelivery.ReliableFragmentedSequenced);
+                        MessagingManager.SendUnnamedMessage(clientIds, buffer,
+                                                            delivery);
                     break;
             }
 
             buffer.Dispose();
         }
-        public static short GeneratePacketId(NetworkMessageIdenfitier idenfitier) 
+
+        public static int GeneratePacketId(NetworkMessageIdenfitier identifier)
         {
-            if (!_packetCount.ContainsKey(idenfitier.GetType()))
-                _packetCount[idenfitier.GetType()] = 0;
-            return (short)((byte)idenfitier << 8 | _packetCount[idenfitier.GetType()]++);
+            var identifierType = identifier.GetType();
+            if (!PacketsCount.ContainsKey(identifierType))
+                PacketsCount[identifierType] = 0;
+            return ((byte)identifier << 24) | (PacketsCount[identifierType]++ & 0xFFFFFF);
         }
-        
     }
 }

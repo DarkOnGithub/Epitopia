@@ -3,34 +3,22 @@ using MessagePack;
 using Network.Messages;
 using Unity.Netcode;
 
-namespace Network.Packets.Packets
+namespace Network.Messages
 {
     public static class NetworkUtils
     {
         [MessagePackObject]
         public struct Header
         {
-            [Key(0)]
-            public short PacketId;
-            [Key(1)]
-            public byte SendingMode;
-            [Key(2)]
-            public ulong Author;
-            [Key(3)]
-            public ulong[] TargetIds;
+            [Key(0)] public int PacketId;
+            [Key(1)] public byte SendingMode;
+            [Key(2)] public ulong Author;
+            [Key(3)] public ulong[] TargetIds;
         }
-        /// <summary>
-        /// Header format:
-        ///     Author: ulong
-        ///     SendingMode: byte
-        /// </summary>
-        /// <param name="mode"></param>
-        /// <param name="author"></param>
-        /// <param name="targetIds"></param>
-        /// <param name="packetId"></param>
-        /// <returns></returns>=
-        public static byte[] GenerateHeader(SendingMode mode, short packetId, ulong author, [CanBeNull] ulong[] targetIds = null)
-		{
+        
+        public static byte[] GenerateHeader(SendingMode mode, int packetId, ulong author,
+            [CanBeNull] ulong[] targetIds = null)
+        {
             return MessagePackSerializer.Serialize(new Header
                                                    {
                                                        PacketId = packetId,
@@ -38,13 +26,14 @@ namespace Network.Packets.Packets
                                                        Author = author,
                                                        TargetIds = targetIds
                                                    });
-		}
-        
+        }
+
         public static void WriteBytesToWriter(ref FastBufferWriter writer, byte[] bytes)
         {
             writer.WriteValue(bytes.Length);
             writer.WriteBytes(bytes);
         }
+
         public static void WriteBytesToWriterSafe(ref FastBufferWriter writer, byte[] bytes)
         {
             if (!writer.TryBeginWrite(bytes.Length + sizeof(int))) return;

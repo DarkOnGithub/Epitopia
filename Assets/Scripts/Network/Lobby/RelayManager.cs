@@ -11,10 +11,7 @@ namespace Network.Lobby
     {
         private static BetterLogger _logger = new(typeof(RelayManager));
 
-        /// <summary>
-        /// Join the relay using a join code then start the client
-        /// </summary>
-        /// <param name="joinCode">The join code</param>
+
         public static async Task StartClient(string joinCode)
         {
             try

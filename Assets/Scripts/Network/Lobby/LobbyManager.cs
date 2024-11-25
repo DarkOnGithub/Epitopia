@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Core;
 using JetBrains.Annotations;
@@ -27,10 +28,7 @@ public static class LobbyManager
     [CanBeNull] public static Lobby CurrentLobby { get; private set; }
     private static BetterLogger _logger = new(typeof(LobbyManager));
 
- 
-    /// <summary>
-    /// Infinite loop that sends a heartbeat ping to the lobby every 15 seconds
-    /// </summary>
+
     public static IEnumerator HeartbeatLobby()
     {
         var waiter = new WaitForSeconds(15);
@@ -44,11 +42,6 @@ public static class LobbyManager
         }
     }
 
-    /// <summary>
-    /// Create a lobby with a name of size maxPlayers
-    /// </summary>
-    /// <param name="name">The server name</param>
-    /// <param name="maxPlayers">Max size of the server</param>
     public static async Task CreateLobby(string name, int maxPlayers = 1)
     {
         try
@@ -57,12 +50,12 @@ public static class LobbyManager
             if (code == null)
                 return;
             var lobbyOptions = new CreateLobbyOptions
-            {
-                Data = new Dictionary<string, DataObject>
-                {
-                    { JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Public, code) }
-                }
-            };
+                               {
+                                   Data = new Dictionary<string, DataObject>
+                                          {
+                                              { JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Public, code) }
+                                          }
+                               };
             var lobby = await LobbyService.Instance.CreateLobbyAsync(name, maxPlayers, lobbyOptions);
             CurrentLobby = lobby;
             Debug.Log($"Lobby <{lobby.Name}> created with id {lobby.Id}, join code {code}");
@@ -77,12 +70,7 @@ public static class LobbyManager
         }
     }
 
-    /// <summary>
-    /// Query lobbies following the optional parameters options
-    /// No options will return all lobbies
-    /// </summary>
-    /// <param name="options">Optional parameter used to query lobbies</param>
-    /// <returns>The result of the query</returns>
+
     public static async Task<QueryResponse> QueryLobbies(QueryLobbiesOptions options = null)
     {
         try
@@ -96,10 +84,6 @@ public static class LobbyManager
         }
     }
 
-    /// <summary>
-    /// Join a lobby by its id
-    /// </summary>
-    /// <param name="lobbyId">The lobby id (not the relay id)</param>
     public static async Task JoinLobbyById(string lobbyId)
     {
         try
