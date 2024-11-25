@@ -56,7 +56,6 @@ namespace Network.Messages
             var header = NetworkUtils.GenerateHeader(mode, PacketId, author, clients);
 
             var size = sizeof(int) + header.Length + sizeof(int) + message.Length;
-
             if (MessageFactory.IsInitialized)
             {
                 var writer = new FastBufferWriter(size, Allocator.Temp);

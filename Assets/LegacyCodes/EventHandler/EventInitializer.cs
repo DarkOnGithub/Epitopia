@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using World;
 
-namespace Events.EventHandler
+namespace Old
 {
     public class EventInitializer : MonoBehaviour
     {

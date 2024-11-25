@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Threading;
+using Events.Events;
 using JetBrains.Annotations;
 using Network.Messages;
 using Network.Messages.Packets.Network;
+using Players;
 using Unity.Netcode;
 using Unity.Services.Authentication;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using World;
 
 namespace Network.Server
 {
-    public struct ServerInfo
-    {
-        public string ServerId;
-        public string ServerName;
-        public string OwnerId;
-        public long CreationDate;
-        public long LastJoined;
-    }
-
     public class Server : IDisposable
     {
         private static readonly object _lock = new object();
@@ -32,62 +26,54 @@ namespace Network.Server
         {
             get
             {
-                lock (_lock)
+                if (_instance == null)
                 {
-                    return _instance;
+                    throw new NullReferenceException("Server instance is null");
                 }
+                return _instance;
+                
             }
         }
 
         private Server(string serverName, [CanBeNull] string serverId = null)
         {
-            Debug.Log("b");
             Info = ServerUtils.GetOrCreateInfo(serverName, serverId);
-            Debug.Log("a");
-            WorldManager.LoadWorlds();
-            Scanner.StartScheduler();
-            StartServerThreads();
 
-            foreach (var client in NetworkManager.Singleton.ConnectedClients.Keys)
-            {
-                OnClientAdded(client);
-            }
-
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientAdded;
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientRemoved;
         }
+        
+        public async void Initialize()
+        {
+            ConnectionPacket.OnPlayerAddedCallback += PlayerManager.OnPlayerConnected;
+            ConnectionPacket.OnPlayerRemovedCallback += PlayerManager.OnPlayerDisconnected;
+            WorldManager.LoadWorlds();
 
+
+            StartServerThreads();
+            await ConnectionPacket.TrySendPacket();
+            new OnClientStart().Invoke();
+        }
+        
         public static Server CreateInstance(string serverName, [CanBeNull] string serverId = null)
         {
-            lock (_lock)
+            if (_instance == null)
             {
-                if (_instance == null) 
-                    _instance = new Server(serverName, serverId);
-                return _instance;
-            }
-        }
+                _instance = new Server(serverName, serverId);
+                _instance.Initialize();
+            };
 
-        public static async void OnClientRemoved(ulong client)
-        {
-            MessageFactory.SendPacket(SendingMode.ClientToClient, new ConnectionMessage
-            {
-                State = ConnectionState.Disconnecting,
-                PlayerName = await AuthenticationService.Instance.GetPlayerNameAsync(),
-                PlayerId = AuthenticationService.Instance.PlayerId,
-                ClientId = client
-            });
+            return _instance;
         }
-        public static async void OnClientAdded(ulong client)
+        
+        private static void StartServerThreads()
         {
-            MessageFactory.SendPacket(SendingMode.ClientToClient, new ConnectionMessage
-            {
-                State = ConnectionState.Connecting,
-                PlayerName = await AuthenticationService.Instance.GetPlayerNameAsync(),
-                PlayerId = AuthenticationService.Instance.PlayerId,
-                ClientId = client
-            });
+            new Thread(WorldManager.StartWorldTread).Start();
         }
+        
+        
 
+        
+    
+        
         public void Dispose()
         {
             Dispose(true);
@@ -121,9 +107,14 @@ namespace Network.Server
             Dispose(false);
         }
 
-        private static void StartServerThreads()
-        {
-            new Thread(WorldManager.StartWorldTread).Start();
-        }
+    }
+
+    public struct ServerInfo
+    {
+        public string ServerId;
+        public string ServerName;
+        public string OwnerId;
+        public long CreationDate;
+        public long LastJoined;
     }
 }

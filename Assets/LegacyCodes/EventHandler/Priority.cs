@@ -1,4 +1,4 @@
-﻿namespace Events.EventHandler
+﻿namespace Old
 {
     public enum EventPriority
     {

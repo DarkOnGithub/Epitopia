@@ -55,6 +55,7 @@ namespace World.Chunks
                 else
                     BlockStates[i] = BlockRegistry.GetBlock(newState.Id).FromIBlockState(newState);
             }
+
         }
         public Chunk(AbstractWorld worldIn, Vector2Int center)
         {

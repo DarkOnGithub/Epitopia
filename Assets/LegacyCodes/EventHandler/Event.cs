@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Events.EventHandler
+namespace Old
 {
     public abstract class Event
     {

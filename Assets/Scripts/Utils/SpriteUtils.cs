@@ -9,7 +9,6 @@ namespace Utils
         {
             var tile = ScriptableObject.CreateInstance<Tile>();
             tile.sprite = sprite;
-            Debug.Log(sprite);
             return tile;            
         }
     }

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Threading;
+using Events.Events;
 using JetBrains.Annotations;
 using Network.Messages;
 using Network.Messages.Packets.Network;
+using Players;
 using Unity.Netcode;
 using Unity.Services.Authentication;
+using UnityEngine;
 using World;
 
 namespace Network.Client
@@ -31,20 +34,33 @@ namespace Network.Client
 
         private Client()
         {
-            WorldManager.LoadWorlds();
-            Scanner.StartScheduler();
-        }
 
+        }
+        
+        
+        public async void Initialize()
+        {
+
+            ConnectionPacket.OnPlayerAddedCallback += PlayerManager.OnPlayerConnected;
+            ConnectionPacket.OnPlayerRemovedCallback += PlayerManager.OnPlayerDisconnected;
+
+            WorldManager.LoadWorlds();
+            await ConnectionPacket.TrySendPacket();
+            
+            new OnClientStart().Invoke();
+        }
+        
+     
         public static Client CreateInstance()
         {
-            lock (_lock)
+
+            if (_instance == null)
             {
-                if (_instance == null)
-                {
-                    _instance = new Client();
-                }
-                return _instance;
+                _instance = new Client();
+                _instance.Initialize();
             }
+            return _instance;
+            
         }
 
         public void Dispose()

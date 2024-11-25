@@ -19,7 +19,7 @@ namespace World
         public static ConcurrentDictionary<WorldIdentifier, AbstractWorld> Worlds = new();
         private static Dictionary<WorldIdentifier, Type> _worlds = new();
         public static readonly ConcurrentQueue<(NetworkUtils.Header header, ChunkTransferMessage message)> PacketQueue = new();
-        
+        private const int MaxItemsPerTick = 40;
         [SerializeField] public Tilemap tilemap;
 
         [SerializeField] public Grid Grid;
@@ -44,9 +44,7 @@ namespace World
             UnloadWorlds();
             foreach (var world in _worlds)
             {
-                Debug.Log("aa");
                 var instance = (AbstractWorld) Activator.CreateInstance(world.Value, new object[] { world.Key });
-                Debug.Log("bb");
                 Worlds.TryAdd(world.Key, instance);
             }
         }
@@ -70,10 +68,12 @@ namespace World
             while (true)
             {
                 Thread.Sleep(100 / 3);
-                if (PacketQueue.TryDequeue(out var result))
+                int itemsProcessed = 0;
+                while (itemsProcessed < MaxItemsPerTick && PacketQueue.TryDequeue(out var result))
                 {
                     var handler = GetWorld(result.message.World).ServerHandler;
                     handler.OnPacketReceived(result.header, result.message);
+                    itemsProcessed++;
                 }
             }
         }

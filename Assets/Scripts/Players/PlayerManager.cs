@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Network.Messages.Packets.Network;
 using Unity.Netcode;
+using UnityEngine;
 using World;
 
 namespace Players
@@ -11,8 +12,8 @@ namespace Players
         public static List<Player> Players = new();
         public static void OnPlayerConnected(ConnectionMessage connectionInfos)
         {
-            var player = new Player(connectionInfos.PlayerName, connectionInfos.PlayerId, connectionInfos.ClientId); 
-
+            var player = new Player(connectionInfos.PlayerName, connectionInfos.PlayerId, connectionInfos.ClientId);
+            Debug.Log(connectionInfos.ClientId);
             if(connectionInfos.ClientId == NetworkManager.Singleton.LocalClientId)
             {
                 LocalPlayer = player;

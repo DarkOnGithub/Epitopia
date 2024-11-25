@@ -29,7 +29,7 @@ namespace World
         private WaitForSeconds _scanWaiter;
         private Vector2Int[] _scanPositionsBuffer;
 
-        public void Start()
+        public void Awake()
         {
             if (_instance != null)
             {
@@ -41,6 +41,7 @@ namespace World
             _instance = this;
             InitializeScanRanges();
             _scanWaiter = new WaitForSeconds(SCAN_INTERVAL);
+            OnClientStart.Registry += @event => StartScheduler();
         }
 
         private void InitializeScanRanges()
@@ -81,7 +82,6 @@ namespace World
         private static void RequestChunks(WorldIdentifier worldId, Vector2Int[] positions, int count)
         {
             if (count == 0) return;
-
             var packet = new ChunkRequestMessage
             {
                 Positions = new Vector2Int[count],
@@ -113,7 +113,6 @@ namespace World
         {
             var localPlayer = PlayerManager.LocalPlayer;
             if (localPlayer?.World == null) return;
-
             var chunksToRemove = new HashSet<Chunk>(LoadedChunks);
             int requestCount = 0;
 

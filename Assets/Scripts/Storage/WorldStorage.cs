@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Core;
 using Network;
 using Network.Server;
+using QFSW.QC;
 using RocksDbSharp;
 using UnityEngine;
 using Utils;
@@ -26,7 +27,6 @@ namespace Storage
                 if (rocksDbFolder != null)
                 {
                     var sourcePath = Path.Combine(rocksDbFolder, "runtimes");
-                    Debug.Log(destinationPath);
                     if (Directory.Exists(sourcePath))
                         FileUtils.CopyDirectory(sourcePath, destinationPath);
                     else
@@ -46,13 +46,12 @@ namespace Storage
 
         public WorldStorage(string name)
         {
+
             var dataPath = $"{Application.persistentDataPath}/{Server.Instance.Info.ServerId}/Data";
-            Debug.Log(dataPath);   
             if (!Directory.Exists(dataPath))
                 Directory.CreateDirectory(dataPath);
          
             var fPath = $"{dataPath}/{name}";
-            Debug.Log(fPath);
             Directory.CreateDirectory(fPath);
             _database = RocksDb.Open(Options, fPath);
         }
@@ -65,6 +64,7 @@ namespace Storage
         
         public void Put(Vector2Int key, byte[] value)
         {
+            
             _database.Put(BitConverter.GetBytes(key.Serialize()), value);
         }
 

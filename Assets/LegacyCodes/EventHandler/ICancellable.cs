@@ -1,15 +1,15 @@
-﻿namespace Events.EventHandler
+﻿namespace Old
 {
     public interface ICancellable
     {
         bool IsCanceled()
         {
-            return ((IEvent)this).IsCancelled;
+            return ((Event)this).IsCancelled;
         }
 
         void SetCanceled(bool canceled)
         {
-            ((IEvent)this).IsCancelled = canceled;
+            ((Event)this).IsCancelled = canceled;
         }
     }
 }

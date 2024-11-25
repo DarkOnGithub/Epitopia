@@ -47,12 +47,12 @@ namespace World
 
         public AbstractWorld(WorldIdentifier identifier)
         {
-            Debug.Log("aaaa");
             Identifier = identifier;
             Query = new WorldQuery(this);
             _clientHandler = new ClientWorldHandler(this);
             if(NetworkManager.Singleton.IsHost)
                 _serverHandler = new ServerWorldHandler(this);
+
         }
         
         public void Dispose()

@@ -6,7 +6,7 @@ using System.Reflection;
 using Core;
 using JetBrains.Annotations;
 
-namespace Events.EventHandler
+namespace Old
 {
     public static class EventFactory
     {

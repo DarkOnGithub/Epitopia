@@ -99,8 +99,6 @@ public static class LobbyManager
             await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
             await RelayManager.StartClient(lobby.Data[JOIN_CODE].Value);
             _logger.LogWarning($"Joined lobby {CurrentLobby.Name}");
-            //NetworkManager.Singleton.OnClientConnectedCallback += Server.OnClientAdded;
-
         }
         catch (LobbyServiceException e)
         {

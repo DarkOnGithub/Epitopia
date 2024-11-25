@@ -20,8 +20,8 @@ namespace Players
             PlayerName = playerName;
             PlayerId = playerId;
             ClientId = clientId;
+            World = WorldManager.GetWorld(WorldIdentifier.Overworld);
             PlayerManager.Players.Add(this);
-            EventFactory.Invoke(new PlayerAddedEvent(this));
         }
         
     }

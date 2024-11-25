@@ -35,14 +35,14 @@ namespace World
                 {
                     var content = ChunkUtils.DeserializeChunk(message.ChunkData).BlockStates;
                     chunk.UpdateContent(content);
-                    var c = 0;
-                    foreach (var VARIABLE in chunk.BlockStates)
-                    {
-                        if (VARIABLE.Id == 2)
-                            c++;
-                    }
-
-                    Debug.Log(c);
+                    // var c = 0;
+                    // foreach (var VARIABLE in chunk.BlockStates)
+                    // {
+                    //     if (VARIABLE.Id == 2)
+                    //         c++;
+                    // }
+                    //
+                    // Debug.Log(c);
                     chunk.IsEmpty = false;
                     var players = chunk.Players
                                        .Where(plr => plr != header.Author)
@@ -107,8 +107,8 @@ namespace World
         {
             if (Storage.TryGet(position, out var bytes))
             {
-                // chunk = Query.CreateChunk(position, ChunkUtils.DeserializeChunk(bytes, false).BlockStates);
-                // return true;
+                chunk = Query.CreateChunk(position, ChunkUtils.DeserializeChunk(bytes, false).BlockStates);
+                return true;
             }
             chunk = null;
             return false;
