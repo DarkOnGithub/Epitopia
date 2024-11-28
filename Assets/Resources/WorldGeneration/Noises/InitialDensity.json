@@ -1,0 +1,6 @@
+﻿{
+    "type": "NoiseSource",
+    "Argument": {
+        "type": "OpenSimplex2"
+    }
+}

@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/FastNoise.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Packages/FastNoise2.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Packages/FastNoise2/FastNoise2.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration.meta" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/Biomes.meta" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/Noises.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/WorldGen.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/WorldGen/Overworld.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/WorldGen/Overworld.json.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/Noises/InitialDensity.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/Noises/InitialDensity.json.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/WorldGen/Overworld.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/WorldGen/Overworld.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,6 +192,7 @@
       <workItem from="1732566211187" duration="214000" />
       <workItem from="1732566460705" duration="3004000" />
       <workItem from="1732652876362" duration="1703000" />
+      <workItem from="1732742822915" duration="1104000" />
     </task>
     <task id="LOCAL-00001" summary="added a few libs">
       <option name="closed" value="true" />
