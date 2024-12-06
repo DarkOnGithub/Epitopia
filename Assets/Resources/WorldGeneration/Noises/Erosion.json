@@ -1,0 +1,19 @@
+﻿{
+    "Type": "Add",
+    "Item1": {
+        "Type": "Fractal",
+        "Argument" : "FBm",
+        "Source": {
+            "Type": "NoiseSource",
+            "Argument": "OpenSimplex2",
+            "Frequency": 0.01
+        }
+    },
+    "Item2": {
+        "Type": "Position Output",
+        "X": 0,
+        "Y": 0,
+        "X Offset": 0,
+        "Y Offset": 0
+    }
+}
