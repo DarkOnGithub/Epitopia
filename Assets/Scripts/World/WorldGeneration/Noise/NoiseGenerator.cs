@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using World.WorldGeneration.WorldDataParser;
 
 namespace World.WorldGeneration.Noise
 {
@@ -8,15 +9,13 @@ namespace World.WorldGeneration.Noise
     {
         internal FastNoise Noise;
         public float Frequency;
-        public NoiseGenerator(string noiseSource, float frequency)
+        internal NoiseGenerator(FastNoise noise)
         {
-            Noise = new FastNoise($"{noiseSource}");
-            Frequency = frequency;
+            Noise = noise;
         }
-        internal static NoiseGenerator FromJson(JObject jsonObject)
-        {
-            Debug.Log(jsonObject);
-            return new NoiseGenerator(jsonObject["Argument"].ToString(), (float)jsonObject["Frequency"]);
-        }
+        // internal static NoiseGenerator FromJson(JObject jsonObject)
+        // {
+        //     //return new FastNoise(jsonObject.Get<float>("Frequency"));
+        // }
     }
 }

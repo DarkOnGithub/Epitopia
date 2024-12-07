@@ -12,10 +12,7 @@ namespace World.WorldGeneration.WorldDataParser
         private static BetterLogger _logger = new(typeof(TypeBinding));
         public static Dictionary<string, Func<JObject, object>> TypeBindings = new()
         {
-            {"noisesource", Noise.NoiseGenerator.FromJson},
-            { "fractal", Fractal.FromJson },
-            { "add", DensityFunctions.Add },
-            { "positionoutput", DensityFunctions.PositionOutput }
+
         };
 
 		public static object CallBinding(string type, JObject jObject)

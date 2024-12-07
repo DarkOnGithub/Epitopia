@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using World.WorldGeneration.DensityFunctions;
 using World.WorldGeneration.Noise;
 using World.WorldGeneration.WorldDataParser;
 
@@ -21,6 +22,7 @@ public class NoiseTest : MonoBehaviour
     private FastNoise _noise;
     void Start()
     {
+        DensityFunctionManager.LoadDensityFunctions();
         spriteRenderer = GetComponent<SpriteRenderer>();
         
         if (spriteRenderer == null)
@@ -38,7 +40,7 @@ public class NoiseTest : MonoBehaviour
         _noise.Set("LHS", fractal);
         _noise.Set("RHS", pos);
 
-        WorldDataParser.ParseData<NoiseGenerator>(Resources.Load<TextAsset>("WorldGeneration/Noises/Erosion").text);
+        WorldDataParser.ParseData<FastNoise>(Resources.Load<TextAsset>("WorldGeneration/Noises/Erosion").text);
     }
 
     public void GeneratePerlinNoiseTexture(float[,] customNoiseArray)

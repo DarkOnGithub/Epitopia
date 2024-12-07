@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
@@ -19,8 +20,9 @@ namespace World.WorldGeneration.WorldDataParser
 
         public static object ParseData(JObject data)
         {
-            Debug.Log(data);
-            return TypeBinding.CallBinding(data["Type"].ToString(), data);
+            
+            var temp =  TypeBinding.CallBinding(data["Type"].ToString(), data);
+            return temp;
         }
 
         public static T Get<T>(this JObject jObject, string key)
