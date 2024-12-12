@@ -5,29 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/BasicGenerators.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/BasicGenerators.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/CoherentNoise.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/CoherentNoise.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/DensityFunctionAttribute.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/DensityFunctionAttribute.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/DensityFunctionHelper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/DensityFunctionHelper.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/DomainWarp.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/DomainWarp.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/Fractal.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/Fractal.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/Modifier.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions/Modifier.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Editor.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Editor/NoiseTool.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Editor/NoiseTool/NodeGraph.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Editor/NoiseTool/NodeGraph.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Editor/NoiseTool/NodeGraphEditor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Editor/NoiseTool/NodeGraphEditor.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/Noises/Erosion.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/WorldGeneration/Noises/Erosion.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/NoiseTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Test/NoiseTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunctions.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/NoiseGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/NoiseGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldDataParser/TypeBinding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldDataParser/TypeBinding.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldDataParser/WorldDataParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldDataParser/WorldDataParser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,6 +186,7 @@
       <workItem from="1732566460705" duration="3004000" />
       <workItem from="1732652876362" duration="1703000" />
       <workItem from="1732742822915" duration="1104000" />
+      <workItem from="1733863114661" duration="1260000" />
     </task>
     <task id="LOCAL-00001" summary="added a few libs">
       <option name="closed" value="true" />
