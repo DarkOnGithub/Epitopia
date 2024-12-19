@@ -8,11 +8,10 @@ namespace Network.Messages.Packets.World
     [MessagePackObject]
     public struct ChunkTransferMessage : IMessageData
     {
-        [Key(0)] public byte[] ChunkData;
-        [Key(1)] public Vector2Int Center;
+        [Key(0)] public byte[][] ChunksData;
+        [Key(1)] public Vector2Int[] Positions;
         [Key(2)] public PacketSource Source;
-        [Key(3)] public bool IsEmpty;
-        [Key(4)] public WorldIdentifier World;
+        [Key(3)] public WorldIdentifier World;
     }
     public class ChunkTransferPacket : NetworkPacket<ChunkTransferMessage>
     {
@@ -24,9 +23,6 @@ namespace Network.Messages.Packets.World
             {
                 case PacketSource.Server:
                     world.ClientHandler.OnPacketReceived(header, body);
-                    break;
-                case PacketSource.Client:
-                    WorldManager.PacketQueue.Enqueue((header, body));
                     break;
             }
         }
@@ -62,10 +58,9 @@ namespace Network.Messages.Packets.World
                 case ChunkRequestType.Drop:
                     var handler = WorldManager.GetWorld(body.World).ServerHandler;
                     foreach (var chunk in handler.Query.LazyGetChunks(body.Positions))
-                    {
+
                         handler.RemovePlayerFromChunk(chunk, header.Author);
-                        
-                    }
+
                     break;                    
             }
         }

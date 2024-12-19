@@ -1,81 +1,115 @@
-﻿namespace World.WorldGeneration.DensityFunctions
+﻿using System;
+using Packages.FastNoise2;
+using UnityEngine;
+
+namespace World.WorldGeneration.DensityFunctions
 {
-    public class CoherentNoise
+    public static class CoherentNoise
     {
-[DensityFunction]
-    public struct Simplex
-    {
-        public float FeatureScale { get; set; }
-        public float OutputMin { get; set; }
-        public float OutputMax { get; set; }
-    }
+        [System.Serializable]
+        [DensityFunction]
+        public partial class Simplex : NoiseFunction
+        {
 
-    [DensityFunction]
-    public struct OpenSimplex2
-    {
-        public float FeatureScale { get; set; }
-        public float OutputMin { get; set; }
-        public float OutputMax { get; set; }
-    }
+           
+            public NoiseType Type = NoiseType.Standard;
 
-    [DensityFunction]
-    public struct Perlin
-    {
-        public float FeatureScale { get; set; }
-        public float OutputMin { get; set; }
-        public float OutputMax { get; set; }
-    }
+            public enum NoiseType
+            {
+                Standard,
+                Smooth
+            }
+        }
 
-    [DensityFunction]
-    public struct Value
-    {
-        public float FeatureScale { get; set; }
-        public float OutputMin { get; set; }
-        public float OutputMax { get; set; }
-    }
+        [System.Serializable]
+        [DensityFunction]
+        public partial class Perlin : NoiseFunction
+        {
 
-    [DensityFunction]
-    public struct CellularValue
-    {
-        public float MinkowskiP { get; set; }
-        public float JitterModifier { get; set; }
-        public float FeatureScale { get; set; }
-        public float OutputMin { get; set; }
-        public float OutputMax { get; set; }
-        public string DistanceFunction { get; set; }
-        public int ValueIndex { get; set; }
-    }
+         
+        }
 
-    [DensityFunction]
-    public struct CellularDistance
-    {
-        public float MinkowskiP { get; set; }
-        public float JitterModifier { get; set; }
-        public float FeatureScale { get; set; }
-        public float OutputMin { get; set; }
-        public float OutputMax { get; set; }
-        public string DistanceFunction { get; set; }
-        public int DistanceIndex0 { get; set; }
-        public int DistanceIndex1 { get; set; }
-        public string ReturnType { get; set; }
-    }
+        [System.Serializable]
+        [DensityFunction]
+        public partial class Value : NoiseFunction
+        {
 
-    [DensityFunction]
-    public struct CellularLookup
-    {
-        public float Lookup { get; set; }
-        public float MinkowskiP { get; set; }
-        public float JitterModifier { get; set; }
-        public float FeatureScale { get; set; }
-        public string DistanceFunction { get; set; }
-    }
+        }
 
-    [DensityFunction]
-    public struct OpenSimplex2S
-    {
-        public float FeatureScale { get; set; }
-        public float OutputMin { get; set; }
-        public float OutputMax { get; set; }
-    }
+        [System.Serializable]
+        [DensityFunction]
+        public partial class CellularValue : NoiseFunction
+        {
+            public HybridLookup<FastNoise, float> MinkowskiP = new HybridLookup<FastNoise, float>(1.5f);
+            public HybridLookup<FastNoise, float> JitterModifier = new HybridLookup<FastNoise, float>(1.0f);
+
+           
+            public DistanceFunctionType DistanceFunction = DistanceFunctionType.EuclideanSquared;
+            public int ValueIndex = 0;
+
+            public enum DistanceFunctionType
+            {
+                Euclidean,
+                EuclideanSquared,
+                Manhattan,
+                Hybrid,
+                MaxAxis,
+                Minkowski
+            }
+        }
+
+        [System.Serializable]
+        [DensityFunction]
+        public partial class CellularDistance : NoiseFunction
+        {
+            public HybridLookup<FastNoise, float> MinkowskiP = new HybridLookup<FastNoise, float>(1.5f);
+            public HybridLookup<FastNoise, float> JitterModifier = new HybridLookup<FastNoise, float>(1.0f);
+
+            
+            public DistanceFunctionType DistanceFunction = DistanceFunctionType.EuclideanSquared;
+            public int DistanceIndex0 = 0;
+            public int DistanceIndex1 = 1;
+            public ReturnType ReturnType = ReturnType.Index0;
+
+            public enum DistanceFunctionType
+            {
+                Euclidean,
+                EuclideanSquared,
+                Manhattan,
+                Hybrid,
+                MaxAxis,
+                Minkowski
+            }
+
+ 
+        }
+        public enum ReturnType
+        {
+            Index0,
+            Index0Add1,
+            Index0Sub1,
+            Index0Mul1,
+            Index0Div1
+        }
+        [System.Serializable]
+        [DensityFunction]
+        public partial class CellularLookup : NoiseFunction
+        {
+            public FastNoise Lookup;
+            public HybridLookup<FastNoise, float> MinkowskiP = new HybridLookup<FastNoise, float>(1.5f);
+            public HybridLookup<FastNoise, float> JitterModifier = new HybridLookup<FastNoise, float>(1.0f);
+
+            public DistanceFunctionType DistanceFunction = DistanceFunctionType.EuclideanSquared;
+
+            public enum DistanceFunctionType
+            {
+                Euclidean,
+                EuclideanSquared,
+                Manhattan,
+                Hybrid,
+                MaxAxis,
+                Minkowski
+            }
+        }
     }
 }

@@ -66,7 +66,7 @@ namespace Network.Server
         
         private static void StartServerThreads()
         {
-            new Thread(WorldManager.StartWorldTread).Start();
+            new Thread(WorldManager.StartWorldThread).Start();
         }
         
         

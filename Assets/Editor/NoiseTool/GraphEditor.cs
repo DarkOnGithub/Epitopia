@@ -17,33 +17,27 @@ namespace Editor.NoiseTool
     [NodeGraphEditor.CustomNodeGraphEditor(typeof(NodeGraph))]
     public class GraphEditor : NodeGraphEditor
     {
-        private List<(GUIContent content, bool on, GenericMenu.MenuFunction func, MemberInfo info)> _allNodesInfos = new();
+        private readonly List<(GUIContent content, bool on, GenericMenu.MenuFunction func, MemberInfo info)> _allNodesInfos = new();
         public override void AddContextMenuItems(GenericMenu menu, Type compatibleType = null, NodePort.IO direction = NodePort.IO.Input)
         {
             base.AddContextMenuItems(menu, compatibleType, direction);
             foreach (var infos in _allNodesInfos)
                 menu.AddItem(infos.content, infos.on, infos.func); 
+            menu.AddItem(new GUIContent($"Reset"), false, () => NodeEditorWindow.current.graph.Clear());
         }
-
-        private void AddNode<T>(MemberInfo info)
+        private void AddNode(MemberInfo info)
         {
             var graph = NodeEditorWindow.current.graph;
-            Type genericType = info.GetType().MakeGenericType(new Type[] { info.GetType() });
-            // Get the 'B' method and invoke it:
-            object res = genericType.GetMethod("B").Invoke(new object[] { o });
-            graph.AddNode(new DensityFunctionNodes<info>())
+            NodeFactory.CreateNode(graph, info, NodeEditorWindow.current.WindowToGridPosition(Event.current.mousePosition));
         }
         public override void OnCreate()
         {
             base.OnCreate();
             foreach (var node in DensityFunctionManager.GetMembersWithDensityFunctionAttribute())
             {
-                var declaringType = node.DeclaringType.ToString().Split(".").Last();
-                if (node.IsStruct())
-                    _allNodesInfos.Add((new GUIContent($"Nodes/{declaringType}/{node.Name}"), false, () => Debug.Log(node.Name), node));
-                
+                var declaringType = node.DeclaringType?.ToString().Split(".").Last();
+                _allNodesInfos.Add((new GUIContent($"Nodes/{declaringType}/{node.Name}"), false, () => AddNode(node), node));
             }
-
         }
     }
 }

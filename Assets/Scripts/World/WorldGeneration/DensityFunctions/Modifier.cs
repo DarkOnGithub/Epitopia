@@ -1,106 +1,67 @@
-﻿namespace World.WorldGeneration.DensityFunctions
+﻿using System;
+using Packages.FastNoise2;
+using UnityEngine;
+
+namespace World.WorldGeneration.DensityFunctions
 {
     public static class Modifier
     {
-          [DensityFunction]
-        public struct Abs
+        [System.Serializable]
+        [DensityFunction]
+        public partial class Abs : NoiseFunction
         {
-            public float Source { get; set; }
+            public FastNoise Source;
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct SquareRoot
+        public partial class SquareRoot : NoiseFunction
         {
-            public float Source { get; set; }
+            public FastNoise Source;
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct DomainScale
+        public partial class SeedOffset_ : NoiseFunction
         {
-            public float Source { get; set; }
-            public float Scaling { get; set; } 
+            public FastNoise Source;
+            public int SeedOffset = 1;
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct DomainOffset
+        public partial class ConvertRGBA8 : NoiseFunction
         {
-            public float Source { get; set; }
-            public float OffsetX { get; set; } 
-            public float OffsetY { get; set; } 
-            public float OffsetZ { get; set; } 
-            public float OffsetW { get; set; } 
+            public FastNoise Source;
+            public float Min = -1.0f;
+            public float Max = 1.0f;
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct DomainRotate
+        public partial class GeneratorCache : NoiseFunction
         {
-            public float Source { get; set; }
-            public float Yaw { get; set; } 
-            public float Pitch { get; set; } 
-            public float Roll { get; set; } 
+            public FastNoise Source;
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct DomainAxisScale
+        public partial class Remap : NoiseFunction
         {
-            public float Source { get; set; }
-            public float XScaling { get; set; } 
-            public float YScaling { get; set; } 
-            public float ZScaling { get; set; } 
-            public float WScaling { get; set; } 
+            public FastNoise Source;
+            public HybridLookup<FastNoise, float> FromMin = new HybridLookup<FastNoise, float>(-1.0f);
+            public HybridLookup<FastNoise, float> FromMax = new HybridLookup<FastNoise, float>(1.0f);
+            public HybridLookup<FastNoise, float> ToMin = new HybridLookup<FastNoise, float>(0.0f);
+            public HybridLookup<FastNoise, float> ToMax = new HybridLookup<FastNoise, float>(1.0f);
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct SeedOffset
+        public partial class Terrace : NoiseFunction
         {
-            public float Source { get; set; }
-            public int SeedOffset__ { get; set; } 
-        }
-
-        [DensityFunction]
-        public struct ConvertRGBA8
-        {
-            public float Source { get; set; }
-            public float Min { get; set; } 
-            public float Max { get; set; } 
-        }
-
-        [DensityFunction]
-        public struct GeneratorCache
-        {
-            public float Source { get; set; }
-        }
-
-        [DensityFunction]
-        public struct Remap
-        {
-            public float Source { get; set; }
-            public float FromMin { get; set; } 
-            public float FromMax { get; set; } 
-            public float ToMin { get; set; } 
-            public float ToMax { get; set; } 
-        }
-
-        [DensityFunction]
-        public struct Terrace
-        {
-            public float Source { get; set; }
-            public float Multiplier { get; set; } 
-            public float Smoothness { get; set; } 
-        }
-
-        [DensityFunction]
-        public struct AddDimension
-        {
-            public float Source { get; set; }
-            public float NewDimensionPosition { get; set; } 
-        }
-
-        [DensityFunction]
-        public struct RemoveDimension
-        {
-            public float Source { get; set; }
-            public string RemoveDimension__ { get; set; } 
+            public FastNoise Source;
+            public float Multiplier = 1.0f;
+            public float Smoothness = 0.0f;
         }
     }
 }

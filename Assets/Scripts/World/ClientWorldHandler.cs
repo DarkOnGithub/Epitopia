@@ -6,7 +6,7 @@ using World.Chunks;
 
 namespace World
 {
-    public class ClientWorldHandler : IWorldHandler, IDisposable
+    public class ClientWorldHandler : IDisposable
     {   
         private bool _disposed = false;
         public AbstractWorld WorldIn { get; }

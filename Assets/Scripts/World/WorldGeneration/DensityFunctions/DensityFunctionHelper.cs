@@ -8,13 +8,12 @@ namespace World.WorldGeneration.DensityFunctions
     {
         public static object ParseStruct(JObject jObject, Type type)
         {
-            var noiseObject = new FastNoise((type.Name));
+            var noiseObject = new FastNoise(type.Name);
             foreach (var property in type.GetProperties())
-            {
                 try
                 {
                     var propertyName = property.Name.Replace("__", "");
-                    if(jObject[propertyName] == null)
+                    if (jObject[propertyName] == null)
                         continue;
                     var value = jObject[propertyName].ToObject(property.PropertyType);
                     switch (value)
@@ -34,15 +33,15 @@ namespace World.WorldGeneration.DensityFunctions
                         default:
                             throw new InvalidOperationException($"Unsupported property type: {property.PropertyType}");
                     }
-                }catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Debug.Log($"Error when parsing {type.Name} with {property.Name} : {e.Message}");
                 }
-            }
 
             return noiseObject;
         }
-        
+
         public static string CleanString(string input)
         {
             return input.ToLower().Replace(" ", "");

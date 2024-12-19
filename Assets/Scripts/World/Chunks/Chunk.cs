@@ -27,7 +27,6 @@ namespace World.Chunks
         public IBlockState[] BlockStates = new IBlockState[ChunkSizeSquared];
         public HashSet<ulong> Players = new();
         public readonly AbstractWorld World;
-        public ulong ChunkGeneratorPlayerId;
         private bool _isRendered;
         private bool _disposed;
         
@@ -151,7 +150,6 @@ namespace World.Chunks
         //CALL IT ONLY FROM  THE CLIENT
         public void Destroy()
         { 
-            GameObject.Destroy(GameObject.Find($"{Center}"));
            if(_isRendered)
                 UnRender(); 
            World.ClientHandler.RemoveChunk(this);

@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using World.Chunks;
 using Network.Server;
+using TMPro;
 
 namespace World
 {
@@ -18,21 +19,24 @@ namespace World
         public static WorldManager Instance;
         public static ConcurrentDictionary<WorldIdentifier, AbstractWorld> Worlds = new();
         private static Dictionary<WorldIdentifier, Type> _worlds = new();
-        public static readonly ConcurrentQueue<(NetworkUtils.Header header, ChunkTransferMessage message)> PacketQueue = new();
-        private const int MaxItemsPerTick = 40;
+        public static readonly ConcurrentDictionary<ulong, ConcurrentBag<Chunk>> ChunkSenderQueue = new();      
+        private static readonly Queue<Chunk> GenerateChunksQueue = new();
+        private const int MaxChunksPerTick = 20;
         [SerializeField] public Tilemap tilemap;
 
         [SerializeField] public Grid Grid;
+
         public void Awake()
         {
             RegisterWorlds();
             Instance = this;
         }
+
         public void RegisterWorlds()
         {
             RegisterWorld(typeof(Overworld), WorldIdentifier.Overworld);
-        } 
-      
+        }
+
         public static void RegisterWorld(Type world, WorldIdentifier identifier)
         {
             _worlds.Add(identifier, world);
@@ -44,38 +48,58 @@ namespace World
             UnloadWorlds();
             foreach (var world in _worlds)
             {
-                var instance = (AbstractWorld) Activator.CreateInstance(world.Value, new object[] { world.Key });
+                var instance = (AbstractWorld)Activator.CreateInstance(world.Value, new object[] { world.Key });
+                ChunkSenderQueue.TryAdd(instance, new List<Chunk>());
                 Worlds.TryAdd(world.Key, instance);
             }
         }
-        
+
+    
         public static void UnloadWorlds()
         {
             foreach (var world in Worlds)
-               world.Value.Dispose();
-            
+                world.Value.Dispose();
+
             Worlds.Clear();
         }
+
         public static AbstractWorld GetWorld(WorldIdentifier identifier)
         {
             if (Worlds.TryGetValue(identifier, out var world))
                 return world;
             throw new Exception($"World {identifier} not found");
         }
-        
-        public static void StartWorldTread()
+
+        public static void StartWorldThread()
         {
             while (true)
             {
                 Thread.Sleep(100 / 3);
-                int itemsProcessed = 0;
-                while (itemsProcessed < MaxItemsPerTick && PacketQueue.TryDequeue(out var result))
+                for (int i = 0; i < Mathf.Min(MaxChunksPerTick, GenerateChunksQueue.Count); i++)
                 {
-                    var handler = GetWorld(result.message.World).ServerHandler;
-                    handler.OnPacketReceived(result.header, result.message);
-                    itemsProcessed++;
+                    if (GenerateChunksQueue.TryDequeue(out var chunk))
+                    {
+                        //GENERATE
+                    }
                 }
             }
+        }
+
+        private IEnumerable SendChunksPeriodically()
+        {
+            while (true)
+            {
+                Thread.Sleep(100 / 3);
+                
+                if (ChunkSenderQueue.TryDequeue(out var chunk))
+                {
+                    
+                }
+            }
+        }
+        public static void GenerateChunk(Chunk chunk)
+        {
+            GenerateChunksQueue.Enqueue(chunk);
         }
     }
 }

@@ -1,88 +1,78 @@
-﻿namespace World.WorldGeneration.DensityFunctions
+﻿using System;
+using Packages.FastNoise2;
+using UnityEngine;
+
+namespace World.WorldGeneration.DensityFunctions
 {
-    public static class Blend
+    public static class Blends
     {
+        [System.Serializable]
         [DensityFunction]
-        public struct Add
+        public partial class Min : NoiseFunction
         {
-            public float LHS { get; set; }
-            public float RHS { get; set; } 
+            public FastNoise LHS;
+            public HybridLookup<FastNoise, float> RHS = new HybridLookup<FastNoise, float>(0.0f);
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct Subtract
+        public partial class Max : NoiseFunction
         {
-            public float LHS { get; set; } 
-            public float RHS { get; set; } 
+            public FastNoise LHS;
+            public HybridLookup<FastNoise, float> RHS = new HybridLookup<FastNoise, float>(0.0f);
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct Multiply
+        public partial class MinSmooth : NoiseFunction
         {
-            public float LHS { get; set; }
-            public float RHS { get; set; } 
+            public FastNoise LHS;
+            public HybridLookup<FastNoise, float> RHS = new HybridLookup<FastNoise, float>(0.0f);
+            public HybridLookup<FastNoise, float> Smoothness = new HybridLookup<FastNoise, float>(0.1f);
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct Divide
+        public partial class MaxSmooth : NoiseFunction
         {
-            public float LHS { get; set; } 
-            public float RHS { get; set; } 
+            public FastNoise LHS;
+            public HybridLookup<FastNoise, float> RHS = new HybridLookup<FastNoise, float>(0.0f);
+            public HybridLookup<FastNoise, float> Smoothness = new HybridLookup<FastNoise, float>(0.1f);
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct Min
+        public partial class PowFloat : NoiseFunction
         {
-            public float LHS { get; set; }
-            public float RHS { get; set; } 
+            public HybridLookup<FastNoise, float> Value = new HybridLookup<FastNoise, float>(2.0f);
+            public HybridLookup<FastNoise, float> Pow = new HybridLookup<FastNoise, float>(2.0f);
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct Max
+        public partial class PowInt : NoiseFunction
         {
-            public float LHS { get; set; }
-            public float RHS { get; set; } 
+            public FastNoise Value;
+            public int Pow = 2;
         }
 
+        [System.Serializable]
         [DensityFunction]
-        public struct MinSmooth
+        public partial class Fade_ : NoiseFunction
         {
-            public float LHS { get; set; }
-            public float RHS { get; set; } 
-            public float Smoothness { get; set; } 
-        }
+            public FastNoise A;
+            public FastNoise B;
+            public HybridLookup<FastNoise, float> Fade = new HybridLookup<FastNoise, float>(0.0f);
+            public HybridLookup<FastNoise, float> FadeMin = new HybridLookup<FastNoise, float>(-1.0f);
+            public HybridLookup<FastNoise, float> FadeMax = new HybridLookup<FastNoise, float>(1.0f);
+            public InterpolationType Interpolation = InterpolationType.Linear;
 
-        [DensityFunction]
-        public struct MaxSmooth
-        {
-            public float LHS { get; set; }
-            public float RHS { get; set; } 
-            public float Smoothness { get; set; } 
-        }
-
-        [DensityFunction]
-        public struct PowFloat
-        {
-            public float Value { get; set; } 
-            public float Pow { get; set; } 
-        }
-
-        [DensityFunction]
-        public struct PowInt
-        {
-            public float Value { get; set; }
-            public int Pow { get; set; } 
-        }
-
-        [DensityFunction]
-        public struct Fade
-        {
-            public float A { get; set; }
-            public float B { get; set; }
-            public float FadeValue { get; set; } 
-            public float FadeMin { get; set; } 
-            public float FadeMax { get; set; } 
-            public string Interpolation { get; set; } 
+            public enum InterpolationType
+            {
+                Linear,
+                Hermite,
+                Quintic
+            }
         }
     }
 }
