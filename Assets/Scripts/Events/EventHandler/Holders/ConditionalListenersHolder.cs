@@ -12,10 +12,9 @@ namespace Events.EventHandler.Holders
         public ConditionalListenersHolder()
         {
             _listeners = new Dictionary<EventPriority, Dictionary<T, HashSet<Listener>>>();
-            
+
             foreach (var priority in EventPriorityHelper.GetPriorities)
                 _listeners[priority] = new Dictionary<T, HashSet<Listener>>();
-            
         }
 
         public void AddListener(Listener listener)
@@ -27,13 +26,13 @@ namespace Events.EventHandler.Holders
                 throw new ArgumentException($"Listener must be of type ConditionalListener<{typeof(T).Name}>");
 
             var priorityTable = _listeners[listener.Priority];
-            
+
             if (!priorityTable.TryGetValue(conditionalListener.Condition, out var listeners))
             {
                 listeners = new HashSet<Listener>();
                 priorityTable[conditionalListener.Condition] = listeners;
             }
-            
+
             listeners.Add(listener);
         }
 
@@ -46,7 +45,6 @@ namespace Events.EventHandler.Holders
                 throw new ArgumentException($"Listener must be of type ConditionalListener<{typeof(T).Name}>");
 
             foreach (var priorityTable in _listeners.Values)
-            {
                 if (priorityTable.TryGetValue(conditionalListener.Condition, out var listeners))
                 {
                     var listenerToRemove = listeners.FirstOrDefault(l => l.Action == (Action<IEvent>)(object)listener);
@@ -56,7 +54,6 @@ namespace Events.EventHandler.Holders
                         break;
                     }
                 }
-            }
         }
 
         public IEnumerable<Listener> GetListeners()
@@ -82,7 +79,7 @@ namespace Events.EventHandler.Holders
                 .Select(priorityTable => priorityTable[condition])
                 .SelectMany(listeners => listeners);
         }
-        
+
         public bool Invoke(IEvent @event, T condition)
         {
             foreach (var listener in GetListenersByCondition(condition))
@@ -90,16 +87,19 @@ namespace Events.EventHandler.Holders
                 try
                 {
                     listener.Action.Invoke(@event);
-                }catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     Debug.LogWarning(ex);
                     continue;
                 }
-                if(listener.IsWeak)
+
+                if (listener.IsWeak)
                     _listeners[listener.Priority][condition].Remove(listener);
                 if (@event.IsCancelled)
                     return true;
             }
+
             return false;
         }
     }

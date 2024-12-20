@@ -15,74 +15,46 @@ namespace World
 {
     public class ServerWorldHandler : IDisposable
     {
-        
-        private static BetterLogger _logger = new BetterLogger(typeof(ServerWorldHandler));
+        private static readonly BetterLogger _logger = new(typeof(ServerWorldHandler));
         public AbstractWorld WorldIn { get; }
         private Dictionary<Vector2Int, Chunk> _chunks = new();
-        public WorldStorage Storage;
-        public WorldQuery Query;
+        public WorldStorage Storage { get; }
+        public WorldQuery Query { get; }
         private bool _disposed = false;
+
         public ServerWorldHandler(AbstractWorld worldIn)
         {
             WorldIn = worldIn;
             Storage = new WorldStorage(worldIn.Identifier.GetWorldName());
             Query = new WorldQuery(worldIn, _chunks);
         }
-        
-        public void OnPacketReceived(NetworkUtils.Header header, ChunkTransferMessage message)
-        {
-            // if(Query.TryGetChunk(message.Center, out var chunk))
-            // {
-            //     if ((chunk.IsEmpty && chunk.ChunkGeneratorPlayerId == header.Author) | !chunk.IsEmpty)
-            //     {
-            //         var content = ChunkUtils.DeserializeChunk(message.ChunkData).BlockStates;
-            //         chunk.UpdateContent(content);
-            //         chunk.IsEmpty = false;
-            //         var players = chunk.Players
-            //                            .Where(plr => plr != header.Author)
-            //                            .ToArray();
-            //         if(players.Length > 0)
-            //             SendChunk(chunk, players);
-            //     }
-            // }
-        }
-
-    
-          
 
         public void RemoveChunk(Chunk chunk)
         {
-            
+            // Implementation needed
         }
-        
-        public void PlayerRequestChunks(ulong player, Vector2Int[] position)
+
+        public void PlayerRequestChunks(ulong player, Vector2Int[] positions)
         {
-            foreach (var chunk in LoadChunksInRange(position))
+            foreach (var chunk in LoadChunksInRange(positions))
             {
                 AddPlayerToChunk(chunk, player);
                 if (chunk.IsEmpty)
-                {
-                    //TODO: Generate chunk
-                }
+                    WorldManager.GenerateChunk(chunk);
                 else
-                {
-                    WorldManager.ChunkSenderQueue(chunk);
-                }
+                    WorldManager.ChunkSenderQueue.Enqueue(chunk);
             }
-            
         }
 
         public void AddPlayerToChunk(Chunk chunk, ulong player)
         {
             chunk.Players.Add(player);
         }
-        
+
         public void RemovePlayerFromChunk(Chunk chunk, ulong player)
         {
-
             chunk.Players.Remove(player);
-            if (chunk.Players.Count == 0)
-                DestroyChunk(chunk);
+            if (chunk.Players.Count == 0) DestroyChunk(chunk);
         }
 
         private void DestroyChunk(Chunk chunk)
@@ -91,7 +63,7 @@ namespace World
             Storage.Put(chunk.Center, ChunkUtils.SerializeChunk(chunk, false));
             chunk.Dispose();
         }
-        
+
         private bool GetChunkFromStorage(Vector2Int position, out Chunk chunk)
         {
             if (Storage.TryGet(position, out var bytes))
@@ -99,24 +71,25 @@ namespace World
                 chunk = Query.CreateChunk(position, ChunkUtils.DeserializeChunk(bytes, false).BlockStates);
                 return true;
             }
+
             chunk = null;
             return false;
         }
 
-        public bool GetChunkFromMemoryOrStorage(Vector2Int position, out Chunk chunk) =>
-            Query.TryGetChunk(position, out chunk) || GetChunkFromStorage(position, out chunk);
-        
+        public bool GetChunkFromMemoryOrStorage(Vector2Int position, out Chunk chunk)
+        {
+            return Query.TryGetChunk(position, out chunk) || GetChunkFromStorage(position, out chunk);
+        }
+
         public IEnumerable<Chunk> LoadChunksInRange(Vector2Int[] positions)
         {
             foreach (var position in positions)
-            {
                 if (GetChunkFromMemoryOrStorage(position, out var chunk))
-                    yield return chunk;                 
-                else 
+                    yield return chunk;
+                else
                     yield return Query.CreateEmptyChunk(position);
-            }            
         }
-        
+
         public void Dispose()
         {
             Dispose(true);
@@ -125,16 +98,15 @@ namespace World
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed)
-                return;
+            if (_disposed) return;
 
             if (disposing)
             {
-                foreach (var chunk in _chunks.Values)
-                    DestroyChunk(chunk);
+                foreach (var chunk in _chunks.Values) DestroyChunk(chunk);
                 _chunks = null;
                 Storage.Close();
             }
+
             _disposed = true;
         }
 

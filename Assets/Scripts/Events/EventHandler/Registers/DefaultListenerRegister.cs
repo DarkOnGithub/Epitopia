@@ -11,7 +11,7 @@ namespace Events.EventHandler.Registers
         public DefaultListenerRegister<T> Register(Action<T> listener, EventPriority priority = EventPriority.Normal)
         {
             Holder.AddListener(new DefaultListener(e => listener((T)e))
-                                  .WithPriority(priority));
+                .WithPriority(priority));
             return this;
         }
 
@@ -21,20 +21,27 @@ namespace Events.EventHandler.Registers
             return this;
         }
 
-        public DefaultListenerRegister<T> RegisterOnce(Action<IEvent> listener, EventPriority priority = EventPriority.Normal)
+        public DefaultListenerRegister<T> RegisterOnce(Action<IEvent> listener,
+            EventPriority priority = EventPriority.Normal)
         {
             Holder.AddListener(new DefaultListener(e => listener((T)e))
-                              .WithPriority(priority)
-                              .AsWeak(true));
+                .WithPriority(priority)
+                .AsWeak(true));
 
             return this;
         }
 
-        
-        public static DefaultListenerRegister<T> operator -(DefaultListenerRegister<T> listenerRegister, Action<IEvent> listener) =>
-            listenerRegister.Unregister(listener);
-        
-        public static DefaultListenerRegister<T> operator +(DefaultListenerRegister<T> listenerRegister, Action<T> listener) =>
-            listenerRegister.Register(listener);
+
+        public static DefaultListenerRegister<T> operator -(DefaultListenerRegister<T> listenerRegister,
+            Action<IEvent> listener)
+        {
+            return listenerRegister.Unregister(listener);
+        }
+
+        public static DefaultListenerRegister<T> operator +(DefaultListenerRegister<T> listenerRegister,
+            Action<T> listener)
+        {
+            return listenerRegister.Register(listener);
+        }
     }
 }

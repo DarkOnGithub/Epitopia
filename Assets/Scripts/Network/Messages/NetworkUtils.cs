@@ -15,17 +15,17 @@ namespace Network.Messages
             [Key(2)] public ulong Author;
             [Key(3)] public ulong[] TargetIds;
         }
-        
+
         public static byte[] GenerateHeader(SendingMode mode, int packetId, ulong author,
             [CanBeNull] ulong[] targetIds = null)
         {
             return MessagePackSerializer.Serialize(new Header
-                                                   {
-                                                       PacketId = packetId,
-                                                       SendingMode = (byte)mode,
-                                                       Author = author,
-                                                       TargetIds = targetIds
-                                                   });
+            {
+                PacketId = packetId,
+                SendingMode = (byte)mode,
+                Author = author,
+                TargetIds = targetIds
+            });
         }
 
         public static void WriteBytesToWriter(ref FastBufferWriter writer, byte[] bytes)

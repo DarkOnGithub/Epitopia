@@ -15,7 +15,7 @@ namespace Core.Commands
             await LobbyCommands.CreateLobby(name, 2);
             Server.CreateInstance(name, null);
         }
-        
+
         [Command]
         public static async Task JoinServer(string name)
         {

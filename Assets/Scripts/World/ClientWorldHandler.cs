@@ -7,37 +7,24 @@ using World.Chunks;
 namespace World
 {
     public class ClientWorldHandler : IDisposable
-    {   
+    {
         private bool _disposed = false;
         public AbstractWorld WorldIn { get; }
-        
+
         public ClientWorldHandler(AbstractWorld worldIn)
         {
             WorldIn = worldIn;
         }
-        
+
         public void OnPacketReceived(NetworkUtils.Header header, ChunkTransferMessage message)
         {
             var chunkData = ChunkUtils.DeserializeChunk(message.ChunkData);
-            chunkData.Center = message.Center;
-            var chunk = WorldIn.Query.GetChunkOrCreate(chunkData.Center);   
+            chunkData.Center = message.Position;
+            var chunk = WorldIn.Query.GetChunkOrCreate(chunkData.Center);
             var content = chunkData.BlockStates;
-            if (message.IsEmpty)
-                content = WorldGeneration.WorldGeneration.GenerateChunk(WorldIn, chunk.Origin); 
             chunk.UpdateContent(content);
-            SendChunk(chunk);
         }
 
-        public void SendChunk(Chunk chunk, ulong[] client = null) => MessageFactory.SendPacket(SendingMode.ClientToServer,
-            new ChunkTransferMessage
-            {
-                ChunkData = ChunkUtils.SerializeChunk(chunk),
-                Center = chunk.Center,
-                IsEmpty = chunk.IsEmpty,
-                Source = PacketSource.Client
-            }
-        );
-        
         public void DropChunks(Vector2Int[] positions)
         {
             MessageFactory.SendPacket(SendingMode.ClientToServer, new ChunkRequestMessage
@@ -47,11 +34,11 @@ namespace World
                 World = WorldIn.Identifier
             });
         }
-        
+
         public void RemoveChunk(Chunk chunk)
         {
             WorldIn.Query.RemoveChunk(chunk.Center);
-            DropChunks(new []{chunk.Center});   
+            DropChunks(new[] { chunk.Center });
         }
 
         public void Dispose()
@@ -66,12 +53,8 @@ namespace World
                 return;
 
             if (disposing)
-            {
-                foreach (var chunk in this.WorldIn.Query.Chunks.Values)
-                {
+                foreach (var chunk in WorldIn.Query.Chunks.Values)
                     chunk.Dispose();
-                }
-            }
             _disposed = true;
         }
 
@@ -79,7 +62,5 @@ namespace World
         {
             Dispose(false);
         }
-        
-        
     }
 }

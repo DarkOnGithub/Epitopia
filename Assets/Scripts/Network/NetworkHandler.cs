@@ -35,7 +35,5 @@ namespace Network
             PlayerId = AuthenticationService.Instance.PlayerId;
             StartCoroutine(LobbyManager.HeartbeatLobby());
         }
-
-      
     }
 }

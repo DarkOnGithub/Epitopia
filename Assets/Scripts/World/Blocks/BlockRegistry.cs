@@ -12,35 +12,37 @@ namespace World.Blocks
         public static DefaultBlock BLOCK_NULL;
         public static DefaultBlock BLOCK_DIRT;
         private static Dictionary<int, IBlock> _blocks = new();
+
         public static void RegisterBlocks()
         {
             BLOCK_AIR = RegisterBlock<DefaultBlock>("Air", new BlockProperties()
-                                                           {
-                                                               IsCollidable = false,
-                                                               SpritePath = null
-                                                           });
+            {
+                IsCollidable = false,
+                SpritePath = null
+            });
             BLOCK_NULL = RegisterBlock<DefaultBlock>("Null", new BlockProperties()
-                                                           {
-                                                               SpritePath = "Null" 
-                                                           });
+            {
+                SpritePath = "Null"
+            });
             BLOCK_DIRT = RegisterBlock<DefaultBlock>("Dirt", new BlockProperties()
-                                                             {
-                                                                 SpritePath = "Dirt"
-                                                             });
+            {
+                SpritePath = "Dirt"
+            });
         }
 
         private static T RegisterBlock<T>(string blockName, BlockProperties properties) where T : IBlock
         {
-            var instance = Activator.CreateInstance(typeof(T), new object[]{
-                          _blockCount, blockName, properties
-                      });
+            var instance = Activator.CreateInstance(typeof(T), new object[]
+            {
+                _blockCount, blockName, properties
+            });
             _blocks[_blockCount++] = (IBlock)instance;
             return (T)instance;
         }
-        
+
         public static IBlock GetBlock(int id)
         {
-            return _blocks.GetValueOrDefault(id,BLOCK_NULL);
+            return _blocks.GetValueOrDefault(id, BLOCK_NULL);
         }
     }
 }

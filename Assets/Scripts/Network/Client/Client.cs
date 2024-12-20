@@ -14,7 +14,7 @@ namespace Network.Client
 {
     public class Client : IDisposable
     {
-        private static readonly object _lock = new object();
+        private static readonly object _lock = new();
         private static Client _instance;
 
         private Thread _clientThread;
@@ -34,33 +34,30 @@ namespace Network.Client
 
         private Client()
         {
-
         }
-        
-        
+
+
         public async void Initialize()
         {
-
             ConnectionPacket.OnPlayerAddedCallback += PlayerManager.OnPlayerConnected;
             ConnectionPacket.OnPlayerRemovedCallback += PlayerManager.OnPlayerDisconnected;
 
             WorldManager.LoadWorlds();
             await ConnectionPacket.TrySendPacket();
-            
+
             new OnClientStart().Invoke();
         }
-        
-     
+
+
         public static Client CreateInstance()
         {
-
             if (_instance == null)
             {
                 _instance = new Client();
                 _instance.Initialize();
             }
+
             return _instance;
-            
         }
 
         public void Dispose()
@@ -74,13 +71,11 @@ namespace Network.Client
             if (_disposed) return;
 
             if (disposing)
-            {
                 if (_clientThread != null && _clientThread.IsAlive)
                 {
                     _clientThread.Abort();
                     _clientThread = null;
                 }
-            }
 
             _disposed = true;
             lock (_lock)

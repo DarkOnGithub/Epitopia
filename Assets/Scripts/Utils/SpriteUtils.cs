@@ -9,7 +9,7 @@ namespace Utils
         {
             var tile = ScriptableObject.CreateInstance<Tile>();
             tile.sprite = sprite;
-            return tile;            
+            return tile;
         }
     }
 }

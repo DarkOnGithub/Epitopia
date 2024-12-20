@@ -21,9 +21,7 @@ namespace Events.EventHandler.Holders
                 throw new ArgumentNullException(nameof(listener));
 
             if (!Listeners.TryGetValue(listener.Priority, out var listenerSet))
-            {
                 throw new ArgumentException($"Invalid event priority: {listener.Priority}");
-            }
             listenerSet.Add(listener);
         }
 
@@ -46,8 +44,8 @@ namespace Events.EventHandler.Holders
         public IEnumerable<Listener> GetListeners()
         {
             return Listeners
-                  .OrderBy(kvp => kvp.Key)
-                  .SelectMany(kvp => kvp.Value);
+                .OrderBy(kvp => kvp.Key)
+                .SelectMany(kvp => kvp.Value);
         }
 
         public IEnumerable<Listener> GetListenersByPriority(EventPriority priority)
@@ -55,7 +53,6 @@ namespace Events.EventHandler.Holders
             if (!Listeners.TryGetValue(priority, out var listenerSet))
                 throw new ArgumentException($"Invalid event priority: {priority}");
             return listenerSet.ToList();
-            
         }
 
         public bool Invoke(IEvent @event)
@@ -74,16 +71,16 @@ namespace Events.EventHandler.Holders
                 catch (Exception ex)
                 {
                     Debug.LogWarning(ex);
-                    continue; 
+                    continue;
                 }
-                if(listener.IsWeak)
+
+                if (listener.IsWeak)
                     Listeners[listener.Priority].Remove(listener);
                 if (@event.IsCancelled)
                     return true;
             }
-            
+
             return false;
         }
-        
     }
 }

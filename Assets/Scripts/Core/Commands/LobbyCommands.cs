@@ -36,14 +36,14 @@ namespace Core.Commands
         public static async Task JoinLobbyFromName(string name)
         {
             var lobbies = await LobbyManager.QueryLobbies(new QueryLobbiesOptions
-                                                          {
-                                                              Count = 1,
-                                                              Filters = new List<QueryFilter>()
-                                                                        {
-                                                                            new(QueryFilter.FieldOptions.Name, name,
-                                                                                QueryFilter.OpOptions.EQ)
-                                                                        }
-                                                          });
+            {
+                Count = 1,
+                Filters = new List<QueryFilter>()
+                {
+                    new(QueryFilter.FieldOptions.Name, name,
+                        QueryFilter.OpOptions.EQ)
+                }
+            });
             await LobbyManager.JoinLobbyById(lobbies.Results[0]?.Id);
         }
 

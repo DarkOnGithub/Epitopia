@@ -14,29 +14,25 @@ using Unity.Netcode;
 using UnityEngine;
 using World.Blocks;
 using World.Chunks;
+using World.WorldGeneration;
 
 namespace World
 {
     public abstract class AbstractWorld : IDisposable
     {
-        protected BetterLogger Logger = new BetterLogger(typeof(AbstractWorld));
+        public WorldGenerator WorldGenerator;
+        protected BetterLogger Logger = new(typeof(AbstractWorld));
         public readonly WorldIdentifier Identifier;
         private readonly ServerWorldHandler _serverHandler;
         private ClientWorldHandler _clientHandler;
 
-        public ClientWorldHandler ClientHandler
-        {
-            get
-            {
-                return _clientHandler;
-            }
-        }
+        public ClientWorldHandler ClientHandler => _clientHandler;
 
         public ServerWorldHandler ServerHandler
         {
             get
             {
-                if(!NetworkManager.Singleton.IsHost)
+                if (!NetworkManager.Singleton.IsHost)
                     Logger.LogWarning("ServerHandler is only available on the server");
                 return _serverHandler;
             }
@@ -47,14 +43,14 @@ namespace World
 
         public AbstractWorld(WorldIdentifier identifier)
         {
+            WorldGenerator = new(this);
             Identifier = identifier;
             Query = new WorldQuery(this);
             _clientHandler = new ClientWorldHandler(this);
-            if(NetworkManager.Singleton.IsHost)
+            if (NetworkManager.Singleton.IsHost)
                 _serverHandler = new ServerWorldHandler(this);
-
         }
-        
+
         public void Dispose()
         {
             Dispose(true);
@@ -66,10 +62,7 @@ namespace World
             if (_disposed)
                 return;
 
-            if (disposing)
-            {
-                _clientHandler = null;
-            }
+            if (disposing) _clientHandler = null;
 
             _disposed = true;
         }

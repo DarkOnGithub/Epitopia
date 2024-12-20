@@ -14,7 +14,7 @@ namespace Storage
 {
     public class WorldStorage
     {
-        private static BetterLogger _logger = new BetterLogger(typeof(WorldStorage));
+        private static BetterLogger _logger = new(typeof(WorldStorage));
         private static readonly DbOptions Options;
 
         static WorldStorage()
@@ -23,7 +23,7 @@ namespace Storage
             if (!Directory.Exists(destinationPath))
             {
                 var rocksDbFolder = Directory.GetDirectories($"{Application.dataPath}/Packages")
-                                             .FirstOrDefault(dir => Regex.IsMatch(Path.GetFileName(dir), @"^RocksDB\..*$"));
+                    .FirstOrDefault(dir => Regex.IsMatch(Path.GetFileName(dir), @"^RocksDB\..*$"));
                 if (rocksDbFolder != null)
                 {
                     var sourcePath = Path.Combine(rocksDbFolder, "runtimes");
@@ -31,26 +31,26 @@ namespace Storage
                         FileUtils.CopyDirectory(sourcePath, destinationPath);
                     else
                         _logger.LogError("Source runtimes folder does not exist.");
-
                 }
                 else
                 {
                     _logger.LogError("RocksDbSharp folder not found.");
                 }
             }
+
             Options = new DbOptions()
-                     .SetCreateIfMissing(true)
-                     .SetCompression(Compression.Lz4);
+                .SetCreateIfMissing(true)
+                .SetCompression(Compression.Lz4);
         }
+
         private RocksDb _database;
 
         public WorldStorage(string name)
         {
-
-            var dataPath = $"{Application.persistentDataPath}/{Server.Instance.Info.ServerId}/Data";
+            var dataPath = $"{Server.Instance.ServerDirectory}/Data";
             if (!Directory.Exists(dataPath))
                 Directory.CreateDirectory(dataPath);
-         
+
             var fPath = $"{dataPath}/{name}";
             Directory.CreateDirectory(fPath);
             _database = RocksDb.Open(Options, fPath);
@@ -61,10 +61,9 @@ namespace Storage
             value = _database.Get(BitConverter.GetBytes(position.Serialize()));
             return value != null;
         }
-        
+
         public void Put(Vector2Int key, byte[] value)
         {
-            
             _database.Put(BitConverter.GetBytes(key.Serialize()), value);
         }
 

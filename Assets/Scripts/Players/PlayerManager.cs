@@ -10,19 +10,21 @@ namespace Players
     {
         public static Player LocalPlayer { get; set; }
         public static List<Player> Players = new();
+
         public static void OnPlayerConnected(ConnectionMessage connectionInfos)
         {
             var player = new Player(connectionInfos.PlayerName, connectionInfos.PlayerId, connectionInfos.ClientId);
             Debug.Log(connectionInfos.ClientId);
-            if(connectionInfos.ClientId == NetworkManager.Singleton.LocalClientId)
+            if (connectionInfos.ClientId == NetworkManager.Singleton.LocalClientId)
             {
                 LocalPlayer = player;
                 LocalPlayer.World = WorldManager.GetWorld(WorldIdentifier.Overworld);
             }
-            if(NetworkManager.Singleton.IsHost)
-                SetPlayerInfos(player);    
+
+            if (NetworkManager.Singleton.IsHost)
+                SetPlayerInfos(player);
         }
-        
+
         public static void OnPlayerDisconnected(ConnectionMessage player)
         {
             Players.RemoveAll(p => p.ClientId == player.ClientId);

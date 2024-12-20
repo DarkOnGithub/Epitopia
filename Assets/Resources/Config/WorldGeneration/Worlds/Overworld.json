@@ -1,11 +1,10 @@
 ﻿{
     "Name": "Overworld",
-    "NoiseRouter": {
+    "Noises": {
         "InitialDensity": {
             "Type": "Noise",
-            "Noise" : "InitialDensity"
-        },
-        "FinalDensity": {
+            "Noise" : "InitialDensity",
+            "Frequency": 0.01 
         }
     },
     "biomes": []

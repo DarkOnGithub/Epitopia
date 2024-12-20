@@ -14,7 +14,6 @@ namespace Network.Messages
 {
     public class MessageFactory : NetworkBehaviour
     {
-       
         private static readonly Dictionary<Type, byte> PacketsCount = new();
         private static readonly Dictionary<int, INetworkMessage> NetworkMessageIds = new();
         private static readonly Dictionary<Type, INetworkMessage> NetworkMessageTypes = new();
@@ -23,7 +22,7 @@ namespace Network.Messages
 
         public static bool IsInitialized => MessagingManager != null;
 
-        
+
         public override void OnNetworkSpawn()
         {
             MessagingManager = NetworkManager.Singleton.CustomMessagingManager;
@@ -57,21 +56,21 @@ namespace Network.Messages
                     if (NetworkManager.Singleton.IsHost)
                     {
                         var newHeader = NetworkUtils.GenerateHeader(SendingMode.ServerToClient, header.PacketId,
-                                                                    header.Author, header.TargetIds);
+                            header.Author, header.TargetIds);
                         reader.ReadValueSafe(out int bodyLength);
                         var body = new byte[bodyLength];
                         reader.ReadBytesSafe(ref body, bodyLength);
                         var buffer = new FastBufferWriter(sizeof(int) + newHeader.Length + sizeof(int) + bodyLength,
-                                                          Allocator.Temp);
+                            Allocator.Temp);
                         if (!buffer.TryBeginWrite(sizeof(int) + newHeader.Length + sizeof(int) + bodyLength))
                             return;
                         NetworkUtils.WriteBytesToWriter(ref buffer, newHeader);
                         NetworkUtils.WriteBytesToWriter(ref buffer, body);
-                        SendBufferTo(buffer, SendingMode.ServerToClient, NetworkDelivery.ReliableFragmentedSequenced, header.TargetIds);
+                        SendBufferTo(buffer, SendingMode.ServerToClient, NetworkDelivery.ReliableFragmentedSequenced,
+                            header.TargetIds);
                     }
 
                     return;
-
             }
 
             if (!NetworkMessageIds.TryGetValue(header.PacketId, out var networkMessage))
@@ -100,28 +99,29 @@ namespace Network.Messages
             }
 
             networkMessage.SendMessageTo(packetData, mode,
-                                         author.GetValueOrDefault(NetworkManager.Singleton.LocalClientId), clientIds, delivery);
+                author.GetValueOrDefault(NetworkManager.Singleton.LocalClientId), clientIds, delivery);
         }
 
 
-        public static void SendBufferTo(FastBufferWriter buffer, SendingMode mode,  NetworkDelivery delivery, [CanBeNull] ulong[] clientIds = null)
+        public static void SendBufferTo(FastBufferWriter buffer, SendingMode mode, NetworkDelivery delivery,
+            [CanBeNull] ulong[] clientIds = null)
         {
             switch (mode)
             {
                 case SendingMode.ClientToClient:
                     MessagingManager.SendUnnamedMessage(NetworkManager.ServerClientId, buffer,
-                                                        delivery);
+                        delivery);
                     break;
                 case SendingMode.ClientToServer:
                     MessagingManager.SendUnnamedMessage(NetworkManager.ServerClientId, buffer,
-                                                        delivery);
+                        delivery);
                     break;
                 case SendingMode.ServerToClient:
                     if (clientIds == null)
                         MessagingManager.SendUnnamedMessageToAll(buffer, delivery);
                     else
                         MessagingManager.SendUnnamedMessage(clientIds, buffer,
-                                                            delivery);
+                            delivery);
                     break;
             }
 

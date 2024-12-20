@@ -25,7 +25,7 @@ namespace Network.Messages
         Server,
         Client
     }
-    
+
     public abstract class NetworkPacket<T> : INetworkMessage
         where T : IMessageData
     {
@@ -63,7 +63,7 @@ namespace Network.Messages
                 writer.WriteValue(header);
                 writer.WriteValue(message.Length);
                 writer.WriteBytes(message);
-                MessageFactory.SendBufferTo(writer, mode, delivery, clients );
+                MessageFactory.SendBufferTo(writer, mode, delivery, clients);
             }
         }
     }

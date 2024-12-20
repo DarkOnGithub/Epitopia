@@ -8,8 +8,6 @@ using UnityEngine;
 
 namespace Network
 {
-    
-    
     public class ServerManager : NetworkBehaviour
     {
         public static readonly string ServersFilePath = FilesManager.DataPath + "/Servers.json";
@@ -19,7 +17,5 @@ namespace Network
         {
             ServerFiles.LoadServers();
         }
-
-       
     }
 }

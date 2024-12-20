@@ -20,10 +20,10 @@ namespace World
 
         private static Scanner _instance;
         private static Coroutine _scannerCoroutine;
-        
+
         private static readonly HashSet<Vector2Int> RequestedChunks = new();
         private static readonly HashSet<Chunk> LoadedChunks = new();
-        
+
         private int _scanRangeHorizontal;
         private int _scanRangeVertical;
         private WaitForSeconds _scanWaiter;
@@ -37,7 +37,7 @@ namespace World
                 Destroy(this);
                 return;
             }
-            
+
             _instance = this;
             InitializeScanRanges();
             _scanWaiter = new WaitForSeconds(SCAN_INTERVAL);
@@ -47,10 +47,10 @@ namespace World
         private void InitializeScanRanges()
         {
             if (Camera.main == null) return;
-            
-            float aspect = Camera.main.aspect;
-            float orthographicSize = Camera.main.orthographicSize;
-            
+
+            var aspect = Camera.main.aspect;
+            var orthographicSize = Camera.main.orthographicSize;
+
             Vector2 screenDimensions = new(
                 orthographicSize * 2 * aspect,
                 orthographicSize * 2
@@ -58,8 +58,8 @@ namespace World
 
             _scanRangeHorizontal = Mathf.CeilToInt(screenDimensions.x / Chunk.ChunkSize) / 2 + SCAN_PADDING;
             _scanRangeVertical = Mathf.CeilToInt(screenDimensions.y / Chunk.ChunkSize) / 2 + SCAN_PADDING;
-            
-            int maxPositions = (_scanRangeHorizontal * 2) * (_scanRangeVertical * 2);
+
+            var maxPositions = _scanRangeHorizontal * 2 * _scanRangeVertical * 2;
             _scanPositionsBuffer = new Vector2Int[maxPositions];
         }
 
@@ -78,7 +78,7 @@ namespace World
                 _scannerCoroutine = null;
             }
         }
-        
+
         private static void RequestChunks(WorldIdentifier worldId, Vector2Int[] positions, int count)
         {
             if (count == 0) return;
@@ -88,14 +88,14 @@ namespace World
                 Type = ChunkRequestType.Request,
                 World = worldId
             };
-            
+
             Array.Copy(positions, packet.Positions, count);
-            
+
             MessageFactory.SendPacket(
-                SendingMode.ClientToServer, 
-                packet, 
-                null, 
-                null, 
+                SendingMode.ClientToServer,
+                packet,
+                null,
+                null,
                 NetworkDelivery.ReliableFragmentedSequenced
             );
         }
@@ -108,47 +108,43 @@ namespace World
                 yield return _scanWaiter;
             }
         }
+
         //!TODO REWRITE THIS IS UGLY AF
         private void Scan()
         {
             var localPlayer = PlayerManager.LocalPlayer;
             if (localPlayer?.World == null) return;
             var chunksToRemove = new HashSet<Chunk>(LoadedChunks);
-            int requestCount = 0;
+            var requestCount = 0;
 
-            Vector2 basePosition = localPlayer.Position;
-            
-            for (int x = -_scanRangeHorizontal; x < _scanRangeHorizontal; x++)
+            var basePosition = localPlayer.Position;
+
+            for (var x = -_scanRangeHorizontal; x < _scanRangeHorizontal; x++)
+            for (var y = -_scanRangeVertical; y < _scanRangeVertical; y++)
             {
-                for (int y = -_scanRangeVertical; y < _scanRangeVertical; y++)
+                var chunkPosition = WorldUtils.FindNearestChunkPosition(
+                    basePosition + new Vector2Int(x, y) * Chunk.ChunkSize
+                );
+
+                if (localPlayer.World.Query.TryGetChunk(chunkPosition, out var chunk))
                 {
-                    Vector2Int chunkPosition = WorldUtils.FindNearestChunkPosition(
-                        basePosition + new Vector2Int(x, y) * Chunk.ChunkSize
-                    );
-                    
-                    if (localPlayer.World.Query.TryGetChunk(chunkPosition, out var chunk))
+                    if (chunk != null)
                     {
-                        if (chunk != null)
-                        {
-                            chunk.Render();
-                            LoadedChunks.Add(chunk);
-                            chunksToRemove.Remove(chunk);
-                            RequestedChunks.Remove(chunkPosition);
-                        }
+                        chunk.Render();
+                        LoadedChunks.Add(chunk);
+                        chunksToRemove.Remove(chunk);
+                        RequestedChunks.Remove(chunkPosition);
                     }
-                    else if (!RequestedChunks.Contains(chunkPosition))
-                    {
-                        _scanPositionsBuffer[requestCount++] = chunkPosition;
-                        RequestedChunks.Add(chunkPosition);
-                    }
+                }
+                else if (!RequestedChunks.Contains(chunkPosition))
+                {
+                    _scanPositionsBuffer[requestCount++] = chunkPosition;
+                    RequestedChunks.Add(chunkPosition);
                 }
             }
 
-            if (requestCount > 0)
-            {
-                RequestChunks(localPlayer.World.Identifier, _scanPositionsBuffer, requestCount);
-            }
-            
+            if (requestCount > 0) RequestChunks(localPlayer.World.Identifier, _scanPositionsBuffer, requestCount);
+
             foreach (var chunk in chunksToRemove)
             {
                 LoadedChunks.Remove(chunk);

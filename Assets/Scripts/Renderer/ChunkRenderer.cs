@@ -22,18 +22,19 @@ namespace Renderer
             var origin = chunk.Origin.ToVector3Int();
 
             var positions = new Vector3Int[Chunk.ChunkSizeSquared];
-            for (int i = 0; i < Chunk.ChunkSizeSquared; i++)
+            for (var i = 0; i < Chunk.ChunkSizeSquared; i++)
                 positions[i] = origin + i.ToVector3Int0();
-            
+
             _tilemap.SetTiles(positions, null);
         }
+
         public static (Vector3Int[], Tile[]) ExtractTiles(Chunk chunk)
         {
             var position = new Vector3Int[Chunk.ChunkSizeSquared];
             var tiles = new Tile[Chunk.ChunkSizeSquared];
             var origin = chunk.Origin.ToVector3Int();
             var blocks = chunk.BlockStates;
-            for (int i = 0; i < Chunk.ChunkSizeSquared; i++)
+            for (var i = 0; i < Chunk.ChunkSizeSquared; i++)
             {
                 position[i] = origin + i.ToVector3Int0();
                 tiles[i] = blocks[i].Block.Tile;
@@ -41,15 +42,15 @@ namespace Renderer
 
             return (position, tiles);
         }
-        
+
         public static void UnRenderChunk(Chunk chunk)
         {
             var origin = chunk.Origin.ToVector3Int();
             var positions = new Vector3Int[Chunk.ChunkSizeSquared];
-            for (int i = 0; i < Chunk.ChunkSizeSquared; i++)
+            for (var i = 0; i < Chunk.ChunkSizeSquared; i++)
                 positions[i] = origin + i.ToVector3Int0();
 
-    
+
             _tilemap.SetTiles(positions, new TileBase[Chunk.ChunkSizeSquared]);
         }
     }

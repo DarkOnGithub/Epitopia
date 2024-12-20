@@ -6,9 +6,10 @@
         Normal = 2,
         Low = 3
     }
-    
+
     public static class EventPriorityHelper
     {
-        public static EventPriority[] GetPriorities { get; } = (EventPriority[])System.Enum.GetValues(typeof(EventPriority));    
+        public static EventPriority[] GetPriorities { get; } =
+            (EventPriority[])System.Enum.GetValues(typeof(EventPriority));
     }
 }

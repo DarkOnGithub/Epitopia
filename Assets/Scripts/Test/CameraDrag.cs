@@ -15,7 +15,10 @@ public class CameraDrag : MonoBehaviour
 
     #endregion
 
-    private void Awake() => _mainCamera = Camera.main;
+    private void Awake()
+    {
+        _mainCamera = Camera.main;
+    }
 
     public void OnDrag(InputAction.CallbackContext ctx)
     {
@@ -29,7 +32,7 @@ public class CameraDrag : MonoBehaviour
 
         _difference = GetMousePosition - transform.position;
         transform.position = _origin - _difference;
-        if(_mainCamera == null || PlayerManager.LocalPlayer == null) return;
+        if (_mainCamera == null || PlayerManager.LocalPlayer == null) return;
         PlayerManager.LocalPlayer.Position = _mainCamera.transform.position;
     }
 

@@ -21,7 +21,7 @@ using Event = UnityEngine.Event;
 
 public class Main : MonoBehaviour
 {
-    IEnumerator Temp()
+    private IEnumerator Temp()
     {
         yield return new WaitForSeconds(5);
         // while (true)
@@ -32,6 +32,7 @@ public class Main : MonoBehaviour
         //     PlayerManager.LocalPlayer.Position = Camera.main.transform.position;
         // }
     }
+
     private async void Start()
     {
         BlockRegistry.RegisterBlocks();
@@ -39,8 +40,6 @@ public class Main : MonoBehaviour
 
         StartCoroutine(Temp());
     }
-    
-    
 }
 
 //!TODO CREATE WORLD WHEN NEEDED NOT AT START 

@@ -36,7 +36,7 @@ namespace Utils.LZ4
                     var srcHandle = GCHandle.Alloc(input, GCHandleType.Pinned);
                     var dstHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                     var actualSize = API.Unity_LZ4_compress(srcHandle.AddrOfPinnedObject(), input.Length,
-                                                            dstHandle.AddrOfPinnedObject(), maxSize, compressionLevel);
+                        dstHandle.AddrOfPinnedObject(), maxSize, compressionLevel);
 
                     if (actualSize > 0)
                     {
@@ -63,7 +63,7 @@ namespace Utils.LZ4
                 result = new byte[uncompressSize];
                 var dstHandle = GCHandle.Alloc(result, GCHandleType.Pinned);
                 if (API.Unity_LZ4_decompress(srcHandle.AddrOfPinnedObject(), input.Length,
-                                             dstHandle.AddrOfPinnedObject(), result.Length) != 0) result = null;
+                        dstHandle.AddrOfPinnedObject(), result.Length) != 0) result = null;
 
                 srcHandle.Free();
                 dstHandle.Free();

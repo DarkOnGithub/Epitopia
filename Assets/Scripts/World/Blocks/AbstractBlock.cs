@@ -11,9 +11,9 @@ namespace World.Blocks
         public string Name { get; }
         public BlockProperties Properties { get; }
         public Tile Tile { get; }
-        public IBlockState IDefaultState { get { return DefaultState; } }
+        public IBlockState IDefaultState => DefaultState;
         public abstract T DefaultState { get; }
-        
+
         public AbstractBlock(int id, string name, BlockProperties properties)
         {
             Id = id;
@@ -21,25 +21,24 @@ namespace World.Blocks
             Properties = properties;
             Tile = SpriteUtils.GetTileFromSprite(Resources.Load<Sprite>($"Sprites/Blocks/{properties.SpritePath}"));
         }
+
         public abstract T GetState(object state);
         public abstract T GetDefaultState();
         public abstract T FromState(T state);
+
         IBlockState IBlock.GetDefaultState()
         {
             return GetDefaultState();
         }
-        
+
         IBlockState IBlock.GetState(object state)
         {
             return GetState(state);
         }
-        
+
         IBlockState IBlock.FromIBlockState(IBlockState state)
         {
             return FromState((T)state);
         }
-
-        
-        
     }
 }
