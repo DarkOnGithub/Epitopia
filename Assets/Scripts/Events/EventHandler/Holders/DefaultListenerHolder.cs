@@ -44,8 +44,8 @@ namespace Events.EventHandler.Holders
         public IEnumerable<Listener> GetListeners()
         {
             return Listeners
-                .OrderBy(kvp => kvp.Key)
-                .SelectMany(kvp => kvp.Value);
+                  .OrderBy(kvp => kvp.Key)
+                  .SelectMany(kvp => kvp.Value);
         }
 
         public IEnumerable<Listener> GetListenersByPriority(EventPriority priority)

@@ -43,7 +43,7 @@ namespace World
 
         public AbstractWorld(WorldIdentifier identifier)
         {
-            WorldGenerator = new(this);
+            WorldGenerator = new WorldGenerator(this);
             Identifier = identifier;
             Query = new WorldQuery(this);
             _clientHandler = new ClientWorldHandler(this);

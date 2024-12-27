@@ -118,10 +118,10 @@ namespace World.Chunks
         public ChunkData GetChunkData()
         {
             return new ChunkData
-            {
-                Center = Center,
-                BlockStates = BlockStates
-            };
+                   {
+                       Center = Center,
+                       BlockStates = BlockStates
+                   };
         }
 
 
@@ -134,7 +134,7 @@ namespace World.Chunks
         {
             if (!IsValidIndex(index))
                 throw new ArgumentOutOfRangeException(nameof(index),
-                    $"Index must be between 0 and {ChunkSizeSquared - 1}");
+                                                      $"Index must be between 0 and {ChunkSizeSquared - 1}");
         }
 
         public void Render()

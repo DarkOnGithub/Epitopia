@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Network;
 using Network.Messages;
 using Network.Messages.Packets.World;
@@ -23,7 +24,7 @@ namespace World
         private static readonly Queue<Chunk> ToGenerateChunksQueue = new();
         private const int MaxChunksPerTick = 20;
         private const int MaxGenerationPerTick = 20;
-        
+
         [SerializeField] public Tilemap tilemap;
         [SerializeField] public Grid Grid;
 
@@ -74,7 +75,7 @@ namespace World
                 yield return waiter;
                 for (var i = 0; i < Mathf.Min(MaxGenerationPerTick, ToGenerateChunksQueue.Count); i++)
                     if (ToGenerateChunksQueue.TryDequeue(out var chunk))
-                        WorldGeneration.WorldGeneration.GenerateChunk(chunk.World, chunk);
+                        Task.Run(() => WorldGeneration.WorldGeneration.GenerateChunk(chunk.World, chunk));
             }
         }
 

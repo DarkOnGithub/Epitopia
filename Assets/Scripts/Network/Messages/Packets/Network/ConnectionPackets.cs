@@ -54,12 +54,14 @@ namespace Network.Messages.Packets.Network
         {
             while (!MessageFactory.IsInitialized) await Task.Delay(100);
             MessageFactory.SendPacket(SendingMode.ClientToClient, new ConnectionMessage
-            {
-                State = ConnectionState.Connecting,
-                PlayerName = await AuthenticationService.Instance.GetPlayerNameAsync(),
-                PlayerId = AuthenticationService.Instance.PlayerId,
-                ClientId = NetworkManager.Singleton.LocalClientId
-            });
+                                                                  {
+                                                                      State = ConnectionState.Connecting,
+                                                                      PlayerName = await AuthenticationService.Instance
+                                                                         .GetPlayerNameAsync(),
+                                                                      PlayerId =
+                                                                          AuthenticationService.Instance.PlayerId,
+                                                                      ClientId = NetworkManager.Singleton.LocalClientId
+                                                                  });
         }
     }
 }

@@ -21,13 +21,13 @@ namespace World.Blocks
         public DefaultBlock(int id, string name, BlockProperties properties) : base(id, name, properties)
         {
             DefaultState = new DefaultBlockState
-            {
-                Id = id,
-                Name = name,
-                Properties = properties,
-                Block = this,
-                State = 0
-            };
+                           {
+                               Id = id,
+                               Name = name,
+                               Properties = properties,
+                               Block = this,
+                               State = 0
+                           };
         }
 
         public override DefaultBlockState FromState(DefaultBlockState state)
@@ -40,13 +40,13 @@ namespace World.Blocks
             if (state is not int cState)
                 return DefaultState;
             return new DefaultBlockState()
-            {
-                Id = Id,
-                Name = Name,
-                Properties = Properties,
-                Block = this,
-                State = cState
-            };
+                   {
+                       Id = Id,
+                       Name = Name,
+                       Properties = Properties,
+                       Block = this,
+                       State = cState
+                   };
         }
 
         public override DefaultBlockState GetDefaultState()

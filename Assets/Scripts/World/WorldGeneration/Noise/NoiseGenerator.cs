@@ -1,27 +1,21 @@
-﻿using System;
-using Newtonsoft.Json.Linq;
-using UnityEngine;
-using Utils;
+﻿using UnityEngine;
+using World.Chunks;
 
 namespace World.WorldGeneration.Noise
 {
-    public class NoiseGenerator
+    public abstract class NoiseGenerator
     {
-        internal FastNoise Noise;
+        public FastNoise Noise;
         public float Frequency;
-        public int[] Splines;
+        public int Seed;
 
-        internal NoiseGenerator(FastNoise noise, float frequency, int[] splines)
+        protected NoiseGenerator(FastNoise noise, float frequency, int seed)
         {
+            Seed = seed;
             Noise = noise;
             Frequency = frequency;
-            Splines = splines;
         }
 
-        public static NoiseGenerator FromJson(JObject jsonObject)
-        {
-            return new NoiseGenerator(FastNoise.FromEncodedNodeTree(jsonObject.Get<string>("TreeNode")),
-                jsonObject.Get<float>("Frequency"), jsonObject.Get<int[]>("Splines"));
-        }
+        public abstract float[] Gen(Vector2 origin);
     }
 }

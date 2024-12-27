@@ -23,7 +23,8 @@ namespace Storage
             if (!Directory.Exists(destinationPath))
             {
                 var rocksDbFolder = Directory.GetDirectories($"{Application.dataPath}/Packages")
-                    .FirstOrDefault(dir => Regex.IsMatch(Path.GetFileName(dir), @"^RocksDB\..*$"));
+                                             .FirstOrDefault(
+                                                  dir => Regex.IsMatch(Path.GetFileName(dir), @"^RocksDB\..*$"));
                 if (rocksDbFolder != null)
                 {
                     var sourcePath = Path.Combine(rocksDbFolder, "runtimes");
@@ -39,8 +40,8 @@ namespace Storage
             }
 
             Options = new DbOptions()
-                .SetCreateIfMissing(true)
-                .SetCompression(Compression.Lz4);
+                     .SetCreateIfMissing(true)
+                     .SetCompression(Compression.Lz4);
         }
 
         private RocksDb _database;
@@ -54,6 +55,15 @@ namespace Storage
             var fPath = $"{dataPath}/{name}";
             Directory.CreateDirectory(fPath);
             _database = RocksDb.Open(Options, fPath);
+            ClearDatabase();
+        }
+
+        public void ClearDatabase()
+        {
+            using (var iterator = _database.NewIterator())
+            {
+                for (iterator.SeekToFirst(); iterator.Valid(); iterator.Next()) _database.Remove(iterator.Key());
+            }
         }
 
         public bool TryGet(Vector2Int position, out byte[] value)

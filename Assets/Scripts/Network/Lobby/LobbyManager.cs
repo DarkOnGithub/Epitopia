@@ -50,12 +50,12 @@ public static class LobbyManager
             if (code == null)
                 return;
             var lobbyOptions = new CreateLobbyOptions
-            {
-                Data = new Dictionary<string, DataObject>
-                {
-                    { JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Public, code) }
-                }
-            };
+                               {
+                                   Data = new Dictionary<string, DataObject>
+                                          {
+                                              { JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Public, code) }
+                                          }
+                               };
             var lobby = await LobbyService.Instance.CreateLobbyAsync(name, maxPlayers, lobbyOptions);
             CurrentLobby = lobby;
             Debug.Log($"Lobby <{lobby.Name}> created with id {lobby.Id}, join code {code}");

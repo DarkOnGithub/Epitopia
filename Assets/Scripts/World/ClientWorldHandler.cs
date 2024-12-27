@@ -28,11 +28,11 @@ namespace World
         public void DropChunks(Vector2Int[] positions)
         {
             MessageFactory.SendPacket(SendingMode.ClientToServer, new ChunkRequestMessage
-            {
-                Positions = positions,
-                Type = ChunkRequestType.Drop,
-                World = WorldIn.Identifier
-            });
+                                                                  {
+                                                                      Positions = positions,
+                                                                      Type = ChunkRequestType.Drop,
+                                                                      World = WorldIn.Identifier
+                                                                  });
         }
 
         public void RemoveChunk(Chunk chunk)

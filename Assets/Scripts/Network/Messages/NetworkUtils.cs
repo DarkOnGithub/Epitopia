@@ -20,12 +20,12 @@ namespace Network.Messages
             [CanBeNull] ulong[] targetIds = null)
         {
             return MessagePackSerializer.Serialize(new Header
-            {
-                PacketId = packetId,
-                SendingMode = (byte)mode,
-                Author = author,
-                TargetIds = targetIds
-            });
+                                                   {
+                                                       PacketId = packetId,
+                                                       SendingMode = (byte)mode,
+                                                       Author = author,
+                                                       TargetIds = targetIds
+                                                   });
         }
 
         public static void WriteBytesToWriter(ref FastBufferWriter writer, byte[] bytes)

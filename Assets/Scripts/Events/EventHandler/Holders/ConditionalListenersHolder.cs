@@ -59,8 +59,8 @@ namespace Events.EventHandler.Holders
         public IEnumerable<Listener> GetListeners()
         {
             return _listeners
-                .SelectMany(priorityEntry => priorityEntry.Value.Values)
-                .SelectMany(listeners => listeners);
+                  .SelectMany(priorityEntry => priorityEntry.Value.Values)
+                  .SelectMany(listeners => listeners);
         }
 
         public IEnumerable<Listener> GetListenersByPriority(EventPriority priority)
@@ -74,10 +74,10 @@ namespace Events.EventHandler.Holders
         public IEnumerable<Listener> GetListenersByCondition(T condition)
         {
             return _listeners
-                .Select(priorityEntry => priorityEntry.Value)
-                .Where(priorityTable => priorityTable.ContainsKey(condition))
-                .Select(priorityTable => priorityTable[condition])
-                .SelectMany(listeners => listeners);
+                  .Select(priorityEntry => priorityEntry.Value)
+                  .Where(priorityTable => priorityTable.ContainsKey(condition))
+                  .Select(priorityTable => priorityTable[condition])
+                  .SelectMany(listeners => listeners);
         }
 
         public bool Invoke(IEvent @event, T condition)

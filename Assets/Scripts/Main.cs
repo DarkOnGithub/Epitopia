@@ -13,7 +13,6 @@ using Players;
 using QFSW.QC;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Utils.LZ4;
 using World.Blocks;
 using World.Chunks;
 using Event = UnityEngine.Event;
@@ -23,7 +22,8 @@ public class Main : MonoBehaviour
 {
     private IEnumerator Temp()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForFixedUpdate();
+
         // while (true)
         // {
         //     yield return new WaitForSeconds(1 / 20f);

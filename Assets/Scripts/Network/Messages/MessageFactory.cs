@@ -56,18 +56,18 @@ namespace Network.Messages
                     if (NetworkManager.Singleton.IsHost)
                     {
                         var newHeader = NetworkUtils.GenerateHeader(SendingMode.ServerToClient, header.PacketId,
-                            header.Author, header.TargetIds);
+                                                                    header.Author, header.TargetIds);
                         reader.ReadValueSafe(out int bodyLength);
                         var body = new byte[bodyLength];
                         reader.ReadBytesSafe(ref body, bodyLength);
                         var buffer = new FastBufferWriter(sizeof(int) + newHeader.Length + sizeof(int) + bodyLength,
-                            Allocator.Temp);
+                                                          Allocator.Temp);
                         if (!buffer.TryBeginWrite(sizeof(int) + newHeader.Length + sizeof(int) + bodyLength))
                             return;
                         NetworkUtils.WriteBytesToWriter(ref buffer, newHeader);
                         NetworkUtils.WriteBytesToWriter(ref buffer, body);
                         SendBufferTo(buffer, SendingMode.ServerToClient, NetworkDelivery.ReliableFragmentedSequenced,
-                            header.TargetIds);
+                                     header.TargetIds);
                     }
 
                     return;
@@ -99,7 +99,8 @@ namespace Network.Messages
             }
 
             networkMessage.SendMessageTo(packetData, mode,
-                author.GetValueOrDefault(NetworkManager.Singleton.LocalClientId), clientIds, delivery);
+                                         author.GetValueOrDefault(NetworkManager.Singleton.LocalClientId), clientIds,
+                                         delivery);
         }
 
 
@@ -110,18 +111,18 @@ namespace Network.Messages
             {
                 case SendingMode.ClientToClient:
                     MessagingManager.SendUnnamedMessage(NetworkManager.ServerClientId, buffer,
-                        delivery);
+                                                        delivery);
                     break;
                 case SendingMode.ClientToServer:
                     MessagingManager.SendUnnamedMessage(NetworkManager.ServerClientId, buffer,
-                        delivery);
+                                                        delivery);
                     break;
                 case SendingMode.ServerToClient:
                     if (clientIds == null)
                         MessagingManager.SendUnnamedMessageToAll(buffer, delivery);
                     else
                         MessagingManager.SendUnnamedMessage(clientIds, buffer,
-                            delivery);
+                                                            delivery);
                     break;
             }
 

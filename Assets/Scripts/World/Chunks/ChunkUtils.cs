@@ -5,7 +5,6 @@ using Network.Messages.Packets.World;
 using PimDeWitte.UnityMainThreadDispatcher;
 using Unity.Netcode;
 using UnityEngine;
-using Utils.LZ4;
 using World.Blocks;
 
 namespace World.Chunks
@@ -31,11 +30,12 @@ namespace World.Chunks
             var serializedChunk = SerializeChunk(chunk, true);
 
             MessageFactory.SendPacket(SendingMode.ServerToClient, new ChunkTransferMessage
-            {
-                ChunkData = serializedChunk,
-                Position = chunk.Center,
-                World = chunk.World.Identifier
-            }, chunk.Players.ToArray(), null, NetworkDelivery.ReliableFragmentedSequenced);
+                                                                  {
+                                                                      ChunkData = serializedChunk,
+                                                                      Position = chunk.Center,
+                                                                      World = chunk.World.Identifier
+                                                                  }, chunk.Players.ToArray(), null,
+                                      NetworkDelivery.ReliableFragmentedSequenced);
         }
 
         public static void SendChunkFromThread(Chunk chunk)
@@ -44,11 +44,12 @@ namespace World.Chunks
             UnityMainThreadDispatcher.Instance().Enqueue(() =>
             {
                 MessageFactory.SendPacket(SendingMode.ServerToClient, new ChunkTransferMessage
-                {
-                    ChunkData = serializedChunk,
-                    Position = chunk.Center,
-                    World = chunk.World.Identifier
-                }, chunk.Players.ToArray(), null, NetworkDelivery.ReliableFragmentedSequenced);
+                                                                      {
+                                                                          ChunkData = serializedChunk,
+                                                                          Position = chunk.Center,
+                                                                          World = chunk.World.Identifier
+                                                                      }, chunk.Players.ToArray(), null,
+                                          NetworkDelivery.ReliableFragmentedSequenced);
             });
         }
     }

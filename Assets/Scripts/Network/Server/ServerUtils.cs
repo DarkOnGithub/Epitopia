@@ -14,13 +14,13 @@ namespace Network
             if (serverId != null && ServerManager.Servers.ContainsKey(serverId)) throw new NotImplementedException();
 
             return new ServerInfo()
-            {
-                ServerId = new Guid().ToString(),
-                ServerName = serverName,
-                OwnerId = Authentification.LocalPlayerId,
-                CreationDate = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                LastJoined = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-            };
+                   {
+                       ServerId = new Guid().ToString(),
+                       ServerName = serverName,
+                       OwnerId = Authentification.LocalPlayerId,
+                       CreationDate = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                       LastJoined = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                   };
         }
     }
 }

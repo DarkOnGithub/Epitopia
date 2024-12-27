@@ -26,6 +26,7 @@ namespace Network.Server
         private bool _disposed;
         public string ServerDirectory => $"{Application.persistentDataPath}/{Info.ServerId}";
         public string ConfigDirectory => $"{ServerDirectory}/Config";
+
         public static Server Instance
         {
             get
@@ -44,7 +45,7 @@ namespace Network.Server
         public void InitializeConfig()
         {
             FileUtils.CloneDirectory(Path.Combine(Application.dataPath, "Resources") + "/Config",
-                ServerDirectory + "/Config");
+                                     ServerDirectory + "/Config");
         }
 
         public async void Initialize()

@@ -11,7 +11,7 @@ namespace Events.EventHandler.Registers
         public DefaultListenerRegister<T> Register(Action<T> listener, EventPriority priority = EventPriority.Normal)
         {
             Holder.AddListener(new DefaultListener(e => listener((T)e))
-                .WithPriority(priority));
+                                  .WithPriority(priority));
             return this;
         }
 
@@ -25,8 +25,8 @@ namespace Events.EventHandler.Registers
             EventPriority priority = EventPriority.Normal)
         {
             Holder.AddListener(new DefaultListener(e => listener((T)e))
-                .WithPriority(priority)
-                .AsWeak(true));
+                              .WithPriority(priority)
+                              .AsWeak(true));
 
             return this;
         }

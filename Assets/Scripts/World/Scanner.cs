@@ -83,11 +83,11 @@ namespace World
         {
             if (count == 0) return;
             var packet = new ChunkRequestMessage
-            {
-                Positions = new Vector2Int[count],
-                Type = ChunkRequestType.Request,
-                World = worldId
-            };
+                         {
+                             Positions = new Vector2Int[count],
+                             Type = ChunkRequestType.Request,
+                             World = worldId
+                         };
 
             Array.Copy(positions, packet.Positions, count);
 

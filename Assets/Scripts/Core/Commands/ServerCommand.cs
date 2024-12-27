@@ -12,7 +12,7 @@ namespace Core.Commands
         [Command]
         public static async Task CreateServer(string name)
         {
-            await LobbyCommands.CreateLobby(name, 2);
+            await LobbyCommands.CreateLobby(name, 4);
             Server.CreateInstance(name, null);
         }
 

@@ -1,11 +1,36 @@
 ﻿{
     "Name": "Overworld",
     "Noises": {
-        "InitialDensity": {
-            "Type": "Noise",
-            "Noise" : "InitialDensity",
-            "Frequency": 0.01 
+        "Erosion": {
+            "Type": "Noise1D",
+            "Noise" : "Erosion",
+            "Frequency": 0.0007
+        },
+        "Continental": {
+            "Type": "Noise1D",
+            "Noise" : "Continental",
+            "Frequency": 0.00066171428
+        },
+        "Cave":
+        {
+            "Type": "Noise2D",
+            "Noise": "Cave",
+            "Frequency": 0.012
         }
     },
+    "HeightMapRouter": {
+        "Type": "Blend",
+        "Method": "Add",
+        "Amplitude": 100,
+        "Routes": [
+            {
+                "Noise": "Continental"
+            },
+            {
+                "Noise": "Erosion"
+            }
+        ]
+    },
+    
     "biomes": []
 }
