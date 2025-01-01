@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Mono.CSharp;
 using UnityEngine;
 
 namespace World.Blocks
@@ -13,7 +14,8 @@ namespace World.Blocks
         public static DefaultBlock BLOCK_DIRT;
         public static DefaultBlock BLOCK_GRASS;
         public static DefaultBlock BLOCK_STONE;
-        private static Dictionary<int, IBlock> _blocks = new();
+        private static Dictionary<int, IBlock> _blockIds = new();
+        private static Dictionary<string, IBlock> _blockNames = new();
 
         public static void RegisterBlocks()
         {
@@ -28,31 +30,47 @@ namespace World.Blocks
                                                              });
             BLOCK_DIRT = RegisterBlock<DefaultBlock>("Dirt", new BlockProperties()
                                                              {
-                                                                 SpritePath = "Dirt"
+                                                                 SpritePath = "dirt_low"
                                                              });
             BLOCK_GRASS = RegisterBlock<DefaultBlock>("Grass", new BlockProperties()
                                                                {
-                                                                   SpritePath = "Grass"
+                                                                   SpritePath = "grass_low"
                                                                });
             BLOCK_STONE = RegisterBlock<DefaultBlock>("Stone", new BlockProperties()
                                                                {
-                                                                   SpritePath = "Stone"
+                                                                   SpritePath = "stone_low"
+                                                               });
+            RegisterBlock<DefaultBlock>("Sand", new BlockProperties()
+                                                               {
+                                                                   SpritePath = "sand_low"
+                                                               });
+            RegisterBlock<DefaultBlock>("Water", new BlockProperties()
+                                                               {
+                                                                   SpritePath = "water_low"
                                                                });
         }
-
+        private static string FormatName(string name)
+        {
+            return name.ToLower();
+        }
         private static T RegisterBlock<T>(string blockName, BlockProperties properties) where T : IBlock
         {
             var instance = Activator.CreateInstance(typeof(T), new object[]
                                                                {
                                                                    _blockCount, blockName, properties
                                                                });
-            _blocks[_blockCount++] = (IBlock)instance;
+            _blockIds[_blockCount++] = (IBlock)instance;
+            _blockNames[FormatName(blockName)] = (IBlock)instance;
             return (T)instance;
         }
 
         public static IBlock GetBlock(int id)
         {
-            return _blocks.GetValueOrDefault(id, BLOCK_NULL);
+            return _blockIds.GetValueOrDefault(id, BLOCK_NULL);
+        }
+        public static IBlock GetBlock(string name)
+        {
+            return _blockNames.GetValueOrDefault(FormatName(name), BLOCK_NULL);
         }
     }
 }

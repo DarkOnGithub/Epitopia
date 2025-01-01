@@ -23,7 +23,6 @@ public class Main : MonoBehaviour
     private IEnumerator Temp()
     {
         yield return new WaitForFixedUpdate();
-
         // while (true)
         // {
         //     yield return new WaitForSeconds(1 / 20f);

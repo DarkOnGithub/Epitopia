@@ -18,5 +18,10 @@ namespace Utils
         {
             return a * (1f - r) + b * r;
         }
+        
+        public static float ScaledTanh(float x, int k)
+        {
+            return (float) System.Math.Tanh(x / k);
+        }
     }
 }

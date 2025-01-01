@@ -1,0 +1,24 @@
+{
+    "Name": "Beach",
+    "Temperature": [0.5, 0.8],
+    "Humidity": [0.6, 0.9],
+    "Vegetation": [0.2, 0.4],
+    "Elevation": [0.6, 0.7],
+    "WaterLevel": 63,
+    "SurfaceRules": [
+        {
+            "Type": "Constant",
+            "Argument": "Sand",
+            "Height": 1
+        },
+        {
+            "Type": "Constant",
+            "Argument": "Sand",
+            "Height": 5
+        },
+        {
+            "Type": "Constant",
+            "Argument": "Stone"
+        }
+    ]
+}

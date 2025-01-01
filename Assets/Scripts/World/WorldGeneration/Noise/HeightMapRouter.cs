@@ -1,53 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using World.Chunks;
 
 namespace World.WorldGeneration.Noise
 {
-    public class HeightMap
+    public struct Router
     {
-        private float[][] _noiseMaps;
+        public float Weight;
+        public string Noise;
+    }
+
+    public struct NoiseRouterStruct
+    {
+        public string Type;
+        public string Method;
+        public Router[] Routes;
+    }
+
+
+    public class HeightMap : NoiseRouterPoint<NoiseGenerator1D>
+    {
         private Func<float[], float> _generator;
         private int _amplitude;
-        private List<NoiseGenerator1D> _noiseGenerators;
-        public HeightMap(Vector2Int origin, Func<float[], float> generator, int amplitude, List<NoiseGenerator1D> noiseGenerators)
+        public HeightMap(Vector2Int origin, Func<float[], float> generator, int amplitude, List<NoiseGenerator1D> noiseGenerators) : base(origin, noiseGenerators)
         {
-            _noiseMaps = new float[noiseGenerators.Count][];
-            for (var i = 0; i < noiseGenerators.Count; i++)
-                _noiseMaps[i] = noiseGenerators[i].Gen(origin);
-            
-            _noiseGenerators = noiseGenerators;
             _generator = generator;
             _amplitude = amplitude;
         }
 
         public int GetPoint(int x)
         {
-            var values = new float[_noiseMaps.Length];
-            for (var i = 0; i < _noiseMaps.Length; i++)
-                values[i] = _noiseGenerators[i].ApplySpline(_noiseMaps[i][x]);
+            var values = new float[NoiseMaps.Length];
+            for (var i = 0; i < NoiseMaps.Length; i++)
+                values[i] = Generators[i].ApplySpline(NoiseMaps[i][x]);
             return (int)Mathf.Round(_generator(values) * _amplitude);
         }
     }
 
-    public class HeightMapRouter : NoiseRouter
+    public class HeightMapRouter : NoiseRouter<NoiseGenerator1D>
     {
-        private List<NoiseGenerator1D> _generators = new();
         private int _amplitude;
+        protected Func<float[], float> Generator;
 
-        public HeightMapRouter(NoiseRouterStruct router, WorldGenerator worldGenerator, int amplitude) : base(router)
+        public Func<float[], float> Blend(NoiseRouterStruct router)
         {
-            _amplitude = amplitude;
-            foreach (var route in router.Routes)
+            switch (router.Method)
             {
-                _generators.Add((NoiseGenerator1D)worldGenerator.Noises[route.Noise]);
+                case "Add":
+                    return (values) => { return values.Sum(); };
+                case "WeightedAddition":
+                    return (values) => { return values.Select((t, i) => t * router.Routes[i].Weight).Sum(); };
+                case "Lerp":
+                    var totalWeight = router.Routes.Sum(r => r.Weight);
+                    return (values) =>
+                    {
+                        return values.Select((t, i) => t * router.Routes[i].Weight).Sum() / totalWeight;
+                    };
+                case "Multiply":
+                    return (values) => { return values.Aggregate((a, b) => a * b); };
+                default:
+                    return (_) => 0f;
             }
         }
 
-        public HeightMap GenerateNoiseMap(Vector2Int origin)
+
+        public HeightMapRouter(NoiseRouterStruct router, WorldGenerator worldGenerator, int amplitude) : base()
         {
-            return new HeightMap(origin, Generator, _amplitude, _generators);
+            switch (router.Type)
+            {
+                case "Blend":
+                    Generator = Blend(router);
+                    break;
+            }
+            _amplitude = amplitude;
+            foreach (var route in router.Routes)
+                AddGenerator((NoiseGenerator1D)worldGenerator.Noises[route.Noise]);
+        }
+
+        public override NoiseRouterPoint<NoiseGenerator1D> GenerateNoiseMap(Vector2Int origin)
+        {
+            return new HeightMap(origin, Generator, _amplitude, Generators);
         }
     }
 }

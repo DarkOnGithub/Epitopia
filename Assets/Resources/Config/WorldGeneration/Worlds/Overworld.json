@@ -16,6 +16,21 @@
             "Type": "Noise2D",
             "Noise": "Cave",
             "Frequency": 0.012
+        },
+        "Temperature": {
+            "Type": "Noise1D",
+            "Noise": "Temperature",
+            "Frequency": 0.05
+        },
+        "Humidity": {
+            "Type": "Noise1D",
+            "Noise": "Humidity",
+            "Frequency": 0.05
+        },
+        "Vegetation": {
+            "Type": "Noise1D",
+            "Noise": "Vegetation",
+            "Frequency": 0.05
         }
     },
     "HeightMapRouter": {
@@ -31,6 +46,6 @@
             }
         ]
     },
-    
-    "biomes": []
+    "ElevationFactor": 200,
+    "Biomes": ["Beach", "Ocean", "Plains"]
 }

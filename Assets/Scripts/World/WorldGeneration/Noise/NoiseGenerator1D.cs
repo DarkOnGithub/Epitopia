@@ -13,7 +13,6 @@ namespace World.WorldGeneration.Noise
         internal NoiseGenerator1D(FastNoise noise, float frequency, float[] splines, int seed) : base(
             noise, frequency, seed)
         {
-            Debug.Log(seed);
             Splines = new Splines(splines);
         }
 

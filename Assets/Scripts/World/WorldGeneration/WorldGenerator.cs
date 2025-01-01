@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using Utils;
+using World.WorldGeneration.Biomes;
 using World.WorldGeneration.Noise;
 using Random = System.Random;
 
@@ -39,6 +40,7 @@ namespace World.WorldGeneration
         public Dictionary<string, NoiseGeneratorStruct> Noises;
         public NoiseRouterStruct HeightMapRouter;
         public string[] Biomes;
+        public int ElevationFactor;
     }
 
     public class WorldGenerator
@@ -58,50 +60,58 @@ namespace World.WorldGeneration
 
         private const string NoisePath = "/WorldGeneration/Noises/";
         private const string WorldsPath = "/WorldGeneration/Worlds/";
-
+        
+        public int ElevationFactor;
         public Dictionary<string, NoiseGenerator> Noises = new();
         public NoiseGenerator1D Entry;
         public HeightMapRouter HeightMapRouter;
-
-        public IEnumerator PreviewNoise()
-        {
-            yield break;
-        }
-
+        public BiomeRouter BiomeRouter;
+        public BiomeFinder BiomeFinder;
         public WorldGenerator(AbstractWorld worldIn)
         {
             var worldPath =
                 Server.Instance.ConfigDirectory + WorldsPath + worldIn.Identifier.GetWorldName() + ".json";
-            if (File.Exists(worldPath))
-            {
-                var worldGenParameters = JsonConvert.DeserializeObject<WorldStruct>(File.ReadAllText(worldPath));
-                var jsonContent = JObject.Parse(File.ReadAllText(worldPath));
-                foreach (var noise in worldGenParameters.Noises)
-                {
-                    var noisePath = Server.Instance.ConfigDirectory + NoisePath + noise.Value.Noise + ".json";
-                    if (File.Exists(noisePath))
-                        switch (noise.Value.Type)
-                        {
-                            case "Noise1D":
-                                var noiseContent =
-                                    JsonConvert.DeserializeObject<Noise1DStruct>(File.ReadAllText(noisePath));
-                                Noises.Add(noise.Key,
-                                           NoiseGenerator1D.FromJson(noiseContent, noise.Value.Frequency,
-                                                                     Seed + _randomizerSeed.Next()));
-                                break;
-                            case "Noise2D":
-                                var noiseContent2D =
-                                    JsonConvert.DeserializeObject<Noise2DStruct>(File.ReadAllText(noisePath));
-                                Noises.Add(noise.Key,
-                                           NoiseGenerator2D.FromJson(noiseContent2D, noise.Value.Frequency,
-                                                                     Seed + _randomizerSeed.Next()));
-                                break;
-                        }
-                }
+            if (!File.Exists(worldPath)) return;
+        
+            var worldGenParameters = JsonConvert.DeserializeObject<WorldStruct>(File.ReadAllText(worldPath));
+            var jsonContent = JObject.Parse(File.ReadAllText(worldPath));
 
-                HeightMapRouter = new HeightMapRouter(worldGenParameters.HeightMapRouter, this,
-                                                      jsonContent.Get<JObject>("HeightMapRouter").Get<int>("Amplitude"));
+            ElevationFactor = worldGenParameters.ElevationFactor;
+            
+            foreach (var noise in worldGenParameters.Noises)
+            {
+                var noisePath = Server.Instance.ConfigDirectory + NoisePath + noise.Value.Noise + ".json";
+                if (!File.Exists(noisePath)) continue;
+                switch (noise.Value.Type)
+                {
+                    case "Noise1D":
+                        var noiseContent =
+                            JsonConvert.DeserializeObject<Noise1DStruct>(File.ReadAllText(noisePath));
+                        Noises.Add(noise.Key,
+                                   NoiseGenerator1D.FromJson(noiseContent, noise.Value.Frequency,
+                                                             Seed + _randomizerSeed.Next()));
+                        break;
+                    case "Noise2D":
+                        var noiseContent2D =
+                            JsonConvert.DeserializeObject<Noise2DStruct>(File.ReadAllText(noisePath));
+                        Noises.Add(noise.Key,
+                                   NoiseGenerator2D.FromJson(noiseContent2D, noise.Value.Frequency,
+                                                             Seed + _randomizerSeed.Next()));
+                        break;
+                }
             }
+
+            HeightMapRouter = new HeightMapRouter(worldGenParameters.HeightMapRouter, this,
+                                                  jsonContent.Get<JObject>("HeightMapRouter").Get<int>("Amplitude"));
+            BiomeRouter = new(new()
+                              {
+                                  (NoiseGenerator1D)Noises["Temperature"],
+                                  (NoiseGenerator1D)Noises["Humidity"],
+                                  (NoiseGenerator1D)Noises["Vegetation"]  
+                              });
+            BiomeFinder = new();
+            foreach (var biome in worldGenParameters.Biomes)
+                BiomeFinder.AddBiome(new Biome(biome));
         }
     }
 }

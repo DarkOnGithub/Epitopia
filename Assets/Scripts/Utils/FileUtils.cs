@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Network.Server;
 
 namespace Utils
 {
@@ -11,6 +10,8 @@ namespace Utils
 
             foreach (var filePath in Directory.GetFiles(sourceDir))
             {
+                if (Path.GetExtension(filePath) == ".meta") continue;
+
                 var fileName = Path.GetFileName(filePath);
                 var destFile = Path.Combine(destinationDir, fileName);
                 File.Copy(filePath, destFile, overwrite);
@@ -38,6 +39,8 @@ namespace Utils
 
             foreach (var file in Directory.GetFiles(sourceDir))
             {
+                if (Path.GetExtension(file) == ".meta") continue;
+
                 var destFile = Path.Combine(destDir, Path.GetFileName(file));
                 File.Copy(file, destFile, true);
             }
