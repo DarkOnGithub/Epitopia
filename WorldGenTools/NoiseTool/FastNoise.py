@@ -36,23 +36,29 @@ class FastNoise:
             self.name = ""
             self.members: Dict[str, 'FastNoise.Metadata.Member'] = {}
 
-    def __init__(self, metadata_name: str):
-        formatted_name = self._format_lookup(metadata_name)
-        if formatted_name not in self.metadata_name_lookup:
-            raise ValueError(f"Failed to find metadata name: {metadata_name}")
-        self.metadata_id = self.metadata_name_lookup[formatted_name]
-        # Pass both arguments: metadata_id and simdLevel (default to 0)
-        self.node_handle = self._fn_new_from_metadata(self.metadata_id, 0)
-        if not self.node_handle:
-            raise RuntimeError("Failed to create FastNoise node from metadata")
-
+    def __init__(self, metadata_name: str | int):
+        if isinstance(metadata_name, str):
+            formatted_name = self._format_lookup(metadata_name)
+            if formatted_name not in self.metadata_name_lookup:
+                raise ValueError(f"Failed to find metadata name: {metadata_name}")
+            self.metadata_id = self.metadata_name_lookup[formatted_name]
+            # Pass both arguments: metadata_id and simdLevel (default to 0)
+            self.node_handle = self._fn_new_from_metadata(self.metadata_id, 0)
+            if not self.node_handle:
+                raise RuntimeError("Failed to create FastNoise node from metadata")
+        elif isinstance(metadata_name, int):
+            self.metadata_id = self._fn_get_metadata_id(metadata_name)
+            # Pass both arguments: metadata_id and simdLevel (default to 0)
+            self.node_handle = metadata_name
+            if not self.node_handle:
+                raise RuntimeError("Failed to create FastNoise node from metadata")
     def __del__(self):
         # Check if node_handle exists before attempting to delete
         if hasattr(self, 'node_handle') and self.node_handle:
             self._fn_delete_node_ref(self.node_handle)
     @staticmethod
     def from_encoded_node_tree(encoded_node_tree: str) -> 'FastNoise':
-        node_handle = FastNoise._fn_new_from_encoded_node_tree(encoded_node_tree)
+        node_handle = FastNoise._fn_new_from_encoded_node_tree(ctypes.c_char_p(encoded_node_tree.encode('utf-8')), ctypes.c_uint(0))
         if not node_handle:
             return None
         return FastNoise(node_handle)

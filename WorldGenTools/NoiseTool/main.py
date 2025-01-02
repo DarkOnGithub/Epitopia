@@ -1,26 +1,23 @@
-import dearpygui.dearpygui as dpg
+import dearpygui.dearpygui as imgui
+import math
+from typing import List, Tuple, Dict
+from SplineEditor import SplineEditor
+from NoisePreview import NoisePreview
+from WorldGenTool import WorldGenTool
+def main():
+    imgui.create_context()
+    spline_editor = SplineEditor()
+    noise_editor = NoisePreview()
+    World_gen_tool = WorldGenTool()
+    imgui.create_viewport(title='Spline Editor', width=800, height=600)
+    imgui.setup_dearpygui()
+    
+    World_gen_tool.render()
+    spline_editor.render()
+    noise_editor.render()
+    imgui.show_viewport()
+    imgui.start_dearpygui()
+    imgui.destroy_context()
 
-dpg.create_context()
-
-def print_val(sender):
-    print(dpg.get_value(sender))
-
-with dpg.window(label="Tutorial", width=400, height=400):
-    with dpg.plot(label="Drag Lines/Points", height=-1, width=-1):
-        dpg.add_plot_legend()
-        dpg.add_plot_axis(dpg.mvXAxis, label="x")
-        dpg.set_axis_limits(dpg.last_item(), -5, 5)
-        dpg.add_plot_axis(dpg.mvYAxis, label="y")
-        dpg.set_axis_limits(dpg.last_item(), -5, 5)
-
-        # drag lines/points belong to the plot NOT axis
-        dpg.add_drag_line(label="dline1", color=[255, 0, 0, 255], default_value=2.0, callback=print_val)
-        dpg.add_drag_line(label="dline2", color=[255, 255, 0, 255], vertical=False, default_value=-2, callback=print_val)
-        dpg.add_drag_point(label="dpoint1", color=[255, 0, 255, 255], default_value=(1.0, 1.0), callback=print_val)
-        dpg.add_drag_point(label="dpoint2", color=[255, 0, 255, 255], default_value=(-1.0, 1.0), callback=print_val)
-
-dpg.create_viewport(title='Custom Title', width=800, height=600)
-dpg.setup_dearpygui()
-dpg.show_viewport()
-dpg.start_dearpygui()
-dpg.destroy_context()
+if __name__ == "__main__":
+    main()
