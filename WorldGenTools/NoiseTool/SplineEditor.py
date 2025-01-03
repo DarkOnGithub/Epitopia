@@ -49,7 +49,7 @@ class SplineEditor:
         
         self.point_id += 1
         self.points[point_id] = at
-        self.spline.add_point(at[0], at[1])
+        self.spline.add_control_point(at[0], at[1])
         self.update_lines()
         
     def update_lines(self):
@@ -71,11 +71,9 @@ class SplineEditor:
             label="",
             parent="x_axis"
         )
-        
 
     def render(self):
-        with imgui.window(label="Splines Editor", width=400, height=400) as self.spline_editor:
-
+        with imgui.window(label="Splines Editor", width=400, height=400) as self.window:
             with imgui.plot(label="Editor", height=-1, width=-1, ) as plot:
                 self.plot = plot    
                 x_axis = imgui.add_plot_axis(imgui.mvXAxis, label="X", tag="x_axis")
@@ -88,3 +86,9 @@ class SplineEditor:
             with imgui.group(horizontal=True):
                 imgui.add_button(label="Add Point", callback=lambda: self.add_new_point())
                 imgui.add_button(label="Remove Point", callback=lambda: setattr(self, 'mode', 1))
+
+    def show(self):
+        imgui.show_item(self.window)
+    
+    def hide(self):
+        imgui.hide_item(self.window)

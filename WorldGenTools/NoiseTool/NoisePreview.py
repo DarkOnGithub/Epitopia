@@ -1,75 +1,88 @@
+from dataclasses import dataclass
 from FastNoise import FastNoise
-import dearpygui.dearpygui as imgui
+import dearpygui.dearpygui as dpg
 import array
+from typing import Tuple, Optional
+
+@dataclass
+class ViewState:
+    position: Tuple[float, float] = (0.0, 0.0)
+    is_dragging: bool = False
+    last_mouse_pos: Tuple[float, float] = (0.0, 0.0)
+    sensitivity: float = 0.5
 
 class NoisePreview:
-    def __init__(self):
-        self.size = (256, 256)
-        self.raw_image = array.array("f", [0] * (self.size[0] * self.size[1] * 3))
-        self.position = (0, 0)
-        self.dragging = False
-        self.last_mouse = (0, 0)
+    def __init__(self, width: int = 256, height: int = 256):
+        self.dimensions = (width, height)
+        self.view_state = ViewState()
+        self.window: Optional[int] = None
+        self.raw_image = array.array("f", [0] * (width * height * 3))
         self.noise = FastNoise.from_encoded_node_tree("FwAAAIC/AACAPwAAAAAAAIA/CQA=")
-        self.sensivity = 0.5
         
-    def on_drag(self, sender, mouse_data):
-        if not imgui.is_item_hovered(self.window):
+    def handle_drag(self, sender: int, mouse_data: Tuple[int, float, float]) -> None:
+        if not dpg.is_item_hovered(self.window) or not all(mouse_data[1:]):
             return
+            
         button, x, y = mouse_data
-        if x == 0 and y == 0:
+        if button != 0:
             return
-        if button == 0:
-            if not self.dragging:
-                self.dragging = True
-                self.last_mouse = (x, y)
-            else:
-                current_mouse = (x, y)
-                delta_x = self.last_mouse[0] - current_mouse[0] 
-                delta_y =self.last_mouse[1] -  current_mouse[1]
-                self.position = (
-                    self.position[0] + delta_x * self.sensivity,
-                    self.position[1] + delta_y * self.sensivity
-                )
-                self.last_mouse = current_mouse
-                self.update_noise(self.noise)
 
-    def on_release(self, sender, mouse_data):
-        self.dragging = False
+        if not self.view_state.is_dragging:
+            self.view_state.is_dragging = True
+            self.view_state.last_mouse_pos = (x, y)
+        else:
+            delta_x = self.view_state.last_mouse_pos[0] - x
+            delta_y = self.view_state.last_mouse_pos[1] - y
+            
+            self.view_state.position = (
+                self.view_state.position[0] + delta_x * self.view_state.sensitivity,
+                self.view_state.position[1] + delta_y * self.view_state.sensitivity
+            )
+            self.view_state.last_mouse_pos = (x, y)
+            self.update_noise(self.noise)
 
+    def handle_release(self, sender: int, mouse_data: Tuple[int, float, float]) -> None:
+        self.view_state.is_dragging = False
 
-    def render(self):
-        with imgui.window(label="Noise Preview", width=400, height=400) as self.window:
-            with imgui.texture_registry(show=False): 
-                imgui.add_raw_texture(
-                    width=self.size[0],
-                    height=self.size[1],
+    def render(self) -> None:
+        with dpg.window(label="Noise Preview", width=400, height=400) as self.window:
+            with dpg.texture_registry(show=False): 
+                dpg.add_raw_texture(
+                    width=self.dimensions[0],
+                    height=self.dimensions[1],
                     default_value=self.raw_image,
-                    format=imgui.mvFormat_Float_rgb,
+                    format=dpg.mvFormat_Float_rgb,
                     tag="noise_texture"
                 )
             
-            image_id = imgui.add_image("noise_texture")
+            image_id = dpg.add_image("noise_texture")
             self.image_id = image_id
-            with imgui.handler_registry():
-                imgui.add_mouse_drag_handler(callback=self.on_drag)
-                imgui.add_mouse_release_handler(callback=self.on_release)
-            imgui.bind_item_handler_registry(image_id, "handler_registry")
+            with dpg.handler_registry():
+                dpg.add_mouse_drag_handler(callback=self.handle_drag)
+                dpg.add_mouse_release_handler(callback=self.handle_release)
+            dpg.bind_item_handler_registry(image_id, "handler_registry")
             
-    def update_noise(self, noise: FastNoise):
-        buffer = [0] * (self.size[0] * self.size[1])
+    def update_noise(self, noise: FastNoise, frequency: float = 0.1, seed: int = 1, y: int = 0) -> None:
+        buffer = [0] * (self.dimensions[0] * self.dimensions[1])
 
         noise.gen_uniform_grid_2d(
             buffer,
-            int(self.position[0]),
-            int(self.position[1]),
-            self.size[0],
-            self.size[1],
-            0.01,
-            10
+            int(self.view_state.position[0]),
+            int(self.view_state.position[1]),
+            self.dimensions[0],
+            self.dimensions[1],
+            frequency,
+            seed
         )
 
         rgb_buffer = [value for value in buffer for _ in range(3)]
 
         self.raw_image = array.array('f', rgb_buffer)
 
-        imgui.set_value("noise_texture", self.raw_image)
+        dpg.set_value("noise_texture", self.raw_image)
+
+    def show(self) -> None:
+        dpg.show_item(self.window)
+        
+    def hide(self) -> None:
+        dpg.hide_item(self.window)
