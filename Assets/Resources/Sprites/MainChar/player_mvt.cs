@@ -1,4 +1,3 @@
-namespace DefaultNamespace;
 using UnityEngine;
 
 public class player_mvt
