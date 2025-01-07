@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="ecca6bc3-90be-4600-a2d8-2cd4c875b5a1" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -10,22 +13,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "tymmi78"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;tymmi78&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/DarkOnGithub/Epitopia.git",
-    "accountId": "e42aa1be-1e4f-4d97-a4c8-ddad1d4a8cdd"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DarkOnGithub/Epitopia.git&quot;,
+    &quot;accountId&quot;: &quot;e42aa1be-1e4f-4d97-a4c8-ddad1d4a8cdd&quot;
   }
-}]]></component>
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/player_mvt.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2rAytoWFKDRFN48TfckqpX1awON" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -39,6 +45,10 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "test-tymmi-animation",
     "last_opened_file_path": "//wsl.localhost/Ubuntu/home/tymmi/Epita/Projet/Epitopia",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -52,6 +62,7 @@
       <option name="presentableId" value="Default" />
       <updated>1736016390555</updated>
       <workItem from="1736016391708" duration="254000" />
+      <workItem from="1736284576835" duration="444000" />
     </task>
     <task id="LOCAL-00001" summary="test add animation (19h50)">
       <option name="closed" value="true" />
@@ -61,7 +72,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736016568202</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="gfsgdqg">
+      <option name="closed" value="true" />
+      <created>1736284608543</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1736284608544</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -75,6 +94,7 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="test add animation (19h50)" />
-    <option name="LAST_COMMIT_MESSAGE" value="test add animation (19h50)" />
+    <MESSAGE value="gfsgdqg" />
+    <option name="LAST_COMMIT_MESSAGE" value="gfsgdqg" />
   </component>
 </project>
