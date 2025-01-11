@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: c207483a2388800489db9d1c100365e8
+guid: 54929a84c707315489f6ceecdc13cfdd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7607693779202889642
-    second: PP_face_0
+      213: 5750276734196562136
+    second: left mvt_0
+  - first:
+      213: 790995793931096594
+    second: left mvt_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +103,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PP_face_0
+      name: left mvt sheet_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 0
-        width: 28
+        x: 0
+        y: 32
+        width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4688578, y: 0.47775543}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 658a9aaa0da0c6690800000000000000
-      internalID: -7607693779202889642
+      spriteID: d325e9c6972ad43458001d55c2255393
+      internalID: 183987725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: left mvt sheet_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.4666332, y: 0.4710821}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76dd520e882c35b4c87f08037bbd7077
+      internalID: -1131080216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: left mvt sheet_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.46218446, y: 0.4777553}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 560808d24af1f3d4ab8172c52a188882
+      internalID: 387022109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: left mvt sheet_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.47997987, y: 0.48442864}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4835d274fe84f4442902bd4e820b5696
+      internalID: -1889954175
       vertices: []
       indices: 
       edges: []
@@ -125,7 +194,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7ca774300a3914a438639899a1faaf10
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +204,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PP_face_0: -7607693779202889642
+      left mvt sheet_0: 183987725
+      left mvt sheet_1: -1131080216
+      left mvt sheet_2: 387022109
+      left mvt sheet_3: -1889954175
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

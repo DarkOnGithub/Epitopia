@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: c207483a2388800489db9d1c100365e8
+guid: a0a5b8d066a9779458b90d7da1144f32
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7607693779202889642
-    second: PP_face_0
+      213: -7066957917841441480
+    second: right sword_0
+  - first:
+      213: 8315057787668539197
+    second: right sword_1
+  - first:
+      213: 8988335160938803056
+    second: right sword_2
+  - first:
+      213: -1381442049401264575
+    second: right sword_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +60,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,13 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PP_face_0
+      name: right sword_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 0
-        width: 28
-        height: 32
+        x: 23
+        y: 79
+        width: 20
+        height: 34
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +124,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 658a9aaa0da0c6690800000000000000
-      internalID: -7607693779202889642
+      spriteID: 83d3d60573f1ded90800000000000000
+      internalID: -7066957917841441480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: right sword_1
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 79
+        width: 20
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3724d8b005056370800000000000000
+      internalID: 8315057787668539197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: right sword_2
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 15
+        width: 20
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07f29e5e43bfcbc70800000000000000
+      internalID: 8988335160938803056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: right sword_3
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 15
+        width: 20
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14666a776c124dce0800000000000000
+      internalID: -1381442049401264575
       vertices: []
       indices: 
       edges: []
@@ -135,7 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PP_face_0: -7607693779202889642
+      right sword_0: -7066957917841441480
+      right sword_1: 8315057787668539197
+      right sword_2: 8988335160938803056
+      right sword_3: -1381442049401264575
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -4,28 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PP_face.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PP_face.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PP_left.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PP_left.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PP_right.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PP_right.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/left mvt.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/left mvt.gif.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/left sword test.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/left sword test.gif.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/right mvt sword.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/right mvt sword.gif.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/right mvt.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/right mvt.gif.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/static left.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/static left.gif.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/static right.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/static right.gif.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerMvt.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerMvt.cs" afterDir="false" />
-    </list>
+    <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -190,7 +169,7 @@
       <workItem from="1736285477654" duration="706000" />
       <workItem from="1736375278980" duration="1288000" />
       <workItem from="1736602309852" duration="209000" />
-      <workItem from="1736602561998" duration="7546000" />
+      <workItem from="1736602561998" duration="8889000" />
     </task>
     <task id="LOCAL-00001" summary="added a few libs">
       <option name="closed" value="true" />
@@ -280,7 +259,23 @@
       <option name="project" value="LOCAL" />
       <updated>1736602381813</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="debut du mvt et sprite du perso">
+      <option name="closed" value="true" />
+      <created>1736613667022</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1736613667022</updated>
+    </task>
+    <task id="LOCAL-00013" summary="ngdfhrsz">
+      <option name="closed" value="true" />
+      <created>1736616303664</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1736616303664</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,7 +302,9 @@
     <MESSAGE value="rewriting with threads" />
     <MESSAGE value="Debut mvt du perso implémenté" />
     <MESSAGE value="vzvqscq" />
-    <option name="LAST_COMMIT_MESSAGE" value="vzvqscq" />
+    <MESSAGE value="debut du mvt et sprite du perso" />
+    <MESSAGE value="ngdfhrsz" />
+    <option name="LAST_COMMIT_MESSAGE" value="ngdfhrsz" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
