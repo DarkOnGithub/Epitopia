@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Core;
 using JetBrains.Annotations;
 using MessagePack;
-using Network.Messages.Packets;
 using Unity.Collections;
 using Unity.Netcode;
-using UnityEngine;
 using Utils;
 using Type = System.Type;
 
@@ -14,7 +11,6 @@ namespace Network.Messages
 {
     public class MessageFactory : NetworkBehaviour
     {
-       
         private static readonly Dictionary<Type, byte> PacketsCount = new();
         private static readonly Dictionary<int, INetworkMessage> NetworkMessageIds = new();
         private static readonly Dictionary<Type, INetworkMessage> NetworkMessageTypes = new();
@@ -23,7 +19,7 @@ namespace Network.Messages
 
         public static bool IsInitialized => MessagingManager != null;
 
-        
+
         public override void OnNetworkSpawn()
         {
             MessagingManager = NetworkManager.Singleton.CustomMessagingManager;
@@ -67,11 +63,11 @@ namespace Network.Messages
                             return;
                         NetworkUtils.WriteBytesToWriter(ref buffer, newHeader);
                         NetworkUtils.WriteBytesToWriter(ref buffer, body);
-                        SendBufferTo(buffer, SendingMode.ServerToClient, NetworkDelivery.ReliableFragmentedSequenced, header.TargetIds);
+                        SendBufferTo(buffer, SendingMode.ServerToClient, NetworkDelivery.ReliableFragmentedSequenced,
+                                     header.TargetIds);
                     }
 
                     return;
-
             }
 
             if (!NetworkMessageIds.TryGetValue(header.PacketId, out var networkMessage))
@@ -100,11 +96,13 @@ namespace Network.Messages
             }
 
             networkMessage.SendMessageTo(packetData, mode,
-                                         author.GetValueOrDefault(NetworkManager.Singleton.LocalClientId), clientIds, delivery);
+                                         author.GetValueOrDefault(NetworkManager.Singleton.LocalClientId), clientIds,
+                                         delivery);
         }
 
 
-        public static void SendBufferTo(FastBufferWriter buffer, SendingMode mode,  NetworkDelivery delivery, [CanBeNull] ulong[] clientIds = null)
+        public static void SendBufferTo(FastBufferWriter buffer, SendingMode mode, NetworkDelivery delivery,
+            [CanBeNull] ulong[] clientIds = null)
         {
             switch (mode)
             {

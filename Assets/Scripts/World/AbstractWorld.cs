@@ -1,60 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Lifetime;
 using Core;
-using JetBrains.Annotations;
-using MessagePack;
-using Network;
-using Network.Server;
-using Network.Messages;
-using Network.Messages.Packets.World;
-using Players;
 using Unity.Netcode;
-using UnityEngine;
-using World.Blocks;
-using World.Chunks;
+using World.WorldGeneration;
 
 namespace World
 {
     public abstract class AbstractWorld : IDisposable
     {
-        protected BetterLogger Logger = new BetterLogger(typeof(AbstractWorld));
-        public readonly WorldIdentifier Identifier;
         private readonly ServerWorldHandler _serverHandler;
-        private ClientWorldHandler _clientHandler;
-
-        public ClientWorldHandler ClientHandler
-        {
-            get
-            {
-                return _clientHandler;
-            }
-        }
-
-        public ServerWorldHandler ServerHandler
-        {
-            get
-            {
-                if(!NetworkManager.Singleton.IsHost)
-                    Logger.LogWarning("ServerHandler is only available on the server");
-                return _serverHandler;
-            }
-        }
+        public readonly WorldIdentifier Identifier;
+        private bool _disposed;
+        protected BetterLogger Logger = new(typeof(AbstractWorld));
 
         public WorldQuery Query;
-        private bool _disposed;
+        public WorldGenerator WorldGenerator;
 
         public AbstractWorld(WorldIdentifier identifier)
         {
             Identifier = identifier;
             Query = new WorldQuery(this);
-            _clientHandler = new ClientWorldHandler(this);
-            if(NetworkManager.Singleton.IsHost)
+            ClientHandler = new ClientWorldHandler(this);
+            if (NetworkManager.Singleton.IsHost)
+            {
                 _serverHandler = new ServerWorldHandler(this);
-
+                WorldGenerator = new WorldGenerator(this);
+            }
         }
-        
+
+        public ClientWorldHandler ClientHandler { get; private set; }
+
+        public ServerWorldHandler ServerHandler
+        {
+            get
+            {
+                if (!NetworkManager.Singleton.IsHost)
+                    Logger.LogWarning("ServerHandler is only available on the server");
+                return _serverHandler;
+            }
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -66,10 +50,7 @@ namespace World
             if (_disposed)
                 return;
 
-            if (disposing)
-            {
-                _clientHandler = null;
-            }
+            if (disposing) ClientHandler = null;
 
             _disposed = true;
         }

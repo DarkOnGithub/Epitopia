@@ -11,20 +11,23 @@ namespace Network
         {
             if (File.Exists(ServerManager.ServersFilePath))
             {
-                string json = File.ReadAllText(ServerManager.ServersFilePath);
-                ServerManager.Servers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json) ?? new Dictionary<string, string>();
+                var json = File.ReadAllText(ServerManager.ServersFilePath);
+                ServerManager.Servers = JsonConvert.DeserializeObject<Dictionary<string, string>>(json) ??
+                                        new Dictionary<string, string>();
             }
             else
+            {
                 ServerManager.Servers = new Dictionary<string, string>();
+            }
         }
 
-        public static  void SaveServers()
+        public static void SaveServers()
         {
-            string json = JsonConvert.SerializeObject(ServerManager.Servers, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(ServerManager.Servers, Formatting.Indented);
             File.WriteAllText(ServerManager.ServersFilePath, json);
         }
 
-        public static  void AddServer(string serverName)
+        public static void AddServer(string serverName)
         {
             string id;
             do
@@ -36,7 +39,7 @@ namespace Network
             SaveServers();
         }
 
-        public static  Dictionary<string, string> GetAllServers()
+        public static Dictionary<string, string> GetAllServers()
         {
             return new Dictionary<string, string>(ServerManager.Servers);
         }

@@ -1,32 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using Core;
 using JetBrains.Annotations;
 using Network;
 using Network.Lobby;
-using Network.Lobby.Authentification;
-using Network.Messages;
-using Network.Messages.Packets.Network;
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
-using Unity.Networking.Transport.Relay;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
-using Unity.Services.Relay.Models;
 using UnityEngine;
 
 public static class LobbyManager
 {
     private const string JOIN_CODE = "JOIN_CODE";
+    private static readonly BetterLogger _logger = new(typeof(LobbyManager));
     [CanBeNull] public static Lobby CurrentLobby { get; private set; }
-    private static BetterLogger _logger = new(typeof(LobbyManager));
 
 
     public static IEnumerator HeartbeatLobby()

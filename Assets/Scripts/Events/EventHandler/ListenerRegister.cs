@@ -1,7 +1,4 @@
-﻿
-using System;
-
-namespace Events.EventHandler
+﻿namespace Events.EventHandler
 {
     public abstract class ListenerRegister<T> where T : IEvent
     {

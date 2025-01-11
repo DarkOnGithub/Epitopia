@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Core;
-using Network.Messages;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Relay;
@@ -9,7 +8,7 @@ namespace Network.Lobby
 {
     public static class RelayManager
     {
-        private static BetterLogger _logger = new(typeof(RelayManager));
+        private static readonly BetterLogger _logger = new(typeof(RelayManager));
 
 
         public static async Task StartClient(string joinCode)
@@ -34,7 +33,7 @@ namespace Network.Lobby
         }
 
         /// <summary>
-        /// Create a new relay allocation then start the host
+        ///     Create a new relay allocation then start the host
         /// </summary>
         /// <param name="maxPlayers">Max amount of player in the allocation</param>
         /// <returns>Return a join code</returns>

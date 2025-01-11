@@ -8,11 +8,11 @@ namespace Network.Lobby.Authentification
     public static class Authentification
     {
         public static string LocalPlayerId;
-        private static BetterLogger _logger = new(typeof(Authentification));
-        private static int _attempts = 10;
+        private static readonly BetterLogger _logger = new(typeof(Authentification));
+        private static readonly int _attempts = 10;
 
         /// <summary>
-        /// Sign the local user to unity services
+        ///     Sign the local user to unity services
         /// </summary>
         /// <exception cref="AuthenticationException">Thrown if any error while trying to sign in</exception>
         public static async Task TrySignIn()

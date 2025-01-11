@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Network;
 using Network.Client;
 using Network.Server;
 using QFSW.QC;
-using UnityEngine;
 
 namespace Core.Commands
 {
@@ -12,10 +10,10 @@ namespace Core.Commands
         [Command]
         public static async Task CreateServer(string name)
         {
-            await LobbyCommands.CreateLobby(name, 2);
-            Server.CreateInstance(name, null);
+            await LobbyCommands.CreateLobby(name, 4);
+            Server.CreateInstance(name);
         }
-        
+
         [Command]
         public static async Task JoinServer(string name)
         {

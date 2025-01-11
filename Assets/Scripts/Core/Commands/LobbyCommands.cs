@@ -4,13 +4,12 @@ using QFSW.QC;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using UnityEngine;
 
 namespace Core.Commands
 {
     public static class LobbyCommands
     {
-        private static BetterLogger _logger = new(typeof(LobbyCommands));
+        private static readonly BetterLogger _logger = new(typeof(LobbyCommands));
 
         [Command]
         public static async Task CreateLobby(string name, int size = 1)
@@ -38,7 +37,7 @@ namespace Core.Commands
             var lobbies = await LobbyManager.QueryLobbies(new QueryLobbiesOptions
                                                           {
                                                               Count = 1,
-                                                              Filters = new List<QueryFilter>()
+                                                              Filters = new List<QueryFilter>
                                                                         {
                                                                             new(QueryFilter.FieldOptions.Name, name,
                                                                                 QueryFilter.OpOptions.EQ)

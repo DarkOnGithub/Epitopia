@@ -1,20 +1,17 @@
-﻿
-using Events.EventHandler;
-using Events.Events;
-using UnityEngine;
+﻿using UnityEngine;
 using World;
 
 namespace Players
 {
     public class Player
     {
-        public string PlayerName;
-        public string PlayerId;
         public ulong ClientId;
+        public string PlayerId;
+        public string PlayerName;
         public Vector2 Position;
         public AbstractWorld World;
-        
-        
+
+
         public Player(string playerName, string playerId, ulong clientId)
         {
             PlayerName = playerName;
@@ -23,6 +20,5 @@ namespace Players
             World = WorldManager.GetWorld(WorldIdentifier.Overworld);
             PlayerManager.Players.Add(this);
         }
-        
     }
 }

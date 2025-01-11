@@ -6,7 +6,7 @@ namespace Utils
 {
     public static class VectorUtils
     {
-        private static int _chunkSize = Chunk.ChunkSize;
+        private static readonly int _chunkSize = Chunk.ChunkSize;
 
         public static int ToIndex(this Vector2Int vector)
         {
@@ -50,12 +50,12 @@ namespace Utils
         {
             return new Vector3Int(vector.x, vector.y);
         }
-        
+
         public static int Serialize(this Vector2Int vector)
         {
-            return vector.x << 16 | vector.y & 0xFFFF;
+            return (vector.x << 16) | (vector.y & 0xFFFF);
         }
-        
+
         public static Vector2Int Deserialize(this int value)
         {
             return new Vector2Int(value >> 16, value & 0xFFFF);

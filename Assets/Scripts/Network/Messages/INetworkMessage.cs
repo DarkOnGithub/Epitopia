@@ -1,6 +1,5 @@
 ﻿using System;
 using JetBrains.Annotations;
-using Network.Messages.Packets;
 using Unity.Netcode;
 
 namespace Network.Messages
@@ -11,6 +10,8 @@ namespace Network.Messages
         NetworkMessageIdenfitier Identifier { get; }
         int PacketId { get; }
         void OnPacketReceived(NetworkUtils.Header header, IMessageData messageData);
-        void SendMessageTo(IMessageData messageData, SendingMode mode, ulong author, [CanBeNull] ulong[] clients, NetworkDelivery delivery);
+
+        void SendMessageTo(IMessageData messageData, SendingMode mode, ulong author, [CanBeNull] ulong[] clients,
+            NetworkDelivery delivery);
     }
 }

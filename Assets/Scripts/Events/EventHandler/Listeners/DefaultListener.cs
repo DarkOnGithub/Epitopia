@@ -8,6 +8,5 @@ namespace Events.EventHandler
         {
             Action = action;
         }
-        
     }
 }

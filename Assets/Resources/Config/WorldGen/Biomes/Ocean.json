@@ -1,0 +1,24 @@
+{
+    "Name": "Ocean",
+    "Temperature": [0.3, 0.7],
+    "Humidity": [0.7, 1.0],
+    "Vegetation": [0.0, 0.0],
+    "Elevation": [0.0, 0.5],
+    "WaterLevel": 63,
+    "SurfaceRules": [
+        {
+            "Type": "Constant",
+            "Argument": "Stone",
+            "Height": 0
+        },
+        {
+            "Type": "Constant",
+            "Argument": "Stone",
+            "Height": 0
+        },
+        {
+            "Type": "Constant",
+            "Argument": "Stone"
+        }
+    ]
+}

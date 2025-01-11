@@ -8,18 +8,47 @@ namespace Utils
         {
             Directory.CreateDirectory(destinationDir);
 
-            foreach (string filePath in Directory.GetFiles(sourceDir))
+            foreach (var filePath in Directory.GetFiles(sourceDir))
             {
-                string fileName = Path.GetFileName(filePath);
-                string destFile = Path.Combine(destinationDir, fileName);
+                if (Path.GetExtension(filePath) == ".meta") continue;
+
+                var fileName = Path.GetFileName(filePath);
+                var destFile = Path.Combine(destinationDir, fileName);
                 File.Copy(filePath, destFile, overwrite);
             }
 
-            foreach (string subDir in Directory.GetDirectories(sourceDir))
+            foreach (var subDir in Directory.GetDirectories(sourceDir))
             {
-                string dirName = Path.GetFileName(subDir);
-                string destSubDir = Path.Combine(destinationDir, dirName);
+                var dirName = Path.GetFileName(subDir);
+                var destSubDir = Path.Combine(destinationDir, dirName);
                 CopyDirectory(subDir, destSubDir, overwrite);
+            }
+        }
+
+        public static void CreateDirectory(string path)
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        public static void CloneDirectory(string sourceDir, string destDir)
+        {
+            if (!Directory.Exists(sourceDir))
+                throw new DirectoryNotFoundException($"Source directory not found: {sourceDir}");
+
+            if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
+
+            foreach (var file in Directory.GetFiles(sourceDir))
+            {
+                if (Path.GetExtension(file) == ".meta") continue;
+
+                var destFile = Path.Combine(destDir, Path.GetFileName(file));
+                File.Copy(file, destFile, true);
+            }
+
+            foreach (var dir in Directory.GetDirectories(sourceDir))
+            {
+                var destSubDir = Path.Combine(destDir, Path.GetFileName(dir));
+                CloneDirectory(dir, destSubDir);
             }
         }
     }
