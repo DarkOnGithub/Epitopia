@@ -1,4 +1,6 @@
-﻿namespace Events.EventHandler
+﻿using System;
+
+namespace Events.EventHandler
 {
     public enum EventPriority
     {
@@ -10,6 +12,6 @@
     public static class EventPriorityHelper
     {
         public static EventPriority[] GetPriorities { get; } =
-            (EventPriority[])System.Enum.GetValues(typeof(EventPriority));
+            (EventPriority[])Enum.GetValues(typeof(EventPriority));
     }
 }

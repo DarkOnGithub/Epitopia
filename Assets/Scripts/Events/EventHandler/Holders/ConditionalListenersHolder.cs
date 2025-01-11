@@ -47,7 +47,7 @@ namespace Events.EventHandler.Holders
             foreach (var priorityTable in _listeners.Values)
                 if (priorityTable.TryGetValue(conditionalListener.Condition, out var listeners))
                 {
-                    var listenerToRemove = listeners.FirstOrDefault(l => l.Action == (Action<IEvent>)(object)listener);
+                    var listenerToRemove = listeners.FirstOrDefault(l => l.Action == listener);
                     if (listenerToRemove != null)
                     {
                         listeners.Remove(listenerToRemove);

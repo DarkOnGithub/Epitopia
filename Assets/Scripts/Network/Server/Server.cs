@@ -3,13 +3,8 @@ using System.IO;
 using System.Threading;
 using Events.Events;
 using JetBrains.Annotations;
-using Network.Messages;
 using Network.Messages.Packets.Network;
 using Players;
-using Unity.Netcode;
-using Unity.Services.Authentication;
-using UnityEditor;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using Utils;
 using World;
@@ -20,10 +15,16 @@ namespace Network.Server
     {
         private static readonly object _lock = new();
         private static Server _instance;
+        private bool _disposed;
 
         private Thread _worldThread;
-        public ServerInfo Info { get; private set; }
-        private bool _disposed;
+
+        private Server(string serverName, [CanBeNull] string serverId = null)
+        {
+            Info = ServerUtils.GetOrCreateInfo(serverName, serverId);
+        }
+
+        public ServerInfo Info { get; }
         public string ServerDirectory => $"{Application.persistentDataPath}/{Info.ServerId}";
         public string ConfigDirectory => $"{ServerDirectory}/Config";
 
@@ -37,9 +38,10 @@ namespace Network.Server
             }
         }
 
-        private Server(string serverName, [CanBeNull] string serverId = null)
+        public void Dispose()
         {
-            Info = ServerUtils.GetOrCreateInfo(serverName, serverId);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void InitializeConfig()
@@ -77,12 +79,6 @@ namespace Network.Server
         private static void StartServerThreads()
         {
             new Thread(WorldManager.ChunksDispatcher).Start();
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)

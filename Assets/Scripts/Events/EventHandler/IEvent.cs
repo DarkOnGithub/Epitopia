@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Events.EventHandler
+﻿namespace Events.EventHandler
 {
     public interface IEvent
     {

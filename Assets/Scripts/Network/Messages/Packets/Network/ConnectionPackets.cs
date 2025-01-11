@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MessagePack;
-using Players;
 using Unity.Netcode;
 using Unity.Services.Authentication;
-using UnityEngine;
 
 namespace Network.Messages.Packets.Network
 {
@@ -26,12 +24,13 @@ namespace Network.Messages.Packets.Network
     {
         public delegate void OnPlayerAdded(ConnectionMessage message);
 
-        public static event OnPlayerAdded OnPlayerAddedCallback;
-
         public delegate void OnPlayerRemoved(ConnectionMessage message);
 
-        public static event OnPlayerRemoved OnPlayerRemovedCallback;
         public override NetworkMessageIdenfitier Identifier { get; } = NetworkMessageIdenfitier.Network;
+
+        public static event OnPlayerAdded OnPlayerAddedCallback;
+
+        public static event OnPlayerRemoved OnPlayerRemovedCallback;
 
         protected override void OnPacketReceived(NetworkUtils.Header header, ConnectionMessage body)
         {

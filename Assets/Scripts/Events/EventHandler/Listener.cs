@@ -5,8 +5,8 @@ namespace Events.EventHandler
     public abstract class Listener
     {
         public Action<IEvent> Action;
+        public bool IsWeak;
         public EventPriority Priority = EventPriority.Normal;
-        public bool IsWeak = false;
 
         public Listener AsWeak(bool weak)
         {

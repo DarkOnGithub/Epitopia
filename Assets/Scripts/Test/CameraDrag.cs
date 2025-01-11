@@ -4,26 +4,11 @@ using UnityEngine.InputSystem;
 
 public class CameraDrag : MonoBehaviour
 {
-    #region Variables
-
-    private Vector3 _origin;
-    private Vector3 _difference;
-
-    private Camera _mainCamera;
-
-    private bool _isDragging;
-
-    #endregion
+    private Vector3 GetMousePosition => _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
     private void Awake()
     {
         _mainCamera = Camera.main;
-    }
-
-    public void OnDrag(InputAction.CallbackContext ctx)
-    {
-        if (ctx.started) _origin = GetMousePosition;
-        _isDragging = ctx.started || ctx.performed;
     }
 
     private void LateUpdate()
@@ -36,5 +21,20 @@ public class CameraDrag : MonoBehaviour
         PlayerManager.LocalPlayer.Position = _mainCamera.transform.position;
     }
 
-    private Vector3 GetMousePosition => _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+    public void OnDrag(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started) _origin = GetMousePosition;
+        _isDragging = ctx.started || ctx.performed;
+    }
+
+    #region Variables
+
+    private Vector3 _origin;
+    private Vector3 _difference;
+
+    private Camera _mainCamera;
+
+    private bool _isDragging;
+
+    #endregion
 }

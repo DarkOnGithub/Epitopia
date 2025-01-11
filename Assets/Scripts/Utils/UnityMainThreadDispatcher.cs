@@ -14,22 +14,37 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace PimDeWitte.UnityMainThreadDispatcher
 {
     /// Author: Pim de Witte (pimdewitte.com) and contributors, https://github.com/PimDeWitte/UnityMainThreadDispatcher
     /// <summary>
-    /// A thread-safe class which holds a queue with actions to execute on the next Update() method. It can be used to make calls to the main thread for
-    /// things such as UI Manipulation in Unity. It was developed for use in combination with the Firebase Unity plugin, which uses separate threads for event handling
+    ///     A thread-safe class which holds a queue with actions to execute on the next Update() method. It can be used to make
+    ///     calls to the main thread for
+    ///     things such as UI Manipulation in Unity. It was developed for use in combination with the Firebase Unity plugin,
+    ///     which uses separate threads for event handling
     /// </summary>
     public class UnityMainThreadDispatcher : MonoBehaviour
     {
         private static readonly Queue<Action> _executionQueue = new();
+
+
+        private static UnityMainThreadDispatcher _instance;
+
+
+        private void Awake()
+        {
+            if (_instance == null)
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+        }
 
         public void Update()
         {
@@ -39,8 +54,13 @@ namespace PimDeWitte.UnityMainThreadDispatcher
             }
         }
 
+        private void OnDestroy()
+        {
+            _instance = null;
+        }
+
         /// <summary>
-        /// Locks the queue and adds the IEnumerator to the queue
+        ///     Locks the queue and adds the IEnumerator to the queue
         /// </summary>
         /// <param name="action">IEnumerator function that will be executed from the main thread.</param>
         public void Enqueue(IEnumerator action)
@@ -52,7 +72,7 @@ namespace PimDeWitte.UnityMainThreadDispatcher
         }
 
         /// <summary>
-        /// Locks the queue and adds the Action to the queue
+        ///     Locks the queue and adds the Action to the queue
         /// </summary>
         /// <param name="action">function that will be executed from the main thread.</param>
         public void Enqueue(Action action)
@@ -61,7 +81,7 @@ namespace PimDeWitte.UnityMainThreadDispatcher
         }
 
         /// <summary>
-        /// Locks the queue and adds the Action to the queue, returning a Task which is completed when the action completes
+        ///     Locks the queue and adds the Action to the queue, returning a Task which is completed when the action completes
         /// </summary>
         /// <param name="action">function that will be executed from the main thread.</param>
         /// <returns>A Task that can be awaited until the action completes</returns>
@@ -93,9 +113,6 @@ namespace PimDeWitte.UnityMainThreadDispatcher
             yield return null;
         }
 
-
-        private static UnityMainThreadDispatcher _instance = null;
-
         public static bool Exists()
         {
             return _instance != null;
@@ -107,21 +124,6 @@ namespace PimDeWitte.UnityMainThreadDispatcher
                 throw new Exception(
                     "UnityMainThreadDispatcher could not find the UnityMainThreadDispatcher object. Please ensure you have added the MainThreadExecutor Prefab to your scene.");
             return _instance;
-        }
-
-
-        private void Awake()
-        {
-            if (_instance == null)
-            {
-                _instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            _instance = null;
         }
     }
 }

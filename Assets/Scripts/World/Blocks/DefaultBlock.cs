@@ -1,5 +1,6 @@
 ﻿using MessagePack;
-using Unity.VisualScripting;
+using Tiles;
+using UnityEngine;
 
 namespace World.Blocks
 {
@@ -7,51 +8,37 @@ namespace World.Blocks
     public struct DefaultBlockState : IBlockState
     {
         [Key(0)] public int Id { get; set; }
+        [Key(1)] public int State { get; set; }
         [IgnoreMember] public string Name { get; set; }
         [IgnoreMember] public BlockProperties Properties { get; set; }
         [IgnoreMember] public IBlock Block { get; set; }
-        [Key(1)] public int State { get; set; }
     }
 
     public class DefaultBlock : AbstractBlock<DefaultBlockState>
     {
-        public override DefaultBlockState DefaultState { get; }
-
-
         public DefaultBlock(int id, string name, BlockProperties properties) : base(id, name, properties)
         {
+            if (properties.SpritePath != null)
+                Tile = new BaseTile(Resources.Load<Texture2D>($"Sprites/Blocks/{properties.SpritePath}"), true, Name)
+                   .RuleTile;
+
+
             DefaultState = new DefaultBlockState
                            {
                                Id = id,
                                Name = name,
                                Properties = properties,
-                               Block = this,
-                               State = 0
+                               Block = this
                            };
         }
 
-        public override DefaultBlockState FromState(DefaultBlockState state)
-        {
-            return GetState(state.State);
-        }
+        public override DefaultBlockState DefaultState { get; }
 
-        public override DefaultBlockState GetState(object state)
-        {
-            if (state is not int cState)
-                return DefaultState;
-            return new DefaultBlockState()
-                   {
-                       Id = Id,
-                       Name = Name,
-                       Properties = Properties,
-                       Block = this,
-                       State = cState
-                   };
-        }
-
-        public override DefaultBlockState GetDefaultState()
-        {
-            return DefaultState;
-        }
+        public override DefaultBlockState FromState(DefaultBlockState state) => GetState(null);
+        
+        public override DefaultBlockState GetState(object state) => DefaultState;
+        
+        public override DefaultBlockState GetDefaultState() => DefaultState;
+        
     }
 }

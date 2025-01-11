@@ -1,25 +1,29 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using Core.Commands;
-using Events;
-using Events.EventHandler;
-using Events.Events;
-using MessagePack;
-using MessagePack.Resolvers;
-using Network.Messages;
-using Players;
-using QFSW.QC;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using World.Blocks;
-using World.Chunks;
-using Event = UnityEngine.Event;
-
+using World.WorldGeneration;
 
 public class Main : MonoBehaviour
 {
+    public static Main instance;
+
+    [SerializeField] public RuleTile ruleTile;
+
+    private async void Start()
+    {
+        Seed.Initialize();
+        instance = this;
+        BlockRegistry.RegisterBlocks();
+//await ServerCommand.CreateServer("Test");
+        foreach (var v in Resources.Load<RuleTile>("Sprites/Blocks/DefaultRuleTile").m_TilingRules)
+        {
+            Debug.Log(string.Join(" ", v.m_Neighbors));
+            Debug.Log(string.Join(" ", v.m_NeighborPositions));
+        }
+
+        StartCoroutine(Temp());
+    }
+
     private IEnumerator Temp()
     {
         yield return new WaitForFixedUpdate();
@@ -30,14 +34,6 @@ public class Main : MonoBehaviour
         //     Camera.main.transform.position += new Vector3(2, 0, 0);
         //     PlayerManager.LocalPlayer.Position = Camera.main.transform.position;
         // }
-    }
-
-    private async void Start()
-    {
-        BlockRegistry.RegisterBlocks();
-//await ServerCommand.CreateServer("Test");
-
-        StartCoroutine(Temp());
     }
 }
 

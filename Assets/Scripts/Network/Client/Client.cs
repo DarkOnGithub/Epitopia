@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Threading;
 using Events.Events;
-using JetBrains.Annotations;
-using Network.Messages;
 using Network.Messages.Packets.Network;
 using Players;
-using Unity.Netcode;
-using Unity.Services.Authentication;
-using UnityEngine;
 using World;
 
 namespace Network.Client
@@ -19,6 +14,10 @@ namespace Network.Client
 
         private Thread _clientThread;
         private bool _disposed;
+
+        private Client()
+        {
+        }
 
         // Singleton property for controlled access
         public static Client Instance
@@ -32,8 +31,10 @@ namespace Network.Client
             }
         }
 
-        private Client()
+        public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
 
@@ -58,12 +59,6 @@ namespace Network.Client
             }
 
             return _instance;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)

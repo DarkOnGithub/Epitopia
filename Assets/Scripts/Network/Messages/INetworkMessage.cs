@@ -1,6 +1,5 @@
 ﻿using System;
 using JetBrains.Annotations;
-using Network.Messages.Packets;
 using Unity.Netcode;
 
 namespace Network.Messages

@@ -7,7 +7,7 @@ namespace World.Blocks
         public int Id { get; }
         public string Name { get; }
         public BlockProperties Properties { get; }
-        public Tile Tile { get; }
+        public TileBase Tile { get; }
         public IBlockState IDefaultState { get; }
 
         public IBlockState GetDefaultState();

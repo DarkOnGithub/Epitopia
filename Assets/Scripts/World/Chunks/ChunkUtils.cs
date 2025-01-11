@@ -4,8 +4,6 @@ using Network.Messages;
 using Network.Messages.Packets.World;
 using PimDeWitte.UnityMainThreadDispatcher;
 using Unity.Netcode;
-using UnityEngine;
-using World.Blocks;
 
 namespace World.Chunks
 {
@@ -25,22 +23,22 @@ namespace World.Chunks
             return MessagePackSerializer.Deserialize<ChunkData>(data, compress ? Options : null);
         }
 
-        public static void SendChunk(Chunk chunk)
-        {
-            var serializedChunk = SerializeChunk(chunk, true);
-
-            MessageFactory.SendPacket(SendingMode.ServerToClient, new ChunkTransferMessage
-                                                                  {
-                                                                      ChunkData = serializedChunk,
-                                                                      Position = chunk.Center,
-                                                                      World = chunk.World.Identifier
-                                                                  }, chunk.Players.ToArray(), null,
-                                      NetworkDelivery.ReliableFragmentedSequenced);
-        }
+        // public static void SendChunk(Chunk chunk)
+        // {
+        //     var serializedChunk = SerializeChunk(chunk, true);
+        //
+        //     MessageFactory.SendPacket(SendingMode.ServerToClient, new ChunkTransferMessage
+        //                                                           {
+        //                                                               ChunkData = serializedChunk,
+        //                                                               Position = chunk.Center,
+        //                                                               World = chunk.World.Identifier
+        //                                                           }, chunk.Players.ToArray(), null,
+        //                               NetworkDelivery.ReliableFragmentedSequenced);
+        // }
 
         public static void SendChunkFromThread(Chunk chunk)
         {
-            var serializedChunk = SerializeChunk(chunk, true);
+            var serializedChunk = SerializeChunk(chunk);
             UnityMainThreadDispatcher.Instance().Enqueue(() =>
             {
                 MessageFactory.SendPacket(SendingMode.ServerToClient, new ChunkTransferMessage

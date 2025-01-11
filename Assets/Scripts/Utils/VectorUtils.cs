@@ -6,7 +6,7 @@ namespace Utils
 {
     public static class VectorUtils
     {
-        private static int _chunkSize = Chunk.ChunkSize;
+        private static readonly int _chunkSize = Chunk.ChunkSize;
 
         public static int ToIndex(this Vector2Int vector)
         {

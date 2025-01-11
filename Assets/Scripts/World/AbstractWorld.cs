@@ -1,32 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Lifetime;
 using Core;
-using JetBrains.Annotations;
-using MessagePack;
-using Network;
-using Network.Server;
-using Network.Messages;
-using Network.Messages.Packets.World;
-using Players;
 using Unity.Netcode;
-using UnityEngine;
-using World.Blocks;
-using World.Chunks;
 using World.WorldGeneration;
 
 namespace World
 {
     public abstract class AbstractWorld : IDisposable
     {
-        public WorldGenerator WorldGenerator;
-        protected BetterLogger Logger = new(typeof(AbstractWorld));
-        public readonly WorldIdentifier Identifier;
         private readonly ServerWorldHandler _serverHandler;
-        private ClientWorldHandler _clientHandler;
+        public readonly WorldIdentifier Identifier;
+        private bool _disposed;
+        protected BetterLogger Logger = new(typeof(AbstractWorld));
 
-        public ClientWorldHandler ClientHandler => _clientHandler;
+        public WorldQuery Query;
+        public WorldGenerator WorldGenerator;
+
+        public AbstractWorld(WorldIdentifier identifier)
+        {
+            Identifier = identifier;
+            Query = new WorldQuery(this);
+            ClientHandler = new ClientWorldHandler(this);
+            if (NetworkManager.Singleton.IsHost)
+            {
+                _serverHandler = new ServerWorldHandler(this);
+                WorldGenerator = new WorldGenerator(this);
+            }
+        }
+
+        public ClientWorldHandler ClientHandler { get; private set; }
 
         public ServerWorldHandler ServerHandler
         {
@@ -36,19 +37,6 @@ namespace World
                     Logger.LogWarning("ServerHandler is only available on the server");
                 return _serverHandler;
             }
-        }
-
-        public WorldQuery Query;
-        private bool _disposed;
-
-        public AbstractWorld(WorldIdentifier identifier)
-        {
-            WorldGenerator = new WorldGenerator(this);
-            Identifier = identifier;
-            Query = new WorldQuery(this);
-            _clientHandler = new ClientWorldHandler(this);
-            if (NetworkManager.Singleton.IsHost)
-                _serverHandler = new ServerWorldHandler(this);
         }
 
         public void Dispose()
@@ -62,7 +50,7 @@ namespace World
             if (_disposed)
                 return;
 
-            if (disposing) _clientHandler = null;
+            if (disposing) ClientHandler = null;
 
             _disposed = true;
         }

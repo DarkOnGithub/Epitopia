@@ -1,21 +1,26 @@
-﻿using UnityEngine;
-using World.Chunks;
+﻿using System.Threading;
+using UnityEngine;
 
 namespace World.WorldGeneration.Noise
 {
-    public abstract class NoiseGenerator
+    public class NoiseGenerator
     {
-        public FastNoise Noise;
-        public float Frequency;
-        public int Seed;
+        private readonly float _frequency;
+        private readonly FastNoise _noise;
+        private readonly int _seed;
 
-        protected NoiseGenerator(FastNoise noise, float frequency, int seed)
+        public NoiseGenerator(string treeHash, float frequency)
         {
-            Seed = seed;
-            Noise = noise;
-            Frequency = frequency;
+            _noise = FastNoise.FromEncodedNodeTree(treeHash);
+            _frequency = frequency;
+            _seed = Seed.Next();
         }
 
-        public abstract float[] Gen(Vector2 origin);
+        public float[] GenerateCache(Vector2Int pos, Vector2Int size)
+        {
+            var buffer = new float[size.x * size.y];
+            _noise.GenUniformGrid2D(buffer, pos.x, pos.y, size.x, size.y, _frequency, _seed);
+            return buffer;
+        }
     }
 }

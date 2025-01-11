@@ -2,12 +2,7 @@
 using System.Collections.Generic;
 using MessagePack;
 using Renderer;
-using Storage;
-using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using Utils;
 using World.Blocks;
 
 namespace World.Chunks
@@ -23,38 +18,12 @@ namespace World.Chunks
     {
         public const int ChunkSize = 16;
         public const int ChunkSizeSquared = ChunkSize * ChunkSize;
+        public readonly AbstractWorld World;
+        private bool _disposed;
+        private bool _isRendered;
 
         public IBlockState[] BlockStates = new IBlockState[ChunkSizeSquared];
         public HashSet<ulong> Players = new();
-        public readonly AbstractWorld World;
-        private bool _isRendered;
-        private bool _disposed;
-
-        public Vector2Int Center { get; }
-
-        public Vector2Int Origin
-        {
-            get
-            {
-                var half = ChunkSize / 2;
-                return new Vector2Int(Center.x - half, Center.y - half);
-            }
-        }
-
-        public bool IsEmpty { get; set; } = true;
-
-        public void UpdateContent(IBlockState[] newContent)
-        {
-            var air = BlockRegistry.BLOCK_AIR.GetDefaultState();
-            for (var i = 0; i < ChunkSizeSquared; i++)
-            {
-                var newState = newContent[i];
-                if (newState == null)
-                    BlockStates[i] = air;
-                else
-                    BlockStates[i] = BlockRegistry.GetBlock(newState.Id).FromIBlockState(newState);
-            }
-        }
 
         public Chunk(AbstractWorld worldIn, Vector2Int center)
         {
@@ -69,6 +38,38 @@ namespace World.Chunks
             UpdateContent(states);
             Center = center;
             IsEmpty = false;
+        }
+
+        public Vector2Int Center { get; }
+
+        public Vector2Int Origin
+        {
+            get
+            {
+                var half = ChunkSize / 2;
+                return new Vector2Int(Center.x - half, Center.y - half);
+            }
+        }
+
+        public bool IsEmpty { get; set; } = true;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void UpdateContent(IBlockState[] newContent)
+        {
+            var air = BlockRegistry.BLOCK_AIR.GetDefaultState();
+            for (var i = 0; i < ChunkSizeSquared; i++)
+            {
+                var newState = newContent[i];
+                if (newState == null)
+                    BlockStates[i] = air;
+                else
+                    BlockStates[i] = BlockRegistry.GetBlock(newState.Id).FromIBlockState(newState);
+            }
         }
 
         public T GetBlock<T>(int index) where T : IBlockState
@@ -150,7 +151,6 @@ namespace World.Chunks
             ChunkRenderer.UnRenderChunk(this);
         }
 
-        //CALL IT ONLY FROM  THE CLIENT
         public void Destroy()
         {
             if (_isRendered)
@@ -158,17 +158,13 @@ namespace World.Chunks
             World.ClientHandler.RemoveChunk(this);
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
                 return;
+
             Destroy();
+
             if (disposing)
             {
                 Players.Clear();

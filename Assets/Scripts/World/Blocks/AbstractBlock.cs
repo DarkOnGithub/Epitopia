@@ -1,30 +1,23 @@
-﻿using UnityEngine;
-using UnityEngine.Tilemaps;
-using Utils;
+﻿using UnityEngine.Tilemaps;
 
 namespace World.Blocks
 {
     public abstract class AbstractBlock<T> : IBlock
         where T : IBlockState
     {
-        public int Id { get; }
-        public string Name { get; }
-        public BlockProperties Properties { get; }
-        public Tile Tile { get; }
-        public IBlockState IDefaultState => DefaultState;
-        public abstract T DefaultState { get; }
-
         public AbstractBlock(int id, string name, BlockProperties properties)
         {
             Id = id;
             Name = name;
             Properties = properties;
-            Tile = SpriteUtils.GetTileFromSprite(Resources.Load<Sprite>($"Sprites/Blocks/{properties.SpritePath}"));
         }
 
-        public abstract T GetState(object state);
-        public abstract T GetDefaultState();
-        public abstract T FromState(T state);
+        public abstract T DefaultState { get; }
+        public int Id { get; }
+        public string Name { get; }
+        public BlockProperties Properties { get; }
+        public TileBase Tile { get; set; }
+        public IBlockState IDefaultState => DefaultState;
 
         IBlockState IBlock.GetDefaultState()
         {
@@ -40,5 +33,9 @@ namespace World.Blocks
         {
             return FromState((T)state);
         }
+
+        public abstract T GetState(object state);
+        public abstract T GetDefaultState();
+        public abstract T FromState(T state);
     }
 }

@@ -6,10 +6,9 @@ namespace Events.Events
 {
     public class OnClientStart : IEvent
     {
-        public bool IsCancelled { get; set; }
-
         public static readonly DefaultListenerHolder Holder = new();
         public static DefaultListenerRegister<OnClientStart> Registry = new(Holder);
+        public bool IsCancelled { get; set; }
 
         public static bool Invoke(OnClientStart @event)
         {

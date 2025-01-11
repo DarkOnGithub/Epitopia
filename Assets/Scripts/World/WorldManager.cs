@@ -4,29 +4,26 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Network;
-using Network.Messages;
-using Network.Messages.Packets.World;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using World.Chunks;
-using Network.Server;
-using TMPro;
 
 namespace World
 {
     public class WorldManager : MonoBehaviour
     {
-        public static WorldManager Instance { get; private set; }
-        public static ConcurrentDictionary<WorldIdentifier, AbstractWorld> Worlds { get; } = new();
+        private const int MaxChunksPerTick = 20;
+        private const int MaxGenerationPerTick = 20;
         private static readonly Dictionary<WorldIdentifier, Type> _worlds = new();
         public static readonly ConcurrentQueue<Chunk> ChunkSenderQueue = new();
         private static readonly Queue<Chunk> ToGenerateChunksQueue = new();
-        private const int MaxChunksPerTick = 20;
-        private const int MaxGenerationPerTick = 20;
 
-        [SerializeField] public Tilemap tilemap;
+        [SerializeField] public Tilemap worldTilemap;
+        [SerializeField] public Tilemap backgroundTilemap;
+
         [SerializeField] public Grid Grid;
+        public static WorldManager Instance { get; private set; }
+        public static ConcurrentDictionary<WorldIdentifier, AbstractWorld> Worlds { get; } = new();
 
         private void Awake()
         {
@@ -50,7 +47,7 @@ namespace World
             UnloadWorlds();
             foreach (var world in _worlds)
             {
-                var instance = (AbstractWorld)Activator.CreateInstance(world.Value, new object[] { world.Key });
+                var instance = (AbstractWorld)Activator.CreateInstance(world.Value, world.Key);
                 Worlds[world.Key] = instance;
             }
         }
@@ -75,7 +72,7 @@ namespace World
                 yield return waiter;
                 for (var i = 0; i < Mathf.Min(MaxGenerationPerTick, ToGenerateChunksQueue.Count); i++)
                     if (ToGenerateChunksQueue.TryDequeue(out var chunk))
-                        Task.Run(() => WorldGeneration.WorldGeneration.GenerateChunk(chunk.World, chunk));
+                        Task.Run(() => chunk.World.WorldGenerator.GenerateChunk(chunk));
             }
         }
 

@@ -3,9 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Core;
-using Network;
 using Network.Server;
-using QFSW.QC;
 using RocksDbSharp;
 using UnityEngine;
 using Utils;
@@ -14,8 +12,10 @@ namespace Storage
 {
     public class WorldStorage
     {
-        private static BetterLogger _logger = new(typeof(WorldStorage));
+        private static readonly BetterLogger _logger = new(typeof(WorldStorage));
         private static readonly DbOptions Options;
+
+        private readonly RocksDb _database;
 
         static WorldStorage()
         {
@@ -40,11 +40,9 @@ namespace Storage
             }
 
             Options = new DbOptions()
-                     .SetCreateIfMissing(true)
+                     .SetCreateIfMissing()
                      .SetCompression(Compression.Lz4);
         }
-
-        private RocksDb _database;
 
         public WorldStorage(string name)
         {

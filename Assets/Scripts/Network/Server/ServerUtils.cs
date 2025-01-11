@@ -2,8 +2,6 @@
 using JetBrains.Annotations;
 using Network.Lobby.Authentification;
 using Network.Server;
-using Unity.Netcode;
-using Unity.Services.Authentication;
 
 namespace Network
 {
@@ -13,7 +11,7 @@ namespace Network
         {
             if (serverId != null && ServerManager.Servers.ContainsKey(serverId)) throw new NotImplementedException();
 
-            return new ServerInfo()
+            return new ServerInfo
                    {
                        ServerId = new Guid().ToString(),
                        ServerName = serverName,

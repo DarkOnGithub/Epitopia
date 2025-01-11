@@ -3,6 +3,7 @@
 namespace World.Blocks
 {
     [Union(0, typeof(DefaultBlockState))]
+    [Union(1, typeof(Wall))]
     public interface IBlockState
     {
         public int Id { get; }

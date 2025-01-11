@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Core;
-using Network.Messages;
-using Network.Messages.Packets.World;
-using PimDeWitte.UnityMainThreadDispatcher;
 using Storage;
-using Unity.VisualScripting;
 using UnityEngine;
 using World.Chunks;
 
@@ -16,17 +10,24 @@ namespace World
     public class ServerWorldHandler : IDisposable
     {
         private static readonly BetterLogger _logger = new(typeof(ServerWorldHandler));
-        public AbstractWorld WorldIn { get; }
         private Dictionary<Vector2Int, Chunk> _chunks = new();
-        public WorldStorage Storage { get; }
-        public WorldQuery Query { get; }
-        private bool _disposed = false;
+        private bool _disposed;
 
         public ServerWorldHandler(AbstractWorld worldIn)
         {
             WorldIn = worldIn;
             Storage = new WorldStorage(worldIn.Identifier.GetWorldName());
             Query = new WorldQuery(worldIn, _chunks);
+        }
+
+        public AbstractWorld WorldIn { get; }
+        public WorldStorage Storage { get; }
+        public WorldQuery Query { get; }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void RemoveChunk(Chunk chunk)
@@ -88,12 +89,6 @@ namespace World
                     yield return chunk;
                 else
                     yield return Query.CreateEmptyChunk(position);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)

@@ -8,8 +8,8 @@ namespace Players
 {
     public static class PlayerManager
     {
-        public static Player LocalPlayer { get; set; }
         public static List<Player> Players = new();
+        public static Player LocalPlayer { get; set; }
 
         public static void OnPlayerConnected(ConnectionMessage connectionInfos)
         {

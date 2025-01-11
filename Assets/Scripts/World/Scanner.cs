@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Events.EventHandler;
 using Events.Events;
 using Network.Messages;
 using Network.Messages.Packets.World;
@@ -23,11 +22,11 @@ namespace World
 
         private static readonly HashSet<Vector2Int> RequestedChunks = new();
         private static readonly HashSet<Chunk> LoadedChunks = new();
+        private Vector2Int[] _scanPositionsBuffer;
 
         private int _scanRangeHorizontal;
         private int _scanRangeVertical;
         private WaitForSeconds _scanWaiter;
-        private Vector2Int[] _scanPositionsBuffer;
 
         public void Awake()
         {
@@ -109,7 +108,6 @@ namespace World
             }
         }
 
-        //!TODO REWRITE THIS IS UGLY AF
         private void Scan()
         {
             var localPlayer = PlayerManager.LocalPlayer;

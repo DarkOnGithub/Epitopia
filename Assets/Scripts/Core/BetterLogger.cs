@@ -6,7 +6,7 @@ namespace Core
 {
     public class BetterLogger
     {
-        private string _name;
+        private readonly string _name;
 
         public BetterLogger(Type obj)
         {

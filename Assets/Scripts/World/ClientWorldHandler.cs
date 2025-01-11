@@ -8,12 +8,19 @@ namespace World
 {
     public class ClientWorldHandler : IDisposable
     {
-        private bool _disposed = false;
-        public AbstractWorld WorldIn { get; }
+        private bool _disposed;
 
         public ClientWorldHandler(AbstractWorld worldIn)
         {
             WorldIn = worldIn;
+        }
+
+        public AbstractWorld WorldIn { get; }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void OnPacketReceived(NetworkUtils.Header header, ChunkTransferMessage message)
@@ -39,12 +46,6 @@ namespace World
         {
             WorldIn.Query.RemoveChunk(chunk.Center);
             DropChunks(new[] { chunk.Center });
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
