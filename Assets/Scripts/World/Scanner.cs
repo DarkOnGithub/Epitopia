@@ -11,13 +11,13 @@ using World.Chunks;
 
 namespace World
 {
-    public class Scanner : MonoBehaviour
+    public class Scanner : NetworkBehaviour
     {
         private const int SCAN_PADDING = 2;
         private const float SCAN_RATE = 20f;
         private const float SCAN_INTERVAL = 1f / SCAN_RATE;
 
-        private static Scanner _instance;
+        public static Scanner Instance;
         private static Coroutine _scannerCoroutine;
 
         private static readonly HashSet<Vector2Int> RequestedChunks = new();
@@ -28,27 +28,23 @@ namespace World
         private int _scanRangeVertical;
         private WaitForSeconds _scanWaiter;
 
-        public void Awake()
+        private void Awake()
         {
-            if (_instance != null)
-            {
-                Debug.LogError("Multiple Scanner instances detected!");
-                Destroy(this);
-                return;
-            }
-
-            _instance = this;
-            InitializeScanRanges();
-            _scanWaiter = new WaitForSeconds(SCAN_INTERVAL);
-            OnClientStart.Registry += @event => StartScheduler();
+            Instance = this;
         }
 
-        private void InitializeScanRanges()
+        public void InitializeScanner(Camera camera)
         {
-            if (Camera.main == null) return;
+            InitializeScanRanges(camera);
+            _scanWaiter = new WaitForSeconds(SCAN_INTERVAL);
+            StartScheduler();
+        }
 
-            var aspect = Camera.main.aspect;
-            var orthographicSize = Camera.main.orthographicSize;
+        private void InitializeScanRanges(Camera camera)
+        {
+
+            var aspect = camera.aspect;
+            var orthographicSize = camera.orthographicSize;
 
             Vector2 screenDimensions = new(
                 orthographicSize * 2 * aspect,
@@ -57,7 +53,6 @@ namespace World
 
             _scanRangeHorizontal = Mathf.CeilToInt(screenDimensions.x / Chunk.ChunkSize) / 2 + SCAN_PADDING;
             _scanRangeVertical = Mathf.CeilToInt(screenDimensions.y / Chunk.ChunkSize) / 2 + SCAN_PADDING;
-
             var maxPositions = _scanRangeHorizontal * 2 * _scanRangeVertical * 2;
             _scanPositionsBuffer = new Vector2Int[maxPositions];
         }
@@ -66,14 +61,14 @@ namespace World
         public static void StartScheduler()
         {
             StopScheduler();
-            _scannerCoroutine = _instance.StartCoroutine(_instance.ScanScheduler());
+            _scannerCoroutine = Instance.StartCoroutine(Instance.ScanScheduler());
         }
 
         public static void StopScheduler()
         {
             if (_scannerCoroutine != null)
             {
-                _instance.StopCoroutine(_scannerCoroutine);
+                Instance.StopCoroutine(_scannerCoroutine);
                 _scannerCoroutine = null;
             }
         }

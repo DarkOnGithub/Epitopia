@@ -1,54 +1,48 @@
-﻿using Unity.Netcode;
+using System.Threading.Tasks;
+using Players;
+using Unity.Netcode;
 using UnityEngine;
+using World;
 
-namespace Players
+public class PlayerController : NetworkBehaviour
 {
-    public class PlayerController : NetworkBehaviour
+    public int speed;
+    private Rigidbody2D rb;
+    public int JumpPower;
+    private float _horizontalFactor;
+    private Camera _camera;
+
+    public override async void OnNetworkSpawn()
     {
-        [SerializeField] private Rigidbody2D rb;
-        [SerializeField] private Transform groundCheck;
-        [SerializeField] private LayerMask groundLayer;
-
-        private float horizontal;
-        private bool isFacingRight = true;
-        private readonly float jumpingPower = 16f;
-        private readonly float speed = 8f;
-
-
-        private void FixedUpdate()
-        {
-            rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
-            horizontal = Input.GetAxisRaw("Horizontal");
-
-            if (Input.GetKeyDown(KeyCode.Space)) rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-
-            if (Input.GetKeyUp(KeyCode.Space) && rb.linearVelocity.y > 0f)
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
-            if (Camera.main != null && transform != null)
-            {
-                Camera.main.transform.position =
-                    new Vector3(transform.position.x, transform.position.y, -10f);
-                if (PlayerManager.LocalPlayer != null)
-                    PlayerManager.LocalPlayer.Position = transform.position;
-            }
-
-            Flip();
+        if (!IsLocalPlayer) {
+            GetComponent<Camera>().enabled = false;
+            return; // Ensure only the local player initializes the camera and scanner
         }
+        
+        _camera = GetComponent<Camera>();
+        rb = GetComponent<Rigidbody2D>();
+        await Task.Delay(2000);
+        Scanner.Instance.InitializeScanner(_camera);
+    }
 
-        private bool IsGrounded()
-        {
-            return Physics2D.OverlapCircle(groundCheck.position, 2f, groundLayer);
-        }
+    void Update()
+    {
+        if (!IsLocalPlayer) return; // Ensure only the local player processes input and updates the camera
+        if (PlayerManager.LocalPlayer == null) return;
+        if (_camera == null) return;
+        _horizontalFactor = Input.GetAxisRaw("Horizontal");
+        rb.linearVelocity = new Vector2(_horizontalFactor * speed, rb.linearVelocity.y);
+            
+        if (Input.GetKeyDown(KeyCode.Space))
+            rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
 
-        private void Flip()
-        {
-            if ((isFacingRight && horizontal < 0f) || (!isFacingRight && horizontal > 0f))
-            {
-                isFacingRight = !isFacingRight;
-                var localScale = transform.localScale;
-                localScale.x *= -1f;
-                transform.localScale = localScale;
-            }
-        }
+        PlayerManager.LocalPlayer.Position = transform.position;
+        _camera.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+    }
+
+    private bool IsGrounded()
+    {
+        // Implement ground check logic here
+        return true;
     }
 }

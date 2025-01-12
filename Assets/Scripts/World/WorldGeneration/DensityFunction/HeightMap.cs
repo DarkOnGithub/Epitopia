@@ -45,19 +45,20 @@ namespace World.WorldGeneration.DensityFunction
         }
 
 
-        public NoiseCache<float>  CacheHeight(Vector2Int origin)
+        public NoiseCache<float>  CacheHeight(Vector2Int origin, Vector2Int? size = null)
         {
-            var finalCache = _noiseGenerators[0].GenerateCache(origin);
+            size ??= _size;
+            var finalCache = _noiseGenerators[0].GenerateCache(origin, size.Value);
             var j = 0;
             foreach (var generator in _noiseGenerators.Skip(1))
             {
-                var layer = generator.GenerateCache(origin);
+                var layer = generator.GenerateCache(origin, size.Value);
                 for (var i = 0; i < finalCache.Length; i++)
                     finalCache[i] = Mathf.Lerp(finalCache[i], layer[i], Data.weightFactors[j]);
                 j++;
             }
 
-            var detailCache = _detailsGenerators[0].GenerateCache(origin);
+            var detailCache = _detailsGenerators[0].GenerateCache(origin, size.Value);
 
             return new NoiseCache<float>(finalCache, (x, i) =>
             {

@@ -41,6 +41,10 @@ namespace World.WorldGeneration
             WorldManager.ChunkSenderQueue.Enqueue(chunk);
         }
 
+        public int GetHeightAt(int x)
+        {
+              return (int)_heightMap.CacheHeight(new Vector2Int(x, 0), new Vector2Int(1, 1)).GetPoint(x);
+        }
         private Task<IBlockState[]> FillChunk(Vector2Int origin)
         {
             var heightMapCache = _heightMap.CacheHeight(origin);

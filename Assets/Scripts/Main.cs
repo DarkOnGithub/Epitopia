@@ -17,23 +17,7 @@ public class Main : MonoBehaviour
         instance = this;
         BlockRegistry.RegisterBlocks();
 
-        InputManager.BindNewKeyboard(Key.W, (OnKeyEvent e) =>
-        {
-            Debug.Log("W key: Pressing with: " + e.Ctx.action);
-        });
-        InputManager.BindNewKeyboard(Key.W, (OnKeyEvent e) =>
-        {
-            Debug.Log("hello world with W key");
-        });
-        
-        InputManager.BindNewMouse(KeyCode.Mouse0, (OnMouseEvent e) =>
-        {
-            Debug.Log("Left mouse button: Pressing with: " + e.Ctx.action);
-        });
-        InputManager.BindNewMouse(KeyCode.Mouse5, (OnMouseEvent e) =>
-        {
-            Debug.Log($"moving mouse at {e.Position}");
-        });
+
         
     }
 

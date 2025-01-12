@@ -13,7 +13,7 @@ public class PlayerFaceChange : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) //vers left
+        if (Input.GetKeyDown(KeyCode.A)) //vers left
         {
             actualFace = faceSprites[0];
         }

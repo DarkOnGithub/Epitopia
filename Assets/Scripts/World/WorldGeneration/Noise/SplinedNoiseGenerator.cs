@@ -28,11 +28,11 @@ namespace World.WorldGeneration.Noise
             _yOffset = yOffset;
         }
 
-        public float[] GenerateCache(Vector2Int pos)
+        public float[] GenerateCache(Vector2Int pos, Vector2Int size)
         {
             pos = new Vector2Int(pos.x, _yOffset);
 
-            var buffer = _generator.GenerateCache(pos, _size);
+            var buffer = _generator.GenerateCache(pos, size);
             for (var i = 0; i < buffer.Length; i++)
                 buffer[i] = _spline.ApplySpline(buffer[i]);
 

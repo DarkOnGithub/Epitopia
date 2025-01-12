@@ -5,76 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/LegacyCodes.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/ICancellable.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/ICancellable.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventPriority.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventPriority.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Holders.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Holders/ConditionalListenersHolder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Holders/ConditionalListenersHolder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Holders/DefaultListenerHolder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Holders/DefaultListenerHolder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/IEvent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/IEvent.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/IListenersHolder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/IListenersHolder.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Listener.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Listener.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/ListenerRegister.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/ListenerRegister.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Listeners.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Listeners/ConditionalListener.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Listeners/ConditionalListener.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Listeners/DefaultListener.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Listeners/DefaultListener.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Registers.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Registers/DefaultListenerRegister.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Registers/DefaultListenerRegister.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/Events/OnClientStart.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Events/Events/OnClientStart.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/shelf/Uncommitted_changes_before_Update_at_11_16_2024_9_38_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/shelf/Uncommitted_changes_before_Update_at_11_16_2024_9_38_PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/shelf/Uncommitted_changes_before_Update_at_16_11_2024_5_29_pm__Changes_.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerControlle.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerControlle.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PP_face.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PP_left.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PP_right.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PrefabChar/PlayerSwitchSide.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PrefabChar/PlayerSwitchSide.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PrefabChar/PlayerSwitchSide.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PrefabChar/PlayerSwitchSide.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/left mvt.gif.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/left sword test.gif.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/player_mvt.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/player_mvt.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/right mvt sword.gif.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/right mvt.gif.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/static left.gif.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/static right.gif.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Workspace.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Workspace.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/ServerCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/ServerCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Event.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/Event.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Event.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/Event.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/EventFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventFactory.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/EventFactory.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/EventInitializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventInitializer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/EventInitializer.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/EventListener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/EventListener.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/EventListener.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/ICancellable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/ICancellable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/ICancellable.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/ICancellable.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Priority.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/Priority.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Priority.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/Priority.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/SubscribeEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/SubscribeEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/SubscribeEvent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LegacyCodes/EventHandler/SubscribeEvent.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/Events/PlayerAddedEvent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/Events/PlayerAddedEvent.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Main.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Main.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Client/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Client/Client.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Lobby/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Lobby/LobbyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/NetworkPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/NetworkPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/Network/Connection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/Network/ConnectionPackets.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/Network/Connection.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/Network/ConnectionPackets.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Server/Server.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Server/Server.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerController.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerFaceChange.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerFaceChange.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Storage/WorldStorage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Storage/WorldStorage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/SpriteUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utils/SpriteUtils.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/AbstractWorld.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/AbstractWorld.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Chunks/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Chunks/Chunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Overworld.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Overworld.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerMvt.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerMvt.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/ServerWorldHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/ServerWorldHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGeneration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGeneration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunction/HeightMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunction/HeightMap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/SplinedNoiseGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/SplinedNoiseGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGenerator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,36 +60,20 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1a34d7ee85f44ff2a9df5d0ea5a6ee325735b0/74/8e79ffb9/Action`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1a34d7ee85f44ff2a9df5d0ea5a6ee325735b0/d0/ac7671ce/Activator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3dc3216a8d8c4ad89abd01aecf9f34c435400/00/720895ab/RocksSafePath.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3dc3216a8d8c4ad89abd01aecf9f34c435400/1e/462a8e52/RocksDb.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3dc3216a8d8c4ad89abd01aecf9f34c435400/76/7d870636/Native.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3dc3216a8d8c4ad89abd01aecf9f34c435400/7b/69e8e3c0/Options`1.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3dc3216a8d8c4ad89abd01aecf9f34c435400/7c/fa3f3a5c/Auto.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3dc3216a8d8c4ad89abd01aecf9f34c435400/a9/06430ddc/Importers.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3dc3216a8d8c4ad89abd01aecf9f34c435400/b2/a548bb8b/AccessHint.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3dc3216a8d8c4ad89abd01aecf9f34c435400/d9/8530aa1b/DbOptions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b5bf0c891ea345fe93688f835df32fdc1dda00/14/0d0ef029/Vector2.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b5bf0c891ea345fe93688f835df32fdc1dda00/50/b9f80619/GameObject.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b9f607e27b8644e0bf609b59dfb1c8525735b0/ad/9ae3e7db/Dictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c0c221501f3a41f8ac0af9d6a9dc9ff335fd90/ab/48f64fd3/SortedSet`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/3dc3216a8d8c4ad89abd01aecf9f34c435400/cd/78e4604b/RocksDbSharp.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3ea01e77be99618395f448b16bd7cc2bd4248bd9e5d8474964b2d97f39c5d74/System.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d44b17e136d09081da1e8fd0e8c83fde60e11818b9f2442d7ed8cb733fae895e/System.Collections.Generic.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/IMessageData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/INetworkMessage.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/MessageFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/NetworkPacket.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/NetworkUtils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Server/Server.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/World/Overworld.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Runtime/Core/NetworkManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Runtime/Serialization/FastBufferReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Tests/Runtime/InvalidConnectionEventsTest.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Tests/Runtime/Metrics/RttMetricsTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/Editor/ShaderGUI/ShadingModels/LitGUI.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/Samples~/URPPackageSamples/CameraStacking/3D Skybox/Scripts/SkyboxCamera.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/Tests/Runtime/DecalTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework/UnityEditor.TestRunner/TestLaunchers/RemotePlayerTestController.cs" root0="SKIP_HIGHLIGHTING" />
@@ -147,20 +89,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;World-Generation&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/Build\Epitopia.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\darke\Documents\Unity\Epitopia\Build" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.25f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\darke\Documents\Unity\Epitopia -debugCodeOptimization" />
@@ -253,6 +203,7 @@
       <workItem from="1732453298697" duration="4888000" />
       <workItem from="1732473503780" duration="13518000" />
       <workItem from="1732559456031" duration="544000" />
+      <workItem from="1736717352664" duration="5563000" />
     </task>
     <task id="LOCAL-00001" summary="added a few libs">
       <option name="closed" value="true" />
@@ -340,6 +291,17 @@
     <option name="unityProjectFolder" value="true" />
   </component>
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="added a few libs" />
