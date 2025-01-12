@@ -334,7 +334,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Soleil_0: -1901745395725515978
+      Soleil_1: -3371005469880710450
+      Soleil_2: 8694297011660096329
+      Soleil_3: -9192340537024394379
+      Soleil_4: -2510448868763588955
+      Soleil_5: -676097360738301612
+      Soleil_6: 3419871930410543390
+      Soleil_7: 3866818382452408361
+      Soleil_8: -7523865066610643616
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
