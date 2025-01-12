@@ -1,16 +1,18 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
+
 
 public class PlayerMvt : MonoBehaviour
 {
     public int speed;
     private Rigidbody2D rb;
     public int JumpPower;
+    
 
-   // public Sprite spriteStart;
-
-    //[SerializeField] private Sprite[] mvtFace;
-    //public Sprite actualFace;
-
+    //1 = vers droite, -1 = vers gauche (pour animation perso)
+    
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,18 +25,17 @@ public class PlayerMvt : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q)) //vers left
         {
             rb.linearVelocity =new Vector2(-speed * 2, rb.linearVelocity.y);
-            //actualFace = mvtFace[0];
+           // PersoDirection = -1;
+
         }
         if (Input.GetKeyDown(KeyCode.D)) //vers right
         {
             rb.linearVelocity = new Vector2(speed * 2, rb.linearVelocity.y);
-            //actualFace = mvtFace[1];
+            //PersoDirection = 1
         }
         if (Input.GetKeyDown(KeyCode.Space))  //jump
         {
             rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
-           // actualFace = mvtFace[2];
         }
-       // GetComponent<SpriteRenderer>().sprite = actualFace;
     }
 }
