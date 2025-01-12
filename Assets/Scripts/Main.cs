@@ -1,5 +1,8 @@
 ﻿using System.Collections;
+using Core;
+using Events.Events;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using World.Blocks;
 using World.WorldGeneration;
 
@@ -11,17 +14,27 @@ public class Main : MonoBehaviour
 
     private async void Start()
     {
-        Seed.Initialize();
         instance = this;
         BlockRegistry.RegisterBlocks();
-//await ServerCommand.CreateServer("Test");
-        foreach (var v in Resources.Load<RuleTile>("Sprites/Blocks/DefaultRuleTile").m_TilingRules)
-        {
-            Debug.Log(string.Join(" ", v.m_Neighbors));
-            Debug.Log(string.Join(" ", v.m_NeighborPositions));
-        }
 
-        StartCoroutine(Temp());
+        InputManager.BindNewKeyboard(Key.W, (OnKeyEvent e) =>
+        {
+            Debug.Log("W key: Pressing with: " + e.Ctx.action);
+        });
+        InputManager.BindNewKeyboard(Key.W, (OnKeyEvent e) =>
+        {
+            Debug.Log("hello world with W key");
+        });
+        
+        InputManager.BindNewMouse(KeyCode.Mouse0, (OnMouseEvent e) =>
+        {
+            Debug.Log("Left mouse button: Pressing with: " + e.Ctx.action);
+        });
+        InputManager.BindNewMouse(KeyCode.Mouse5, (OnMouseEvent e) =>
+        {
+            Debug.Log($"moving mouse at {e.Position}");
+        });
+        
     }
 
     private IEnumerator Temp()

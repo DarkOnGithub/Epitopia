@@ -8,6 +8,7 @@ using Players;
 using UnityEngine;
 using Utils;
 using World;
+using World.WorldGeneration;
 
 namespace Network.Server
 {
@@ -25,7 +26,7 @@ namespace Network.Server
         }
 
         public ServerInfo Info { get; }
-        public string ServerDirectory => $"{Application.persistentDataPath}/{Info.ServerId}";
+        public string ServerDirectory => $"{Application.persistentDataPath}/{Info.ServerName}";
         public string ConfigDirectory => $"{ServerDirectory}/Config";
 
         public static Server Instance
@@ -46,12 +47,13 @@ namespace Network.Server
 
         public void InitializeConfig()
         {
-            FileUtils.CloneDirectory(Path.Combine(Application.dataPath, "Resources") + "/Config",
+            FileUtils.CloneDirectory(Application.streamingAssetsPath + "/Config",
                                      ServerDirectory + "/Config");
         }
 
         public async void Initialize()
         {
+            Seed.Initialize(Info.ServerName.GetHashCode());
             InitializeConfig();
 
             ConnectionPacket.OnPlayerAddedCallback += PlayerManager.OnPlayerConnected;
@@ -70,8 +72,6 @@ namespace Network.Server
                 _instance = new Server(serverName, serverId);
                 _instance.Initialize();
             }
-
-            ;
 
             return _instance;
         }

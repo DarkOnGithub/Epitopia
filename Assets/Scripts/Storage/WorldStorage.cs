@@ -22,7 +22,7 @@ namespace Storage
             var destinationPath = Path.Combine($"{Path.GetDirectoryName(Application.dataPath)}", "runtimes");
             if (!Directory.Exists(destinationPath))
             {
-                var rocksDbFolder = Directory.GetDirectories($"{Application.dataPath}/Packages")
+                var rocksDbFolder = Directory.GetDirectories($"{Application.streamingAssetsPath}/Packages")
                                              .FirstOrDefault(
                                                   dir => Regex.IsMatch(Path.GetFileName(dir), @"^RocksDB\..*$"));
                 if (rocksDbFolder != null)
@@ -53,7 +53,7 @@ namespace Storage
             var fPath = $"{dataPath}/{name}";
             Directory.CreateDirectory(fPath);
             _database = RocksDb.Open(Options, fPath);
-            ClearDatabase();
+            //ClearDatabase();
         }
 
         public void ClearDatabase()
