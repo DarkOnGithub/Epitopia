@@ -1,4 +1,5 @@
 ﻿using Network.Messages.Packets.Network;
+using Network.Messages.Packets.Players;
 using Network.Messages.Packets.World;
 
 namespace Network.Messages
@@ -10,6 +11,7 @@ namespace Network.Messages
             new ConnectionPacket();
             new ChunkRequestPacket();
             new ChunkTransferPacket();
+            new PlayerControllerPacket();
         }
     }
 }

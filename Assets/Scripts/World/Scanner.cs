@@ -35,6 +35,7 @@ namespace World
 
         public void InitializeScanner(Camera camera)
         {
+            Debug.Log("Init scanner");
             InitializeScanRanges(camera);
             _scanWaiter = new WaitForSeconds(SCAN_INTERVAL);
             StartScheduler();
