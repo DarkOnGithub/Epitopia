@@ -1,0 +1,110 @@
+/* styles.css */
+
+/* Réinitialisation */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style général */
+body {
+    font-family: Arial;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f6f4;
+}
+
+@font-face {
+    font-family: 'Pixel';
+    src: url(images/Minecraft.ttf);
+}
+
+/* Style du logo */
+.logo {
+    width: 100px; /* Ajuster la taille selon vos besoins */
+    height: auto;
+}
+
+
+header {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif  ;
+    font-size: large;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+header h1{
+    font-family: 'Pixel', sans-serif;
+}
+header header{
+    text-align: right;
+    width: 0px;
+    height: 0px;
+}
+header nav ul {
+    list-style: armenian;
+    padding: 0;
+    margin-top: 10px;
+}
+
+header nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Sections */
+section {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #4c53af;
+    margin-bottom: 15px;
+}
+
+h3{
+    color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: x-large;
+}
+.gallery {
+    display: flex;
+    gap: 10px;
+}
+
+.gallery img {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 5px;
+}
+
+/* Contact */
+.social-links a {
+    color: #4CAF50;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+/* Pied de page */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
