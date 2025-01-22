@@ -9,6 +9,7 @@ namespace Menus.Parallax
         public GameObject cam;
         public float parallaxEffect;
         public float offset;
+
         private void Start()
         {
             _startPos = transform.position.x;
@@ -17,11 +18,11 @@ namespace Menus.Parallax
 
         private void Update()
         {
-            float temp = cam.transform.position.x * (1 - parallaxEffect);
-            float dist = cam.transform.position.x * parallaxEffect;
-            
-            transform.position = new Vector3(_startPos + dist, cam.transform.position.y - offset , transform.position.z);
-            
+            var temp = cam.transform.position.x * (1 - parallaxEffect);
+            var dist = cam.transform.position.x * parallaxEffect;
+
+            transform.position = new Vector3(_startPos + dist, cam.transform.position.y - offset, transform.position.z);
+
             if (temp > _startPos + _length) _startPos += _length;
             else if (temp < _startPos - _length) _startPos -= _length;
         }

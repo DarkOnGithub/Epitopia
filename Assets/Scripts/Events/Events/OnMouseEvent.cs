@@ -14,7 +14,7 @@ namespace Events.Events
         public InputAction.CallbackContext Ctx { get; set; }
         public KeyCode Mouse { get; set; }
         public Vector2 Position { get; set; }
-        
+
         public static bool Invoke(OnMouseEvent @event, KeyCode condition)
         {
             return Holder.Invoke(@event, condition);

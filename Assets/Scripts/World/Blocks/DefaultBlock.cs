@@ -34,11 +34,19 @@ namespace World.Blocks
 
         public override DefaultBlockState DefaultState { get; }
 
-        public override DefaultBlockState FromState(DefaultBlockState state) => GetState(null);
-        
-        public override DefaultBlockState GetState(object state) => DefaultState;
-        
-        public override DefaultBlockState GetDefaultState() => DefaultState;
-        
+        public override DefaultBlockState FromState(DefaultBlockState state)
+        {
+            return GetState(null);
+        }
+
+        public override DefaultBlockState GetState(object state)
+        {
+            return DefaultState;
+        }
+
+        public override DefaultBlockState GetDefaultState()
+        {
+            return DefaultState;
+        }
     }
 }

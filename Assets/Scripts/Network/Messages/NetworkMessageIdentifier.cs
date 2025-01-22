@@ -4,6 +4,6 @@
     {
         Network = 0x00,
         World = 0x01,
-        Player = 0x02,
+        Player = 0x02
     }
 }

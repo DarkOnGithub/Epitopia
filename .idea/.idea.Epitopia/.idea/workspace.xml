@@ -5,33 +5,113 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="F">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/Players.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/Players/PlayerControllerPacket.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/Players/PlayerControllerPacket.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Players/Camera.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Players/Camera/CameraController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Players/Camera/CameraController.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Players/LocalPlayer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Players/LocalPlayer.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Test/WorldGen.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Test/WorldGen/DistributionPreview.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Test/WorldGen/DistributionPreview.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Biome.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Biome.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/BiomeProvider.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/BiomeProvider.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Climate.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Climate.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Parameters.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Parameters.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Rtree.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Rtree.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/SurfaceRules.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/SurfaceRules.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/INoise.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/INoise.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/MultiNoise.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/MultiNoise.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/IStructure.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/IStructure.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/SmallVegetation.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/SmallVegetation.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/StructurePlacement.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/StructurePlacement.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Desert.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Desert.json.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Forest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Forest.json.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Mountains.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Mountains.json.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Savana.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/WorldSettings/Overworld.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PrefabChar/PlayerSwitchSide.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/PrefabChar/PlayerSwitchSide.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/DefaultRuleTile.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/DefaultRuleTile.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/Null.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/Null.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TileMapTest.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TileMapTest.unity.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Workspace.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Workspace.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/InputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/InputManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Registers/ConditionalRegisterListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/EventHandler/Registers/ConditionalRegisterListener.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/Events/OnKeyEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/Events/OnKeyEvent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Events/Events/OnMouseEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Events/Events/OnMouseEvent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Items/Item.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Items/Item.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Main.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Main.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/MenuController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/MenuController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/MenuPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/MenuPanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/OpenPanelButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/OpenPanelButton.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/VolumeSlider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/MainMenu/VolumeSlider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menus/Parallax/ParallaxLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menus/Parallax/ParallaxLayer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/NetworkMessageIdentifier.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/NetworkMessageIdentifier.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/PacketRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/PacketRegistry.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/HandShake.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/HandShake.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/Players/PlayerControllerPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Network/Messages/Packets/Players/PlayerControllerPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Packages/FastNoise2/FastNoise2.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Packages/FastNoise2/FastNoise2.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/Camera/CameraController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/Camera/CameraController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/LocalPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/LocalPlayer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerControlle.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerControlle.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerFaceChange.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerFaceChange.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Storage/WorldStorage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Storage/WorldStorage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/CameraDrag.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Test/CameraDrag.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/Input.inputactions" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Test/Input.inputactions.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/BlockRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/BlockRegistry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/DefaultBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/DefaultBlock.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunction/Carver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunction/Carver.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunction/HeightMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunction/HeightMap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunction/NoiseCache.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/DensityFunction/NoiseCache.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/NoiseGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/NoiseGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/SplinedNoiseGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/SplinedNoiseGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/Splines.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/Splines.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/ThresholdedNoiseGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Noise/ThresholdedNoiseGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Seed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Seed.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRP.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRP.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/LightMap.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/LightMap.shadergraph" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Beach.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Beach.json.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Savana.json.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Ocean.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Ocean.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Plains.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Plains.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/DensityFunctions/Carver.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/DensityFunctions/Carver.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/DensityFunctions/HeightMap.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/DensityFunctions/HeightMap.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Worlds.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/WorldSettings.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Worlds/Overworld.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Worlds/Overworld.json.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/WorldSettings/Overworld.json.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WorldGenTools/splines.py" beforeDir="false" afterPath="$PROJECT_DIR$/WorldGenTools/splines.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JSON File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -54,8 +134,8 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b5bf0c891ea345fe93688f835df32fdc1dda00/47/d93b84a4/Mathf.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/3dc3216a8d8c4ad89abd01aecf9f34c435400/cd/78e4604b/RocksDbSharp.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/darke/Documents/Unity/Epitopia/Assets/DefaultNetworkPrefabs.asset" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/IMessageData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/INetworkMessage.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/MessageFactory.cs" root0="FORCE_HIGHLIGHTING" />
@@ -63,6 +143,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/NetworkUtils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Server/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Parameters.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Runtime/Core/NetworkManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Runtime/Serialization/FastBufferReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Tests/Runtime/InvalidConnectionEventsTest.cs" root0="SKIP_HIGHLIGHTING" />
@@ -72,7 +153,10 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/Tests/Runtime/DecalTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework/UnityEditor.TestRunner/TestLaunchers/RemotePlayerTestController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui/Runtime/TMP/TMP_Text.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui/Runtime/UGUI/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../My project/Assets/Scripts/Terrain/LightSolver.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../My project/Assets/Scripts/Terrain/TerrainGenerator.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -87,7 +171,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;WorldGenPt2&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -200,6 +284,16 @@
       <workItem from="1732559456031" duration="544000" />
       <workItem from="1736717352664" duration="6131000" />
       <workItem from="1736791302672" duration="12449000" />
+      <workItem from="1737060053630" duration="3909000" />
+      <workItem from="1737138075152" duration="379000" />
+      <workItem from="1737138492004" duration="2883000" />
+      <workItem from="1737200545096" duration="6897000" />
+      <workItem from="1737221071988" duration="6944000" />
+      <workItem from="1737233341260" duration="3612000" />
+      <workItem from="1737287010891" duration="7561000" />
+      <workItem from="1737307581273" duration="12956000" />
+      <workItem from="1737495247747" duration="742000" />
+      <workItem from="1737555217361" duration="713000" />
     </task>
     <task id="LOCAL-00001" summary="added a few libs">
       <option name="closed" value="true" />

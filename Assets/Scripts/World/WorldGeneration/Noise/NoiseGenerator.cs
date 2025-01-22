@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace World.WorldGeneration.Noise
 {
-    public class NoiseGenerator
+    public class NoiseGenerator : INoise
     {
         private readonly float _frequency;
         private readonly FastNoise _noise;
@@ -16,10 +16,11 @@ namespace World.WorldGeneration.Noise
             _seed = Seed.Next();
         }
 
-        public float[] GenerateCache(Vector2Int pos, Vector2Int size)
+        public float[] GenerateCache(Vector2Int pos, Vector2Int? size = null)
         {
-            var buffer = new float[size.x * size.y];
-            _noise.GenUniformGrid2D(buffer, pos.x, pos.y, size.x, size.y, _frequency, _seed);
+            size ??= Vector2Int.zero;
+            var buffer = new float[size.Value.x * size.Value.y];
+            _noise.GenUniformGrid2D(buffer, pos.x, pos.y, size.Value.x, size.Value.y, _frequency, _seed);
             return buffer;
         }
     }

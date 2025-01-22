@@ -1,23 +1,19 @@
 {
     "Name": "Plains",
-    "Temperature": [0.5, 0.8],
-    "Humidity": [0.4, 0.6],
-    "Vegetation": [0.4, 0.6],
-    "Elevation": [0.8, 1.0],
-    "WaterLevel": 63,
+    "WaterLevel": 0,
     "SurfaceRules": [
         {
-            "Type": "Constant",
+            "Type": "Block",
             "Argument": "Grass",
             "Height": 1
         },
         {
-            "Type": "Constant",
+            "Type": "Block",
             "Argument": "Dirt",
             "Height": 5
         },
         {
-            "Type": "Constant",
+            "Type": "Block",
             "Argument": "Stone"
         }
     ]

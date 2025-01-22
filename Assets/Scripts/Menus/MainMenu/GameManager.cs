@@ -3,17 +3,18 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance {  get; private set; }
+    public static GameManager instance { get; private set; }
 
     private void Awake()
     {
-        if (instance != null) 
+        if (instance != null)
         {
             Destroy(this);
             return;
         }
+
         instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     public void ChangeScene(string _sceneName)

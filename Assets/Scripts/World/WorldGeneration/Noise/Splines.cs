@@ -19,7 +19,6 @@ public class Splines
             _points[i / 2] = new Vector2(floatingPoints[i], floatingPoints[i + 1]);
 
         Array.Sort(_points, (a, b) => a.x.CompareTo(b.x));
-        Debug.Log(string.Join(" ", _points));
     }
 
     public float ApplySpline(float p)

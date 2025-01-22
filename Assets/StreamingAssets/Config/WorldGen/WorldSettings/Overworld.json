@@ -1,0 +1,47 @@
+﻿{
+    "Name": "Overworld",
+    "BiomeSources": [
+        {
+            "Name": "Plains",
+            "Temperature": [0.4, 0.5],
+            "Humidity": [0.3, 0.4],
+            "Erosion": [0.1, 0.4],
+            "Continent": [0.4, 0.6]
+        },
+        {
+            "Name": "Ocean",
+            "Temperature": [0.4, 0.5],
+            "Humidity": [0.3, 0.4],
+            "Erosion": [0.7, 1.0],
+            "Continent": [0.0, 0.4]
+        },
+        {
+            "Name": "Desert",
+            "Temperature": [0.6, 0.8],
+            "Humidity": [0.1, 0.3],
+            "Erosion": [0.1, 0.4],
+            "Continent": [0.4, 0.6]
+        },
+        {
+            "Name": "Mountains",
+            "Temperature": [0.2, 0.4],
+            "Humidity": [0.3, 0.4],
+            "Erosion": [0.0, 0.5],
+            "Continent": [0.6, 1.0]
+        },
+        {
+            "Name": "Forest",
+            "Temperature": [0.3, 0.5],
+            "Humidity": [0.5, 0.7],
+            "Erosion": [0.2, 0.4],
+            "Continent": [0.4, 0.6]
+        },
+        {
+            "Name": "Savana",
+            "Temperature": [0.1, 0.3],
+            "Humidity": [0.2, 0.4],
+            "Erosion": [0.1, 0.3],
+            "Continent": [0.3, 0.6]
+        }
+    ]
+}

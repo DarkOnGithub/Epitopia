@@ -25,12 +25,14 @@ public class MenuPanel : MonoBehaviour
         UpdateState();
     }
 
-    public void ChangeState(bool _state) 
+    public void ChangeState(bool _state)
     {
         state = _state;
         UpdateState();
     }
 
-    public PanelType GetPanelType() { return type; }
-
+    public PanelType GetPanelType()
+    {
+        return type;
+    }
 }

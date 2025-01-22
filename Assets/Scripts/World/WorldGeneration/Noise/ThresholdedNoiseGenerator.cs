@@ -12,22 +12,23 @@ namespace World.WorldGeneration.Noise
 
         [JsonProperty] public float threshold { get; set; }
     }
+
     public class ThresholdedNoiseGenerator
     {
         private static readonly Vector2Int _size = new(Chunk.ChunkSize, Chunk.ChunkSize);
         private readonly NoiseGenerator _generator;
         public ThresholdedNoiseGeneratorData Data;
+
         public ThresholdedNoiseGenerator(ThresholdedNoiseGeneratorData data)
         {
             Data = data;
             _generator = new NoiseGenerator(data.noise, data.frequency);
         }
 
-        public float[] GenerateCache(Vector2Int pos)
+        public float[] GenerateCache(Vector2Int pos, Vector2Int? size = null)
         {
-            return _generator.GenerateCache(pos, _size);
+            size ??= _size;
+            return _generator.GenerateCache(pos, size.Value);
         }
-        
     }
-  
 }

@@ -7,6 +7,7 @@ namespace Players
     {
         private NetworkObject _networkObject;
         private UnityEngine.Camera _camera;
+
         public override void OnNetworkSpawn()
         {
             if (!IsOwner)
@@ -16,9 +17,10 @@ namespace Players
                 GetComponent<UnityEngine.Camera>().enabled = false;
                 return;
             }
+
             _camera = GetComponent<UnityEngine.Camera>();
             _networkObject = GetComponent<NetworkObject>();
-            Scanner.Instance.InitializeScanner(_camera);
+            //  Scanner.Instance.InitializeScanner(_camera);
         }
     }
 }

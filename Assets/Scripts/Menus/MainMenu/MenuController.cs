@@ -15,13 +15,14 @@ public enum PanelType
     None,
     Main,
     Option,
-    Credits,
+    Credits
 }
+
 public class MenuController : MonoBehaviour
 {
     [Header("Panels")] [SerializeField] private TMP_InputField field;
-    [SerializeField] private List<MenuPanel> panelsList = new List<MenuPanel>();
-    private Dictionary<PanelType, MenuPanel> panelsDict = new Dictionary<PanelType, MenuPanel>();
+    [SerializeField] private List<MenuPanel> panelsList = new();
+    private Dictionary<PanelType, MenuPanel> panelsDict = new();
 
     private GameManager gameManager;
 
@@ -29,13 +30,9 @@ public class MenuController : MonoBehaviour
     {
         gameManager = GameManager.instance;
 
-        foreach (MenuPanel _panel in panelsList) 
-        {
+        foreach (var _panel in panelsList)
             if (_panel)
-            {
                 panelsDict.Add(_panel.GetPanelType(), _panel);
-            }
-        }
 
 
         OpenOnePanel(PanelType.Main);
@@ -43,26 +40,23 @@ public class MenuController : MonoBehaviour
 
     private void OpenOnePanel(PanelType _type)
     {
-        foreach (MenuPanel _panel in panelsList)
-        {
-            _panel.ChangeState(false);
-        }
+        foreach (var _panel in panelsList) _panel.ChangeState(false);
 
-        if (_type != PanelType.None)
-        {
-            panelsDict[_type].ChangeState(true);
-        }
+        if (_type != PanelType.None) panelsDict[_type].ChangeState(true);
     }
+
     public void OpenPanel(PanelType _type)
     {
         OpenOnePanel(_type);
     }
+
     public async void ChangeScene(string _sceneName)
-   {
-       SceneManager.LoadScene("Scenes/Workspace");
-       await LobbyManager.CreateLobby("TestServer", 4);
-       Server.CreateInstance(name);
-   }
+    {
+        SceneManager.LoadScene("Scenes/Workspace");
+        await LobbyManager.CreateLobby("TestServer", 4);
+        Server.CreateInstance(name);
+    }
+
     public async void CreateServer()
     {
         if (field.text != "")
@@ -73,6 +67,7 @@ public class MenuController : MonoBehaviour
             Server.CreateInstance(field.text);
         }
     }
+
     public async void JoinServer()
     {
         if (field.text != "")
@@ -84,6 +79,7 @@ public class MenuController : MonoBehaviour
             Client.CreateInstance();
         }
     }
+
     public void Quit()
     {
         gameManager.Quit();

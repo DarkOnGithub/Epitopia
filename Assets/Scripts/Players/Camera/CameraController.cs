@@ -10,6 +10,7 @@ namespace Players.Camera
         private float _yOffset = 5f;
         private Player _localPlayer;
         private Vector2 _lastPosition = new();
+
         public override void OnNetworkSpawn()
         {
             _camera = GetComponent<UnityEngine.Camera>();

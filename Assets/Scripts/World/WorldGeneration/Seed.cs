@@ -6,6 +6,7 @@ namespace World.WorldGeneration
     {
         public static int SeedValue;
         private static Random _random;
+        public static bool Initialized => _random != null;
 
         public static void Initialize(int? seed = null)
         {

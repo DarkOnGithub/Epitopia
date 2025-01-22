@@ -4,7 +4,6 @@ using World.Chunks;
 
 namespace World.WorldGeneration.Noise
 {
-    
     public struct SplinedNoiseGeneratorData
     {
         [JsonProperty] public string noise { get; set; }
@@ -14,7 +13,7 @@ namespace World.WorldGeneration.Noise
         [JsonProperty] public float[] spline { get; set; }
     }
 
-    public class SplinedNoiseGenerator
+    public class SplinedNoiseGenerator : INoise
     {
         private static readonly Vector2Int _size = new(Chunk.ChunkSize, 1);
         private readonly NoiseGenerator _generator;
@@ -28,11 +27,12 @@ namespace World.WorldGeneration.Noise
             _yOffset = yOffset;
         }
 
-        public float[] GenerateCache(Vector2Int pos, Vector2Int size)
+        public float[] GenerateCache(Vector2Int pos, Vector2Int? size = null)
         {
+            size ??= _size;
             pos = new Vector2Int(pos.x, _yOffset);
 
-            var buffer = _generator.GenerateCache(pos, size);
+            var buffer = _generator.GenerateCache(pos, size.Value);
             for (var i = 0; i < buffer.Length; i++)
                 buffer[i] = _spline.ApplySpline(buffer[i]);
 

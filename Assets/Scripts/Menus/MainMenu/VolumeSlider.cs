@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class VolumeSlider : MonoBehaviour
 {
-    [SerializeField] Slider slider;
+    [SerializeField] private Slider slider;
 
-    void Start()
+    private void Start()
     {
         if (PlayerPrefs.HasKey("musicVolume"))
         {

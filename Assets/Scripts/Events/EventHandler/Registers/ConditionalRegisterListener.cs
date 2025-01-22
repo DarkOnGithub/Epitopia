@@ -7,19 +7,18 @@ namespace Events.EventHandler.Registers
     {
         public ConditionalListenerRegister(IListenersHolder holder) : base(holder)
         {
-            
         }
 
-        public ConditionalListenerRegister<T, TT> RegisterWhen(Action<T> listener, 
-            TT condition, 
+        public ConditionalListenerRegister<T, TT> RegisterWhen(Action<T> listener,
+            TT condition,
             EventPriority priority = EventPriority.Normal)
         {
             Holder.AddListener(new ConditionalListener<TT>()
                                {
-                                      Condition = condition,
-                                      Action = e => listener((T)e)
+                                   Condition = condition,
+                                   Action = e => listener((T)e)
                                }.WithPriority(priority));
-        
+
             return this;
         }
 
@@ -32,7 +31,7 @@ namespace Events.EventHandler.Registers
                                    Condition = condition,
                                    Action = e => listener((T)e)
                                }.WithPriority(priority).AsWeak(true));
-        
+
             return this;
         }
 

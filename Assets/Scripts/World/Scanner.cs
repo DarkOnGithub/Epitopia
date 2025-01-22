@@ -36,6 +36,7 @@ namespace World
         public void InitializeScanner(Camera camera)
         {
             Debug.Log("Init scanner");
+            Debug.Log(camera);
             InitializeScanRanges(camera);
             _scanWaiter = new WaitForSeconds(SCAN_INTERVAL);
             StartScheduler();
@@ -43,7 +44,6 @@ namespace World
 
         private void InitializeScanRanges(Camera camera)
         {
-
             var aspect = camera.aspect;
             var orthographicSize = camera.orthographicSize;
 

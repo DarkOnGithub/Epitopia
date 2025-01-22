@@ -575,7 +575,8 @@ PlayerSettings:
   webGLWebAssemblyBigInt: 0
   webGLCloseOnQuit: 0
   webWasm2023: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Standalone: NO_PLAYER;TOP_LAYER_ONLY
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

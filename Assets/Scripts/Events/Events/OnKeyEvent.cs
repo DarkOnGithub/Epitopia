@@ -12,7 +12,7 @@ namespace Events.Events
         public bool IsCancelled { get; set; }
         public InputAction.CallbackContext Ctx { get; set; }
         public Key Key { get; set; }
-        
+
         public static bool Invoke(OnKeyEvent @event, Key condition)
         {
             return Holder.Invoke(@event, condition);

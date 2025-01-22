@@ -6,19 +6,22 @@ class SplineEditor(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Spline Editor")
-        self.geometry("600x400")
+        self.geometry("600x450")  # Increased height to accommodate the point info label
 
-        self.points = [(0, 0), (1, 1)]  # Initial points adjusted for bottom-left to top-right
+        self.points = [(0, 0), (1,1)]  # Initial points adjusted for bottom-left to top-right
         self.selected_point_index = None
 
-        self.canvas_width = 1600
-        self.canvas_height = 920
+        self.canvas_width = 1800
+        self.canvas_height = 900
         self.canvas = tk.Canvas(self, width=self.canvas_width, height=self.canvas_height, bg="black")
         self.canvas.pack(pady=10)
 
         self.canvas.bind("<Button-1>", self.on_canvas_click)
         self.canvas.bind("<B1-Motion>", self.on_canvas_drag)
         self.canvas.bind("<ButtonRelease-1>", self.on_canvas_release)
+
+        self.point_info_label = ttk.Label(self, text="No point selected")
+        self.point_info_label.pack()
 
         self.button_frame = ttk.Frame(self)
         self.button_frame.pack()
@@ -74,10 +77,17 @@ class SplineEditor(tk.Tk):
         y = (1 - norm_y) * self.canvas_height
         return x, y
 
+    def update_point_info(self):
+        if self.selected_point_index is not None:
+            x, y = self.points[self.selected_point_index]
+            self.point_info_label.config(text=f"Selected Point: ({x:.4f}, {y:.4f})")
+        else:
+            self.point_info_label.config(text="No point selected")
+
     def on_canvas_click(self, event):
         x, y = self.canvas_to_coords(event.x, event.y)
         self.selected_point_index = None
-        min_distance = 20  # Minimum distance to consider a click on a point
+        min_distance = 10  # Minimum distance to consider a click on a point
         closest_index = -1
 
         for i, point in enumerate(self.points):
@@ -89,9 +99,11 @@ class SplineEditor(tk.Tk):
 
         if closest_index != -1:
             self.selected_point_index = closest_index
+            self.update_point_info()
         else:
             # Add a new point if no point is selected
             self.add_point_at(x, y)
+            self.update_point_info()  # Update to "No point selected" as a new point might not be selected immediately
 
         self.draw_spline()
 
@@ -103,9 +115,11 @@ class SplineEditor(tk.Tk):
                 max(0, min(1, y)),
             )
             self.draw_spline()
+            self.update_point_info()
 
     def on_canvas_release(self, event):
-        self.selected_point_index = None
+        # Keep the selected point highlighted after releasing the mouse
+        pass
 
     def add_point_at(self, x, y):
         # Insert the new point based on x-coordinate order
@@ -115,6 +129,7 @@ class SplineEditor(tk.Tk):
                 break
         else:
             self.points.append((x, y))
+        self.selected_point_index = None # Deselect any previously selected point
 
     def add_spline_point(self):
         # Add a new point in the middle, can be improved
@@ -132,24 +147,26 @@ class SplineEditor(tk.Tk):
         else:
             self.points = [(0.5, 0.5)]
         self.draw_spline()
+        self.update_point_info()
 
     def remove_spline_point(self):
-        if self.selected_point_index is not None and len(self.points) > 2:
+        if self.selected_point_index is not None and len(self.points) > 0:
             del self.points[self.selected_point_index]
             self.selected_point_index = None
             self.draw_spline()
-        elif len(self.points) > 0 and self.selected_point_index is not None:
-            del self.points[self.selected_point_index]
-            self.selected_point_index = None
-            self.draw_spline()
+            self.update_point_info()
+        else:
+            self.update_point_info() # Ensure "No point selected" is shown
 
     def invert_spline(self):
         self.points = [(p[0], 1 - p[1]) for p in self.points]
         self.draw_spline()
+        self.update_point_info()
 
     def reverse_spline_direction(self):
         self.points.reverse()
         self.draw_spline()
+        self.update_point_info()
 
     def get_spline_data_json(self):
         result_array = []
@@ -165,7 +182,3 @@ class SplineEditor(tk.Tk):
 if __name__ == "__main__":
     app = SplineEditor()
     app.mainloop()
-    # The print statement here will now only execute after the GUI is closed,
-    # but the export button will print during the GUI session.
-    # print("Spline Data (JSON):")
-    # print(app.get_spline_data_json())

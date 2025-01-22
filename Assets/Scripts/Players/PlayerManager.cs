@@ -19,12 +19,12 @@ namespace Players
             if (connectionInfos.ClientId == NetworkManager.Singleton.LocalClientId)
                 LocalPlayer = player;
 
-            if (NetworkManager.Singleton.IsHost)
-            {
-                await SetPlayerInfos(player);
-            }
-            player.Spawn();
-
+            if (NetworkManager.Singleton.IsHost) await SetPlayerInfos(player);
+#if NO_PLAYER
+            Scanner.Instance.InitializeScanner(UnityEngine.Camera.main);
+#else
+                player.Spawn();
+#endif
         }
 
         public static void OnPlayerDisconnected(ConnectionMessage player)

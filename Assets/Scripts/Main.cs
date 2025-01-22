@@ -16,9 +16,6 @@ public class Main : MonoBehaviour
     {
         instance = this;
         BlockRegistry.RegisterBlocks();
-
-
-        
     }
 
     private IEnumerator Temp()

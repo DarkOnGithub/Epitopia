@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace World.Blocks
 {
@@ -52,10 +53,14 @@ namespace World.Blocks
                                                                {
                                                                    SpritePath = "Stone_Wall"
                                                                });
-            // RegisterBlock<DefaultBlock>("Sand", new BlockProperties()
-            //                                                    {
-            //                                                        SpritePath = "sand_low"
-            //                                                    });
+            RegisterBlock<DefaultBlock>("Sand", new BlockProperties()
+                                                               {
+                                                                   SpritePath = "Sand"
+                                                               });
+            RegisterBlock<DefaultBlock>("DryGrass", new BlockProperties()
+                                                {
+                                                    SpritePath = "DryGrass"
+                                                });
             // RegisterBlock<DefaultBlock>("Water", new BlockProperties()
             //                                                    {
             //                                                        SpritePath = "water_low"

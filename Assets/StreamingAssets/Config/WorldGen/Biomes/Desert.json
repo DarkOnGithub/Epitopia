@@ -1,0 +1,20 @@
+﻿{
+    "Name": "Desert",
+    "WaterLevel": 0,
+    "SurfaceRules": [
+        {
+            "Type": "Block",
+            "Argument": "Sand",
+            "Height": 3
+        },
+        {
+            "Type": "Block",
+            "Argument": "Dirt",
+            "Height": 6
+        },
+        {
+            "Type": "Block",
+            "Argument": "Stone"
+        }
+    ]
+}

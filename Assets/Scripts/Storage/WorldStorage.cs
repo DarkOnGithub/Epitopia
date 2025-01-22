@@ -53,7 +53,7 @@ namespace Storage
             var fPath = $"{dataPath}/{name}";
             Directory.CreateDirectory(fPath);
             _database = RocksDb.Open(Options, fPath);
-            //ClearDatabase();
+            ClearDatabase();
         }
 
         public void ClearDatabase()

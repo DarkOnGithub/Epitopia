@@ -1,0 +1,20 @@
+{
+    "Name": "Savana",
+    "WaterLevel": 0,
+    "SurfaceRules": [
+        {
+            "Type": "DryGrass",
+            "Argument": "Grass",
+            "Height": 1
+        },
+        {
+            "Type": "Block",
+            "Argument": "Dirt",
+            "Height": 5
+        },
+        {
+            "Type": "Block",
+            "Argument": "Stone"
+        }
+    ]
+}

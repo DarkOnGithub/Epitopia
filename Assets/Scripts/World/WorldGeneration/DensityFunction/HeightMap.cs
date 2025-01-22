@@ -11,60 +11,55 @@ namespace World.WorldGeneration.DensityFunction
         public int lowerAmplitude { get; set; }
 
         public int yOffset { get; set; }
-        public SplinedNoiseGeneratorData[] noiseEntries { get; set; }
-        public float[] weightFactors { get; set; }
-        public SplinedNoiseGeneratorData[] detailEntries { get; set; }
+        public SplinedNoiseGeneratorData erosion { get; set; }
+        public SplinedNoiseGeneratorData continent { get; set; }
+        public float blendFactor { get; set; }
+        public SplinedNoiseGeneratorData detail { get; set; }
     }
 
 
     public class HeightMap
     {
         private static Vector2Int _size = new(Chunk.ChunkSize, 1);
-        private readonly SplinedNoiseGenerator[] _detailsGenerators;
-        private readonly SplinedNoiseGenerator[] _noiseGenerators;
+
+        public readonly SplinedNoiseGenerator ErosionNoise;
+        public readonly SplinedNoiseGenerator ContinentNoise;
+        
+        public SplinedNoiseGenerator DetailNoise;
+
         public HeightMapData Data { get; }
 
         public HeightMap(HeightMapData data)
         {
             Data = data;
-            foreach (var entry in data.noiseEntries)
-            {
-                _noiseGenerators = new SplinedNoiseGenerator[data.noiseEntries.Length];
 
-                for (var i = 0; i < data.noiseEntries.Length; i++)
-                    _noiseGenerators[i] = new SplinedNoiseGenerator(entry, data.yOffset);
-            }
+            ErosionNoise = new SplinedNoiseGenerator(data.erosion, data.yOffset);
+            ContinentNoise = new SplinedNoiseGenerator(data.continent, data.yOffset);
+            
+            DetailNoise = new SplinedNoiseGenerator(data.detail, data.yOffset);
 
-            foreach (var entry in data.detailEntries)
-            {
-                _detailsGenerators = new SplinedNoiseGenerator[data.detailEntries.Length];
-
-                for (var i = 0; i < data.detailEntries.Length; i++)
-                    _detailsGenerators[i] = new SplinedNoiseGenerator(entry, data.yOffset);
-            }
         }
 
 
-        public NoiseCache<float>  CacheHeight(Vector2Int origin, Vector2Int? size = null)
+        public NoiseCache<float> CacheHeight(Vector2Int origin, Vector2Int? size = null)
         {
             size ??= _size;
-            var finalCache = _noiseGenerators[0].GenerateCache(origin, size.Value);
-            var j = 0;
-            foreach (var generator in _noiseGenerators.Skip(1))
-            {
-                var layer = generator.GenerateCache(origin, size.Value);
-                for (var i = 0; i < finalCache.Length; i++)
-                    finalCache[i] = Mathf.Lerp(finalCache[i], layer[i], Data.weightFactors[j]);
-                j++;
-            }
 
-            var detailCache = _detailsGenerators[0].GenerateCache(origin, size.Value);
+            var erosionCache = ErosionNoise.GenerateCache(origin, size.Value);
+            var continentCache = ContinentNoise.GenerateCache(origin, size.Value);
+            var finalCache = new float[erosionCache.Length];
+            for (int i = 0; i < finalCache.Length; i++)
+                finalCache[i] = continentCache[i] - erosionCache[i];
+            // for (var i = 0; i < finalCache.Length; i++)
+            //     finalCache[i] = Mathf.Lerp(erosionCache[i], continentCache[i], Data.blendFactor);
 
-            return new NoiseCache<float>(finalCache, (x, i) =>
+            var detailCache = DetailNoise.GenerateCache(origin, size.Value);
+
+            return new NoiseCache<float>(finalCache, (x, i, _) =>
             {
                 var surfaceLevel = x * Data.higherAmplitude;
                 var detailLevel = detailCache[i] * Data.lowerAmplitude;
-                return surfaceLevel + detailLevel;
+                return (surfaceLevel + detailLevel) - (int)(Data.higherAmplitude * 0.12);
             });
         }
     }
