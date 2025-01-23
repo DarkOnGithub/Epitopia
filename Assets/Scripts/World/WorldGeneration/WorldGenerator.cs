@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Network.Server;
 using UnityEngine;
 using Utils;
@@ -25,7 +26,7 @@ namespace World.WorldGeneration
         public string DefaultPath = Server.Instance.ConfigDirectory + "/WorldGen/";
         public string DensityFunctionsPath => DefaultPath + "DensityFunctions/";
         public string WorldSettingsPath => DefaultPath + "WorldSettings/";
-
+        public const int PreloadDistance = Chunk.ChunkSize * 16;
 
         public AbstractWorld WorldIn;
 
@@ -42,17 +43,8 @@ namespace World.WorldGeneration
             var worldSettings = JsonUtils.LoadJson<WorldSettingsData>(WorldSettingsPath + world.Identifier + ".json");
             BiomeProvider = new BiomeProvider(worldSettings.BiomeSources, _heightMap.ContinentNoise,
                                               _heightMap.ErosionNoise);
-
-
-            // var multiNoises = new INoise[_heightMap.NoiseGenerators.Length + 3];
-            // multiNoises[0] = _heightMap.NoiseGenerators[1];
-            // multiNoises[1] = _heightMap.NoiseGenerators[0];
-            // for (var i = 0; i < 3; i++)
-            //     multiNoises[2 + i] = new NoiseGenerator("FwAAAIC/AACAPwAAAAAAAIA/CQA=", 0.0002f);
-            // BiomeProvider = new BiomeProvider(worldSettings.BiomeSources, multiNoises);
         }
-
-
+        
         public async Task GenerateChunk(Chunk chunk)
         {
             var chunkData = await FillChunk(chunk.Origin);
@@ -72,11 +64,10 @@ namespace World.WorldGeneration
             var emptyChunk = (IBlockState[])_emptyChunk.Clone();
             var biomeParametersGenerator =
                 BiomeProvider.Noises.GetCache(origin, new Vector2Int(Chunk.ChunkSize, Chunk.ChunkSize));
-            //  var biomeParameters = BiomeProvider.Noise.GetCache(origin, new Vector2Int(Chunk.ChunkSize, Chunk.ChunkSize));
             for (var x = 0; x < Chunk.ChunkSize; x++)
             {
                 var surfaceLevel = (int)heightMapCache.GetPoint(x);
-
+    
                 var multiPoint = biomeParametersGenerator.GetPoint(x);
                 var (continent, erosion, temperature, humidity) = BiomeProvider.ExtractParameters(multiPoint);
                 var biome = BiomeProvider.GetBiome(continent, erosion, temperature, humidity);
@@ -100,6 +91,7 @@ namespace World.WorldGeneration
                     }
                 }
             }
+
 
             return Task.FromResult(emptyChunk);
         }

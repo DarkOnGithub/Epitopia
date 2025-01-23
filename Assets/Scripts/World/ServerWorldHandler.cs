@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Core;
 using Storage;
 using UnityEngine;
+using World.Blocks;
 using World.Chunks;
 
 namespace World
@@ -10,31 +11,26 @@ namespace World
     public class ServerWorldHandler : IDisposable
     {
         private static readonly BetterLogger _logger = new(typeof(ServerWorldHandler));
-        private Dictionary<Vector2Int, Chunk> _chunks = new();
         private bool _disposed;
 
         public ServerWorldHandler(AbstractWorld worldIn)
         {
             WorldIn = worldIn;
             Storage = new WorldStorage(worldIn.Identifier.GetWorldName());
-            Query = new WorldQuery(worldIn, _chunks);
+            Query = new WorldQuery(worldIn);
         }
 
         public AbstractWorld WorldIn { get; }
         public WorldStorage Storage { get; }
         public WorldQuery Query { get; }
 
-        public void Dispose()
+  
+        public void PreloadChunk(Vector2Int position, Dictionary<Vector2Int, (IBlockState, bool)> blocks)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            var chunk = new Chunk(this.WorldIn, position, blocks);
+            WorldIn.Query.AddChunk(chunk);
         }
-
-        public void RemoveChunk(Chunk chunk)
-        {
-            // Implementation needed
-        }
-
+        
         public void PlayerRequestChunks(ulong player, Vector2Int[] positions)
         {
             foreach (var chunk in LoadChunksInRange(positions))
@@ -47,10 +43,8 @@ namespace World
             }
         }
 
-        public void AddPlayerToChunk(Chunk chunk, ulong player)
-        {
-            chunk.Players.Add(player);
-        }
+        public void AddPlayerToChunk(Chunk chunk, ulong player)  => chunk.Players.Add(player);
+        
 
         public void RemovePlayerFromChunk(Chunk chunk, ulong player)
         {
@@ -97,14 +91,17 @@ namespace World
 
             if (disposing)
             {
-                foreach (var chunk in _chunks.Values) DestroyChunk(chunk);
-                _chunks = null;
                 Storage.Close();
             }
 
             _disposed = true;
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
         ~ServerWorldHandler()
         {
             Dispose(false);

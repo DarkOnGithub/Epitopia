@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
+using Utils;
 using World.Blocks;
 using World.Chunks;
 
@@ -16,15 +18,11 @@ namespace World
             Chunks = chunks ?? new Dictionary<Vector2Int, Chunk>();
         }
 
-        public void RemoveChunk(Vector2Int chunkPosition)
-        {
-            Chunks.Remove(chunkPosition);
-        }
+        public void RemoveChunk(Vector2Int chunkPosition) => Chunks.Remove(chunkPosition);
+        
 
-        public void AddChunk(Chunk chunk)
-        {
-            Chunks.Add(chunk.Center, chunk);
-        }
+        public void AddChunk(Chunk chunk) => Chunks.Add(chunk.Center, chunk);
+        
 
         public void TryAddChunk(Chunk chunk)
         {
@@ -39,6 +37,7 @@ namespace World
                     yield return chunk;
         }
 
+        [CanBeNull]
         public Chunk GetChunk(Vector2Int chunkPosition)
         {
             return Chunks[chunkPosition];
@@ -74,6 +73,24 @@ namespace World
         {
             var chunkPosition = WorldUtils.FindNearestChunkPosition(worldPosition);
             return Chunks.TryGetValue(chunkPosition, out chunk);
+        }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="blockState"></param>
+    /// <returns>True if chunk exists otherwise false</returns>
+        public bool GetBlockFromWorldPosition(Vector2 position, out IBlockState blockState)
+        {
+            if (!FindNearestChunk(position, out var chunk))
+            {
+                blockState = BlockRegistry.BLOCK_AIR.GetDefaultState();
+                return false;
+            }
+            var localPosition = WorldUtils.WorldToLocalPosition(position, chunk.Center);
+            blockState = chunk.GetBlock(localPosition.ToIndex());
+            return true;
         }
     }
 }

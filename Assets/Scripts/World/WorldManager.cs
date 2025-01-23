@@ -89,6 +89,7 @@ namespace World
 
         public static void GenerateChunk(Chunk chunk)
         {
+            
             ToGenerateChunksQueue.Enqueue(chunk);
         }
     }

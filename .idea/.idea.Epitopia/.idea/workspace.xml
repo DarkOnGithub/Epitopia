@@ -4,12 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="F">
+    <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Workspace.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Workspace.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/AbstractWorld.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/AbstractWorld.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/BlockRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/BlockRegistry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Chunks/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Chunks/Chunk.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/ServerWorldHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/ServerWorldHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Biome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Biome.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/FlowerVegetation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/FlowerVegetation.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/IStructure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/IStructure.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/SmallVegetation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/FlowerVegetation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/SmallVegetation.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/FlowerVegetation.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/StructurePlacement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Structures/StructurePlacement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldQuery.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,15 +47,15 @@
     &quot;assignee&quot;: &quot;DarkOnGithub&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/DarkOnGithub/Epitopia.git",
-    "accountId": "e7a4e772-7863-4a4a-a156-0ed63083fcfc"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DarkOnGithub/Epitopia.git&quot;,
+    &quot;accountId&quot;: &quot;e7a4e772-7863-4a4a-a156-0ed63083fcfc&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b5bf0c891ea345fe93688f835df32fdc1dda00/47/d93b84a4/Mathf.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/3dc3216a8d8c4ad89abd01aecf9f34c435400/cd/78e4604b/RocksDbSharp.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1a34d7ee85f44ff2a9df5d0ea5a6ee325735b0/68/affa7087/Dictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1a34d7ee85f44ff2a9df5d0ea5a6ee325735b0/cc/da911711/IDisposable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/IMessageData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/INetworkMessage.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/MessageFactory.cs" root0="FORCE_HIGHLIGHTING" />
@@ -54,19 +64,32 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Server/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Parameters.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.2d.animation/Editor/SpriteLib/SpriteResolverInspector.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst/Editor/BurstDisassembler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst/Editor/LongTextArea.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst/Runtime/BurstString.Float.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ide.rider/Rider/Editor/Discovery.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ide.visualstudio/Editor/ProjectGeneration/ProjectGeneration.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem/InputSystem/Actions/InputActionAsset.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem/InputSystem/Editor/UITKAssetEditor/Views/ContextMenu.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Runtime/Core/NetworkManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Runtime/Serialization/FastBufferReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Tests/Runtime/InvalidConnectionEventsTest.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects/Tests/Runtime/Metrics/RttMetricsTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core/Runtime/Textures/PowerOfTwoTextureAtlas.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/Editor/ShaderGUI/ShadingModels/LitGUI.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/Samples~/URPPackageSamples/CameraStacking/3D Skybox/Scripts/SkyboxCamera.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/Tests/Runtime/DecalTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.rendering.light-transport/Runtime/UnifiedRayTracing/Common/Utilities/BlockAllocator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.shadergraph/Editor/Data/Graphs/GraphData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.shadergraph/Editor/Data/Nodes/Input/CustomInterpolatorNode.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.shadergraph/Editor/Drawing/PreviewManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.shadergraph/Editor/Generation/Processors/CustomInterpolatorUtils.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.shadergraph/Tests/Editor/UnitTests/BlockNodeTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.test-framework/UnityEditor.TestRunner/TestLaunchers/RemotePlayerTestController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui/Runtime/TMP/TMP_Text.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui/Runtime/UGUI/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../My project/Assets/Scripts/Terrain/LightSolver.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../My project/Assets/Scripts/Terrain/TerrainGenerator.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -78,19 +101,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "WorldGenPT2",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;WorldGenPT2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="$PROJECT_DIR$/Build\Epitopia.exe" />
@@ -204,7 +227,11 @@
       <workItem from="1737307581273" duration="12956000" />
       <workItem from="1737495247747" duration="742000" />
       <workItem from="1737555217361" duration="713000" />
-      <workItem from="1737559786952" duration="4167000" />
+      <workItem from="1737559786952" duration="4643000" />
+      <workItem from="1737623068588" duration="6439000" />
+      <workItem from="1737629873103" duration="3124000" />
+      <workItem from="1737636040200" duration="372000" />
+      <workItem from="1737636513087" duration="3673000" />
     </task>
     <task id="LOCAL-00001" summary="added a few libs">
       <option name="closed" value="true" />
@@ -286,7 +313,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736723544179</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="WorldGenPT2">
+      <option name="closed" value="true" />
+      <created>1737565164823</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1737565164823</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -324,7 +359,8 @@
     <MESSAGE value="aaa" />
     <MESSAGE value="rewriting with threads" />
     <MESSAGE value="F" />
-    <option name="LAST_COMMIT_MESSAGE" value="F" />
+    <MESSAGE value="WorldGenPT2" />
+    <option name="LAST_COMMIT_MESSAGE" value="WorldGenPT2" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

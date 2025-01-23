@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using World.Blocks;
 
 namespace World.WorldGeneration.Structures
 {
@@ -13,17 +15,14 @@ namespace World.WorldGeneration.Structures
             VerticalStructures = verticalStructures;
         }
 
-        public void PlaceStructures(Vector2Int position, float point)
+        public List<Dictionary<Vector2Int, (IBlockState, bool)>> PlaceStructures(Vector2Int position, float point)
         {
+            var result = new List<Dictionary<Vector2Int, (IBlockState, bool)>>();
             foreach (var structure in SurfaceStructures)
-            {
-                if (structure.CanPlace(position, point))
-                {
-                    structure.Place(position);
-                }
-            }
+                result.Add(structure.TryPlace(position, point));
+            return result;
         }
-        
-        
+
+
     }
 }

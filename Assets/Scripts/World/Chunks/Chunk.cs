@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using MessagePack;
 using Renderer;
 using UnityEngine;
+using Utils;
 using World.Blocks;
 
 namespace World.Chunks
@@ -12,6 +14,7 @@ namespace World.Chunks
     {
         [Key(0)] public Vector2Int Center { get; set; }
         [Key(1)] public IBlockState[] BlockStates { get; set; }
+        [Key(2)] [CanBeNull] public Dictionary<Vector2Int, (IBlockState, bool)> BlockToPlace { get; set; }
     }
 
     public class Chunk : IDisposable
@@ -21,10 +24,19 @@ namespace World.Chunks
         public readonly AbstractWorld World;
         private bool _disposed;
         private bool _isRendered;
-
+        
+        public Dictionary<Vector2Int, (IBlockState, bool)> BlockToPlace { get; set; }
         public IBlockState[] BlockStates = new IBlockState[ChunkSizeSquared];
         public HashSet<ulong> Players = new();
 
+        public Chunk(AbstractWorld worldIn, Vector2Int center,Dictionary<Vector2Int, (IBlockState, bool)> blockToPlace)
+        {
+            World = worldIn ?? throw new ArgumentNullException(nameof(worldIn));
+            UpdateContent(new IBlockState[ChunkSizeSquared]);
+            Center = center;
+            BlockToPlace = blockToPlace;
+        }
+        
         public Chunk(AbstractWorld worldIn, Vector2Int center)
         {
             World = worldIn ?? throw new ArgumentNullException(nameof(worldIn));
@@ -53,11 +65,6 @@ namespace World.Chunks
 
         public bool IsEmpty { get; set; } = true;
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         public void UpdateContent(IBlockState[] newContent)
         {
@@ -96,15 +103,11 @@ namespace World.Chunks
             BlockStates[index] = null;
         }
 
-        public T GetBlockSafe<T>(int index) where T : IBlockState
-        {
-            return IsValidIndex(index) ? (T)BlockStates[index] : default;
-        }
+        public T GetBlockSafe<T>(int index) where T : IBlockState  => IsValidIndex(index) ? (T)BlockStates[index] : default;
+        
 
-        public IBlockState GetBlockSafe(int index)
-        {
-            return IsValidIndex(index) ? BlockStates[index] : null;
-        }
+        public IBlockState GetBlockSafe(int index) => IsValidIndex(index) ? BlockStates[index] : null;
+        
 
         public void SetBlockSafe(int index, IBlockState state)
         {
@@ -116,20 +119,17 @@ namespace World.Chunks
             if (IsValidIndex(index)) BlockStates[index] = null;
         }
 
-        public ChunkData GetChunkData()
-        {
-            return new ChunkData
+        public ChunkData GetChunkData() => new ChunkData
                    {
                        Center = Center,
-                       BlockStates = BlockStates
+                       BlockStates = BlockStates,
+                       BlockToPlace = (BlockToPlace == null || BlockToPlace.Count == 0) ? null : BlockToPlace
                    };
-        }
+        
 
 
-        private static bool IsValidIndex(int index)
-        {
-            return index >= 0 && index < ChunkSizeSquared;
-        }
+        private static bool IsValidIndex(int index) => index >= 0 && index < ChunkSizeSquared;
+        
 
         private static void ValidateIndex(int index)
         {
@@ -179,5 +179,11 @@ namespace World.Chunks
         {
             Dispose(false);
         }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
     }
 }

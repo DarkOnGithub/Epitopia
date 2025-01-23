@@ -57,7 +57,7 @@ namespace World.Blocks
                                                                {
                                                                    SpritePath = "Sand"
                                                                });
-            RegisterBlock<DefaultBlock>("DryGrass", new BlockProperties()
+                RegisterBlock<DefaultBlock>("DryGrass", new BlockProperties()
                                                 {
                                                     SpritePath = "DryGrass"
                                                 });

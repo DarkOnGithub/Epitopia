@@ -15,6 +15,19 @@ namespace World
         public WorldQuery Query;
         public WorldGenerator WorldGenerator;
 
+        
+        public ClientWorldHandler ClientHandler { get; private set; }
+
+        public ServerWorldHandler ServerHandler
+        {
+            get
+            {
+                if (!NetworkManager.Singleton.IsHost)
+                    Logger.LogWarning("ServerHandler is only available on the server");
+                return _serverHandler;
+            }
+        }
+        
         public AbstractWorld(WorldIdentifier identifier)
         {
             Identifier = identifier;
@@ -27,24 +40,12 @@ namespace World
             }
         }
 
-        public ClientWorldHandler ClientHandler { get; private set; }
-
-        public ServerWorldHandler ServerHandler
-        {
-            get
-            {
-                if (!NetworkManager.Singleton.IsHost)
-                    Logger.LogWarning("ServerHandler is only available on the server");
-                return _serverHandler;
-            }
-        }
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
@@ -54,7 +55,6 @@ namespace World
 
             _disposed = true;
         }
-
         ~AbstractWorld()
         {
             Dispose(false);

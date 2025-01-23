@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using World.Blocks;
 
 namespace World.WorldGeneration.Structures
 {
     public interface IStructure
     {
         public float Probability { get; }
-        public Vector2 GetBounds();
-        public bool CanPlace(Vector2 pos, float point);
-        public void Place(Vector2 pos);
+        public Vector2Int GetBounds();
+        public Dictionary<Vector2Int, (IBlockState, bool)> TryPlace(Vector2 position, float point);
     }
 }
