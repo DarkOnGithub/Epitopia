@@ -50,8 +50,7 @@ namespace World.WorldGeneration.DensityFunction
             var finalCache = new float[erosionCache.Length];
             for (int i = 0; i < finalCache.Length; i++)
                 finalCache[i] = continentCache[i] - erosionCache[i];
-            // for (var i = 0; i < finalCache.Length; i++)
-            //     finalCache[i] = Mathf.Lerp(erosionCache[i], continentCache[i], Data.blendFactor);
+
 
             var detailCache = DetailNoise.GenerateCache(origin, size.Value);
 

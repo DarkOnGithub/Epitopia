@@ -23,8 +23,8 @@ namespace World.Blocks
         {
             BLOCK_AIR = RegisterBlock<DefaultBlock>("Air", new BlockProperties
                                                            {
-                                                               IsCollidable = false,
-                                                               SpritePath = null
+                                                               SpritePath = null,
+                                                               IsSolid = false
                                                            });
             // BLOCK_NULL = RegisterBlock<DefaultBlock>("Null", new BlockProperties()
             //                                                  {
@@ -33,17 +33,14 @@ namespace World.Blocks
             BLOCK_DIRT = RegisterBlock<DefaultBlock>("Dirt", new BlockProperties
                                                              {
                                                                  SpritePath = "Dirt",
-                                                                 Tileable = true
                                                              });
             BLOCK_GRASS = RegisterBlock<DefaultBlock>("Grass", new BlockProperties
                                                                {
                                                                    SpritePath = "Grass",
-                                                                   Tileable = true
                                                                });
             BLOCK_STONE = RegisterBlock<DefaultBlock>("Stone", new BlockProperties
                                                                {
                                                                    SpritePath = "Stone",
-                                                                   Tileable = true
                                                                });
             WALL_DIRT = RegisterBlock<BaseWall>("Dirt_Wall", new BlockProperties
                                                              {
@@ -60,6 +57,11 @@ namespace World.Blocks
                 RegisterBlock<DefaultBlock>("DryGrass", new BlockProperties()
                                                 {
                                                     SpritePath = "DryGrass"
+                                                });
+                RegisterBlock<FlowerBlock>("Flower", new BlockProperties()
+                                                {
+                                                    SpritePath = "Flowers",
+                                                    IsSolid = false
                                                 });
             // RegisterBlock<DefaultBlock>("Water", new BlockProperties()
             //                                                    {

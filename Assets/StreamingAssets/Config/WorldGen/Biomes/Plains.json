@@ -16,5 +16,13 @@
             "Type": "Block",
             "Argument": "Stone"
         }
+    ],
+    "Vegetation": [
+        {
+            "Type": "Flower",
+            "Range": [0.4, 0.8],
+            "Probability": 0.5,
+            "Block": "Flower"
+        }
     ]
 }

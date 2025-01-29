@@ -1,6 +1,7 @@
 ﻿using MessagePack;
 using Tiles;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace World.Blocks
 {
@@ -8,7 +9,6 @@ namespace World.Blocks
     public struct DefaultBlockState : IBlockState
     {
         [Key(0)] public int Id { get; set; }
-        [Key(1)] public int State { get; set; }
         [IgnoreMember] public string Name { get; set; }
         [IgnoreMember] public BlockProperties Properties { get; set; }
         [IgnoreMember] public IBlock Block { get; set; }
@@ -19,8 +19,12 @@ namespace World.Blocks
         public DefaultBlock(int id, string name, BlockProperties properties) : base(id, name, properties)
         {
             if (properties.SpritePath != null)
+            {
                 Tile = new BaseTile(Resources.Load<Texture2D>($"Sprites/Blocks/{properties.SpritePath}"), true, Name)
                    .RuleTile;
+                if(properties.IsSolid)
+                    DefaultRuleTile.Solids.Add(Tile);
+            }
 
 
             DefaultState = new DefaultBlockState
@@ -34,19 +38,13 @@ namespace World.Blocks
 
         public override DefaultBlockState DefaultState { get; }
 
-        public override DefaultBlockState FromState(DefaultBlockState state)
-        {
-            return GetState(null);
-        }
+        public override DefaultBlockState FromState(DefaultBlockState state) => GetState(null);
+        
 
-        public override DefaultBlockState GetState(object state)
-        {
-            return DefaultState;
-        }
+        public override DefaultBlockState GetState(object state) => DefaultState;
+        
 
-        public override DefaultBlockState GetDefaultState()
-        {
-            return DefaultState;
-        }
+        public override DefaultBlockState GetDefaultState() => DefaultState;
+        
     }
 }

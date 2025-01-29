@@ -19,17 +19,11 @@ namespace World
             Storage = new WorldStorage(worldIn.Identifier.GetWorldName());
             Query = new WorldQuery(worldIn);
         }
-
+        
         public AbstractWorld WorldIn { get; }
         public WorldStorage Storage { get; }
         public WorldQuery Query { get; }
-
-  
-        public void PreloadChunk(Vector2Int position, Dictionary<Vector2Int, (IBlockState, bool)> blocks)
-        {
-            var chunk = new Chunk(this.WorldIn, position, blocks);
-            WorldIn.Query.AddChunk(chunk);
-        }
+        
         
         public void PlayerRequestChunks(ulong player, Vector2Int[] positions)
         {

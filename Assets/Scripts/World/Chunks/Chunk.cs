@@ -28,14 +28,6 @@ namespace World.Chunks
         public Dictionary<Vector2Int, (IBlockState, bool)> BlockToPlace { get; set; }
         public IBlockState[] BlockStates = new IBlockState[ChunkSizeSquared];
         public HashSet<ulong> Players = new();
-
-        public Chunk(AbstractWorld worldIn, Vector2Int center,Dictionary<Vector2Int, (IBlockState, bool)> blockToPlace)
-        {
-            World = worldIn ?? throw new ArgumentNullException(nameof(worldIn));
-            UpdateContent(new IBlockState[ChunkSizeSquared]);
-            Center = center;
-            BlockToPlace = blockToPlace;
-        }
         
         public Chunk(AbstractWorld worldIn, Vector2Int center)
         {

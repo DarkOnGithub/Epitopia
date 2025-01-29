@@ -1,28 +1,23 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using World.Blocks;
+﻿using UnityEngine;
+using World.Chunks;
+using World.WorldGeneration.Noise;
 
 namespace World.WorldGeneration.Structures
 {
     public class StructurePlacement
     {
-        public IStructure[] SurfaceStructures { get; }
-        public IStructure[] VerticalStructures { get; }
-        
-        public StructurePlacement(IStructure[] surfaceStructures, IStructure[] verticalStructures)
+        //Unit is chunk
+        public const int SuperChunkRadius = 16;
+        public const int SuperChunkSize = SuperChunkRadius * Chunk.ChunkSize;
+        private NoiseGenerator _noiseGenerator = new("BgA=", 0.02f);
+        public void LoadSuperchunk(Vector2Int start)
         {
-            SurfaceStructures = surfaceStructures;
-            VerticalStructures = verticalStructures;
+            _noiseGenerator.GenerateCache(start, new Vector2Int(SuperChunkSize, 1));
+
+            for (var x = 0; x < SuperChunkRadius; x++)
+            {
+                
+            }
         }
-
-        public List<Dictionary<Vector2Int, (IBlockState, bool)>> PlaceStructures(Vector2Int position, float point)
-        {
-            var result = new List<Dictionary<Vector2Int, (IBlockState, bool)>>();
-            foreach (var structure in SurfaceStructures)
-                result.Add(structure.TryPlace(position, point));
-            return result;
-        }
-
-
     }
 }

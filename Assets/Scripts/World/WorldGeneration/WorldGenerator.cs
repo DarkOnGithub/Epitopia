@@ -26,6 +26,8 @@ namespace World.WorldGeneration
         public string DefaultPath = Server.Instance.ConfigDirectory + "/WorldGen/";
         public string DensityFunctionsPath => DefaultPath + "DensityFunctions/";
         public string WorldSettingsPath => DefaultPath + "WorldSettings/";
+        private NoiseGenerator _vegetationNoise = new("FwAAAIC/AACAPwAAAAAAAIA/BgA=", 0.07f);
+
         public const int PreloadDistance = Chunk.ChunkSize * 16;
 
         public AbstractWorld WorldIn;
@@ -44,7 +46,7 @@ namespace World.WorldGeneration
             BiomeProvider = new BiomeProvider(worldSettings.BiomeSources, _heightMap.ContinentNoise,
                                               _heightMap.ErosionNoise);
         }
-        
+
         public async Task GenerateChunk(Chunk chunk)
         {
             var chunkData = await FillChunk(chunk.Origin);
@@ -59,41 +61,63 @@ namespace World.WorldGeneration
 
         private Task<IBlockState[]> FillChunk(Vector2Int origin)
         {
-            var heightMapCache = _heightMap.CacheHeight(origin);
-            var carverCache = _carver.CacheDensityPoints(origin);
-            var emptyChunk = (IBlockState[])_emptyChunk.Clone();
-            var biomeParametersGenerator =
-                BiomeProvider.Noises.GetCache(origin, new Vector2Int(Chunk.ChunkSize, Chunk.ChunkSize));
-            for (var x = 0; x < Chunk.ChunkSize; x++)
+            try
             {
-                var surfaceLevel = (int)heightMapCache.GetPoint(x);
-    
-                var multiPoint = biomeParametersGenerator.GetPoint(x);
-                var (continent, erosion, temperature, humidity) = BiomeProvider.ExtractParameters(multiPoint);
-                var biome = BiomeProvider.GetBiome(continent, erosion, temperature, humidity);
-                var lastLayerDepth = surfaceLevel - biome.SurfaceRules.Depth;
-                for (var y = 0; y < Mathf.Clamp(surfaceLevel - origin.y, 0, Chunk.ChunkSize); y++)
+
+                var heightMapCache = _heightMap.CacheHeight(origin);
+                var carverCache = _carver.CacheDensityPoints(origin);
+                
+                var chunkData = (IBlockState[])_emptyChunk.Clone();
+                var biomeParametersGenerator =
+                    BiomeProvider.Noises.GetCache(origin, new Vector2Int(Chunk.ChunkSize, Chunk.ChunkSize));
+                
+                var vegetationCache = _vegetationNoise.GenerateCache(origin, new Vector2Int(Chunk.ChunkSize, 1));
+
+                //Density and Biomes
+
+                for (var x = 0; x < Chunk.ChunkSize; x++)
                 {
-                    var index = x + y * Chunk.ChunkSize;
-                    var localY = y + origin.y;
-                    if (!carverCache.GetPoint(index, y, lastLayerDepth))
+                    var surfaceLevel = (int)heightMapCache.GetPoint(x);
+
+                    var multiPoint = biomeParametersGenerator.GetPoint(x);
+                    
+                    var (continent, erosion, temperature, humidity) = BiomeProvider.ExtractParameters(multiPoint);
+                    var biome = BiomeProvider.GetBiome(continent, erosion, temperature, humidity);
+                    var lastLayerDepth = surfaceLevel - biome.SurfaceRules.Depth;
+                    
+                    for (var y = 0; y < Mathf.Clamp(surfaceLevel - origin.y, 0, Chunk.ChunkSize); y++)
                     {
-                        emptyChunk[index] = biome.SurfaceRules.GetRule(surfaceLevel - localY)();
-                    }
-                    else
-                    {
-                        if (localY == surfaceLevel - 1)
-                            continue;
-                        if (localY > surfaceLevel - 14)
-                            emptyChunk[index] = BlockRegistry.WALL_DIRT.GetDefaultState();
+                        var index = x + y * Chunk.ChunkSize;
+                        var localY = y + origin.y;
+                        
+                        if (!carverCache.GetPoint(index, localY, lastLayerDepth))
+                        {
+                            chunkData[index] = biome.SurfaceRules.GetRule(surfaceLevel - localY)();
+                        }
                         else
-                            emptyChunk[index] = BlockRegistry.WALL_STONE.GetDefaultState();
+                        {
+                            if (localY == surfaceLevel - 1)
+                                continue;
+                            if (localY > surfaceLevel - 14)
+                                chunkData[index] = BlockRegistry.WALL_DIRT.GetDefaultState();
+                            else
+                                chunkData[index] = BlockRegistry.WALL_STONE.GetDefaultState();
+                        }
+                       
                     }
+                    if (origin.y <= surfaceLevel && surfaceLevel < origin.y + Chunk.ChunkSize)
+                        biome.Vegetation.GenerateVegetation(chunkData, vegetationCache[x], new Vector2Int(x, surfaceLevel - origin.y));
                 }
+
+
+                return Task.FromResult(chunkData);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(origin + " " + e);
+                return null;
             }
 
-
-            return Task.FromResult(emptyChunk);
         }
     }
 }

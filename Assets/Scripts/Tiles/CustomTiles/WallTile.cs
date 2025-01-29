@@ -8,6 +8,7 @@ namespace Tiles
         public WallTile(Texture2D texture) : base(texture)
         {
             if (texture == null) return;
+            
             RegisterTileGroup(
                 new[]
                 {
@@ -20,6 +21,7 @@ namespace Tiles
                        Empty, null, Empty,
                        null, Empty, null
                    });
+            
             RegisterTileGroup(
                 new[]
                 {

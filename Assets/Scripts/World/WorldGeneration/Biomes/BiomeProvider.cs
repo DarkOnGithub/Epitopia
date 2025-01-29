@@ -33,6 +33,7 @@ namespace World.WorldGeneration.Biomes
             var noises = new INoise[5];
             noises[0] = continent;
             noises[1] = erosion;
+            
             for (int i = 0; i < 3; i++)
                 noises[i + 2] = new NoiseGenerator("FwAAAIC/AACAPwAAAAAAAIA/CQA=", 0.001f);
             
