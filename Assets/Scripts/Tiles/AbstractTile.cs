@@ -19,7 +19,7 @@ namespace Tiles
         protected const int EmptyOrNonSolid = DefaultRuleTile.Neighbors.EmptyOrNonSolid;  // 6
         protected const int Wall = DefaultRuleTile.Neighbors.Wall;        // 8
         
-        private static readonly List<Vector3Int> LookUpTable = new()
+        public static readonly List<Vector3Int> LookUpTable = new()
                                                                {
                                                                    new Vector3Int(-1, 1, 0),
                                                                    new Vector3Int(0, 1, 0),
@@ -32,9 +32,11 @@ namespace Tiles
                                                                    new Vector3Int(1, -1, 0)
                                                                };
 
+
         public readonly RuleTile RuleTile = ScriptableObject.CreateInstance<DefaultRuleTile>();
         protected Dictionary<Vector2Int, Sprite> Sprites;
-        
+        public static List<(int, int)[]> Temp = new();
+        public static bool Test = false;
         protected AbstractTile()
         {
         }
@@ -66,6 +68,7 @@ namespace Tiles
 
                     if (pixels.All(pixel => pixel.a == 0))
                     {
+                        Console.WriteLine(texture.name +" skipping" + xIndex + " " + yIndex);
                         xIndex++;
                         continue; 
                     }
@@ -91,6 +94,7 @@ namespace Tiles
         protected void RegisterTileFromSprites(List<int?> neighbors, List<Sprite> sprites, RuleTile.TilingRuleOutput.Transform transform = RuleTile.TilingRuleOutput.Transform.Fixed)
         {
             if(sprites.Count == 0) return;
+
             var neighborPositions = new List<Vector3Int>();
             var neighborsUpdated = new List<int>();
 
@@ -104,8 +108,8 @@ namespace Tiles
 
             var rule = new RuleTile.TilingRule
                        {
-                           //m_Neighbors = neighborsUpdated,
-                           //m_NeighborPositions = neighborPositions,
+                           m_Neighbors = neighborsUpdated,
+                           m_NeighborPositions = neighborPositions,
                            m_Sprites = sprites.ToArray(),
                            m_RuleTransform = transform
                        };
@@ -129,6 +133,14 @@ namespace Tiles
                 else
                     Debug.LogWarning($"Sprite at {position} not found in the sprite dictionary.");
             }
+            if(group.Count == 0) return;
+
+            if (Test)
+            {
+                Temp.Add(coords);
+                Debug.Log(string.Join(' ', coords));
+            }
+
             RegisterTileFromSprites(neighbors, group, transform);
         }
     }

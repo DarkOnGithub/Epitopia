@@ -63,6 +63,10 @@ namespace World.Blocks
                                                     SpritePath = "Flowers",
                                                     IsSolid = false
                                                 });
+                RegisterBlock<DefaultBlock>("Test", new BlockProperties()
+                                                {
+                                                    SpritePath = "TTGS"
+                                                });
             // RegisterBlock<DefaultBlock>("Water", new BlockProperties()
             //                                                    {
             //                                                        SpritePath = "water_low"
