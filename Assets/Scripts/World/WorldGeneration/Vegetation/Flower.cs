@@ -9,16 +9,14 @@ namespace World.WorldGeneration.Vegetation
     {
         private IBlock _block;
         
-        
         public Flower(IBlock block)
         {
             _block = block;
         }
         
-        
-        public bool CanGenerateAt(IBlockState[] chunkIn, Vector2Int localPosition) => chunkIn[localPosition.ToIndex()].Id == 0;
+        public bool CanGenerateAt(IBlockState[] chunkIn, Vector2Int localPosition, Vector2Int origin) => chunkIn[localPosition.ToIndex()].Id == 0;
 
-        public void Generate(IBlockState[] chunkIn, Vector2Int localPosition) => chunkIn[localPosition.ToIndex()] = _block.GetDefaultState();
+        public void Generate(IBlockState[] chunkIn, Vector2Int localPosition, Vector2Int origin) => chunkIn[localPosition.ToIndex()] = _block.GetDefaultState();
         
         
     }

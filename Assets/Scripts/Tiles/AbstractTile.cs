@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Network.Server;
 using UnityEngine;
 
 namespace Tiles
@@ -19,18 +20,20 @@ namespace Tiles
         protected const int EmptyOrNonSolid = DefaultRuleTile.Neighbors.EmptyOrNonSolid;  // 6
         protected const int Wall = DefaultRuleTile.Neighbors.Wall;        // 8
         
+        protected static Texture2D GetTexture(string spritePath) => Resources.Load<Texture2D>($"Sprites/Blocks/{spritePath}");
+        
         public static readonly List<Vector3Int> LookUpTable = new()
-                                                               {
-                                                                   new Vector3Int(-1, 1, 0),
-                                                                   new Vector3Int(0, 1, 0),
-                                                                   new Vector3Int(1, 1, 0),
-                                                                   new Vector3Int(-1, 0, 0),
-                                                                   new Vector3Int(0, 0, 0),
-                                                                   new Vector3Int(1, 0, 0),
-                                                                   new Vector3Int(-1, -1, 0),
-                                                                   new Vector3Int(0, -1, 0),
-                                                                   new Vector3Int(1, -1, 0)
-                                                               };
+                                                              {
+                                                                  new Vector3Int(-1, 1, 0),
+                                                                  new Vector3Int(0, 1, 0),
+                                                                  new Vector3Int(1, 1, 0),
+                                                                  new Vector3Int(-1, 0, 0),
+                                                                  new Vector3Int(0, 0, 0),
+                                                                  new Vector3Int(1, 0, 0),
+                                                                  new Vector3Int(-1, -1, 0),
+                                                                  new Vector3Int(0, -1, 0),
+                                                                  new Vector3Int(1, -1, 0)
+                                                              };
 
 
         public readonly RuleTile RuleTile = ScriptableObject.CreateInstance<DefaultRuleTile>();
@@ -130,8 +133,6 @@ namespace Tiles
 
                 if (Sprites.ContainsKey(position))
                     group.Add(Sprites[position]);
-                else
-                    Debug.LogWarning($"Sprite at {position} not found in the sprite dictionary.");
             }
             if(group.Count == 0) return;
 

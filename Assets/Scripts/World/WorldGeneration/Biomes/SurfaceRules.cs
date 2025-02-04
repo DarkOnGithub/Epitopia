@@ -34,7 +34,6 @@ namespace World.WorldGeneration.Biomes
             switch (rule.Type)
             {
                 case "Block":
-                    Debug.Log(jsonJObject);
                     var block = BlockRegistry.GetBlock(jsonJObject["Argument"].Value<string>());
                     AddLayer(rule.Height, () => block.GetDefaultState());
                     break;

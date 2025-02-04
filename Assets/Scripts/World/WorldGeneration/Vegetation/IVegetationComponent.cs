@@ -13,7 +13,7 @@ namespace World.WorldGeneration.Vegetation
     }
     public interface IVegetationComponent
     {
-        public abstract bool CanGenerateAt(IBlockState[] chunkIn, Vector2Int localPosition);
-        public abstract void Generate(IBlockState[] chunkIn, Vector2Int localPosition);
+        public abstract bool CanGenerateAt(IBlockState[] chunkIn, Vector2Int localPosition, Vector2Int origin);
+        public abstract void Generate(IBlockState[] chunkIn, Vector2Int localPosition, Vector2Int origin);
     }
 }

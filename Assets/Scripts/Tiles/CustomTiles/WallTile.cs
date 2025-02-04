@@ -5,10 +5,9 @@ namespace Tiles
 {
     public class WallTile : AbstractTile
     {
-        public WallTile(Texture2D texture) : base(texture)
+        public WallTile(string path) : base(path)
         {
             if (texture == null) return;
-            
             RegisterTileGroup(
                 new[]
                 {

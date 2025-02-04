@@ -64,7 +64,7 @@ namespace World.WorldGeneration.Biomes
         }
         
         
-        public (float continent, float erosion, float temperature, float humidity) ExtractParameters(float[] parameters)
+        public static (float continent, float erosion, float temperature, float humidity) ExtractParameters(float[] parameters)
         {
             return (parameters[0], parameters[1], parameters[2], parameters[3]);
         }

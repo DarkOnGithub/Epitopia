@@ -14,11 +14,11 @@ namespace Tiles
                                     {
                                         null, null, null,
                                         null, null, null,
-                                        null, AnySolid, null
+                                        null, null, null
                                     }, sprites.ToList());
-
-            AssetDatabase.CreateAsset(RuleTile, "Assets/TemporaryRuleTile.asset");
-            AssetDatabase.SaveAssets();
+            //
+            // AssetDatabase.CreateAsset(RuleTile, "Assets/TemporaryRuleTile.asset");
+            // AssetDatabase.SaveAssets();
         }
     }
 }

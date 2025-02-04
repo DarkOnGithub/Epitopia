@@ -12,6 +12,7 @@ namespace Network.Messages
             new ChunkRequestPacket();
             new ChunkTransferPacket();
             new PlayerControllerPacket();
+            new BlockActionPacket();
         }
     }
 }

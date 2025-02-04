@@ -1,96 +1,129 @@
-﻿using System.Collections.Generic;
+﻿// using System.Collections.Generic;
+// using JetBrains.Annotations;
+// using UnityEngine;
+// using Utils;
+// using World.Blocks;
+// using World.Chunks;
+//
+// namespace World
+// {
+//     public class WorldQuery
+//     {
+//         private readonly AbstractWorld _worldIn;
+//         public readonly Dictionary<Vector2Int, Chunk> Chunks;
+//
+//         public WorldQuery(AbstractWorld worldIn, Dictionary<Vector2Int, Chunk> chunks = null)
+//         {
+//             _worldIn = worldIn;
+//             Chunks = chunks ?? new Dictionary<Vector2Int, Chunk>();
+//         }
+//
+//         public void RemoveChunk(Vector2Int chunkPosition) => Chunks.Remove(chunkPosition);
+//         
+//
+//         public void AddChunk(Chunk chunk) => Chunks.Add(chunk.Center, chunk);
+//         
+//
+//         public void TryAddChunk(Chunk chunk)
+//         {
+//             if (!Chunks.TryGetValue(chunk.Center, out var _))
+//                 Chunks.Add(chunk.Center, chunk);
+//         }
+//
+//         public IEnumerable<Chunk> LazyGetChunks(Vector2Int[] chunkPositions)
+//         {
+//             foreach (var chunkPosition in chunkPositions)
+//                 if (Chunks.TryGetValue(chunkPosition, out var chunk))
+//                     yield return chunk;
+//         }
+//
+//         [CanBeNull]
+//         public Chunk GetChunk(Vector2Int chunkPosition)
+//         {
+//             return Chunks[chunkPosition];
+//         }
+//
+//         public bool TryGetChunk(Vector2Int chunkPosition, out Chunk chunk)
+//         {
+//             return Chunks.TryGetValue(chunkPosition, out chunk);
+//         }
+//
+//         public Chunk GetChunkOrCreate(Vector2Int chunkPosition)
+//         {
+//             if (!Chunks.TryGetValue(chunkPosition, out var chunk))
+//                 return CreateEmptyChunk(chunkPosition);
+//             return chunk;
+//         }
+//
+//         public Chunk CreateEmptyChunk(Vector2Int chunkPosition)
+//         {
+//             var chunk = new Chunk(_worldIn, chunkPosition);
+//             Chunks.Add(chunkPosition, chunk);
+//             return chunk;
+//         }
+//
+//         public Chunk CreateChunk(Vector2Int chunkPosition, IBlockState[] data)
+//         {
+//             var chunk = new Chunk(_worldIn, chunkPosition, data);
+//             Chunks.Add(chunkPosition, chunk);
+//             return chunk;
+//         }
+//
+//         public bool FindNearestChunk(Vector2 worldPosition, out Chunk chunk)
+//         {
+//             var chunkPosition = WorldUtils.FindNearestChunkPosition(worldPosition);
+//             return Chunks.TryGetValue(chunkPosition, out chunk);
+//         }
+//
+//         public bool GetBlockFromWorldPosition(Vector2 position, out IBlockState blockState)
+//         {
+//             if (!FindNearestChunk(position, out var chunk))
+//             {
+//                 blockState = BlockRegistry.BLOCK_AIR.GetDefaultState();
+//                 return false;
+//             }
+//             var localPosition = WorldUtils.WorldToLocalPosition(position, chunk.Origin);
+//             blockState = chunk.GetBlock(localPosition.ToIndex());
+//             return true;
+//         }
+//     }
+// }
+
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 using Utils;
-using World.Blocks;
 using World.Chunks;
 
 namespace World
 {
     public class WorldQuery
     {
+        private readonly Dictionary<Vector2Int, Chunk> _chunks;
         private readonly AbstractWorld _worldIn;
-        public readonly Dictionary<Vector2Int, Chunk> Chunks;
-
-        public WorldQuery(AbstractWorld worldIn, Dictionary<Vector2Int, Chunk> chunks = null)
+        
+        public WorldQuery(AbstractWorld worldIn)
         {
             _worldIn = worldIn;
-            Chunks = chunks ?? new Dictionary<Vector2Int, Chunk>();
         }
-
-        public void RemoveChunk(Vector2Int chunkPosition) => Chunks.Remove(chunkPosition);
         
-
-        public void AddChunk(Chunk chunk) => Chunks.Add(chunk.Center, chunk);
+        public void RemoveChunk(Vector2Int chunkPosition) => _chunks.Remove(chunkPosition);
+        public void AddChunk(Chunk chunk) => _chunks.Add(chunk.Position, chunk);
+        public bool HasChunk(Vector2Int chunkPosition) => _chunks.ContainsKey(chunkPosition);
+        public bool TryGetChunk(Vector2Int worldPosition, out Chunk chunk) =>
+            _chunks.TryGetValue(VectorUtils.GetNearestChunkPosition(worldPosition), out chunk);
         
-
-        public void TryAddChunk(Chunk chunk)
+        [ItemCanBeNull]
+        public IEnumerable<Chunk> GetChunks(IEnumerable<Vector2Int> chunkPositions)
         {
-            if (!Chunks.TryGetValue(chunk.Center, out var _))
-                Chunks.Add(chunk.Center, chunk);
-        }
-
-        public IEnumerable<Chunk> LazyGetChunks(Vector2Int[] chunkPositions)
-        {
-            foreach (var chunkPosition in chunkPositions)
-                if (Chunks.TryGetValue(chunkPosition, out var chunk))
-                    yield return chunk;
-        }
-
-        [CanBeNull]
-        public Chunk GetChunk(Vector2Int chunkPosition)
-        {
-            return Chunks[chunkPosition];
-        }
-
-        public bool TryGetChunk(Vector2Int chunkPosition, out Chunk chunk)
-        {
-            return Chunks.TryGetValue(chunkPosition, out chunk);
-        }
-
-        public Chunk GetChunkOrCreate(Vector2Int chunkPosition)
-        {
-            if (!Chunks.TryGetValue(chunkPosition, out var chunk))
-                return CreateEmptyChunk(chunkPosition);
-            return chunk;
-        }
-
-        public Chunk CreateEmptyChunk(Vector2Int chunkPosition)
-        {
-            var chunk = new Chunk(_worldIn, chunkPosition);
-            Chunks.Add(chunkPosition, chunk);
-            return chunk;
-        }
-
-        public Chunk CreateChunk(Vector2Int chunkPosition, IBlockState[] data)
-        {
-            var chunk = new Chunk(_worldIn, chunkPosition, data);
-            Chunks.Add(chunkPosition, chunk);
-            return chunk;
-        }
-
-        public bool FindNearestChunk(Vector2 worldPosition, out Chunk chunk)
-        {
-            var chunkPosition = WorldUtils.FindNearestChunkPosition(worldPosition);
-            return Chunks.TryGetValue(chunkPosition, out chunk);
-        }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="position"></param>
-    /// <param name="blockState"></param>
-    /// <returns>True if chunk exists otherwise false</returns>
-        public bool GetBlockFromWorldPosition(Vector2 position, out IBlockState blockState)
-        {
-            if (!FindNearestChunk(position, out var chunk))
+            foreach (var position in chunkPositions)
             {
-                blockState = BlockRegistry.BLOCK_AIR.GetDefaultState();
-                return false;
+                if (_chunks.TryGetValue(position, out var chunk))
+                    yield return chunk;
+                yield return null;
             }
-            var localPosition = WorldUtils.WorldToLocalPosition(position, chunk.Center);
-            blockState = chunk.GetBlock(localPosition.ToIndex());
-            return true;
         }
-    }
+        
+        
+    }    
 }

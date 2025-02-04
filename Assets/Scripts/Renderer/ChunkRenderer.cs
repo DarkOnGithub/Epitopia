@@ -13,18 +13,21 @@ namespace Renderer
         public enum TilemapType
         {
             World,
-            Background
+            Background,
+            Vegetation
         }
 
-        private static readonly Tilemap _worldTilemap = WorldManager.Instance.worldTilemap;
-        private static readonly Tilemap _backgroundTilemap = WorldManager.Instance.backgroundTilemap;
+        private static readonly Tilemap WorldTilemap = WorldManager.Instance.worldTilemap;
+        private static readonly Tilemap BackgroundTilemap = WorldManager.Instance.backgroundTilemap;
+        private static readonly Tilemap VegetationTilemap = WorldManager.Instance.vegetationTilemap;
 
         public static void RenderChunk(Chunk chunk)
         {
             var tiles = ExtractTiles(chunk);
 
-            SetAndRefreshTiles(_worldTilemap, tiles[TilemapType.World]);
-            SetAndRefreshTiles(_backgroundTilemap, tiles[TilemapType.Background]);
+            SetAndRefreshTiles(WorldTilemap, tiles[TilemapType.World]);
+            SetAndRefreshTiles(BackgroundTilemap, tiles[TilemapType.Background]);
+            SetAndRefreshTiles(VegetationTilemap, tiles[TilemapType.Vegetation]);
         }
 
         private static void SetAndRefreshTiles(Tilemap tilemap, (Vector3Int[], TileBase[]) tileData)
@@ -40,27 +43,36 @@ namespace Renderer
             var worldTiles = new TileBase[Chunk.ChunkSizeSquared];
             var backgroundPositions = new Vector3Int[Chunk.ChunkSizeSquared];
             var backgroundTiles = new TileBase[Chunk.ChunkSizeSquared];
+            var vegetationPositions = new Vector3Int[Chunk.ChunkSizeSquared];
+            var vegetationTiles = new TileBase[Chunk.ChunkSizeSquared];
+            
             var origin = chunk.Origin.ToVector3Int();
             var blocks = chunk.BlockStates;
             for (var i = 0; i < Chunk.ChunkSizeSquared; i++)
             {
                 var block = blocks[i];
-                if (BlockRegistry.WallIds.Contains(block.Id))
+
+                if(BlockRegistry.Vegetation.Contains(block.Id))
                 {
-                    backgroundPositions[i] = origin + i.ToVector3Int0();
-                    backgroundTiles[i] = block.Block.Tile;
+                    vegetationPositions[i] = origin + i.ToVector3Int0();
+                    vegetationTiles[i] = block.Block.Tile;
                 }
                 else
                 {
                     worldPositions[i] = origin + i.ToVector3Int0();
                     worldTiles[i] = block.Block.Tile;
                 }
+
+                backgroundPositions[i] = origin + i.ToVector3Int0();
+                backgroundTiles[i] = block.WallId == 0 ? null : BlockRegistry.WallTiles[block.WallId] ;
+                
             }
 
             return new Dictionary<TilemapType, (Vector3Int[], TileBase[])>
                    {
                        { TilemapType.World, (worldPositions, worldTiles) },
-                       { TilemapType.Background, (backgroundPositions, backgroundTiles) }
+                       { TilemapType.Background, (backgroundPositions, backgroundTiles) },
+                       { TilemapType.Vegetation, (vegetationPositions, vegetationTiles) }
                    };
         }
 
@@ -70,9 +82,10 @@ namespace Renderer
             var positions = new Vector3Int[Chunk.ChunkSizeSquared];
             for (var i = 0; i < Chunk.ChunkSizeSquared; i++)
                 positions[i] = origin + i.ToVector3Int0();
-
-
-            _worldTilemap.SetTiles(positions, new TileBase[Chunk.ChunkSizeSquared]);
+            var tiles = new TileBase[Chunk.ChunkSizeSquared];
+            BackgroundTilemap.SetTiles(positions, tiles);
+            VegetationTilemap.SetTiles(positions, tiles);
+            WorldTilemap.SetTiles(positions, tiles);
         }
     }
 }

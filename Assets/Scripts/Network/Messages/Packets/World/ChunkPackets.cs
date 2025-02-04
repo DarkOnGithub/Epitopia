@@ -1,13 +1,14 @@
 ﻿using MessagePack;
 using UnityEngine;
 using World;
+using World.Chunks;
 
 namespace Network.Messages.Packets.World
 {
     [MessagePackObject]
     public struct ChunkTransferMessage : IMessageData
     {
-        [Key(0)] public byte[] ChunkData;
+        [Key(0)] public byte[] Data;
         [Key(1)] public Vector2Int Position;
         [Key(3)] public WorldIdentifier World;
     }
@@ -18,8 +19,8 @@ namespace Network.Messages.Packets.World
 
         protected override void OnPacketReceived(NetworkUtils.Header header, ChunkTransferMessage body)
         {
-            var world = WorldManager.GetWorld(body.World);
-            world.ClientHandler.OnPacketReceived(header, body);
+            var world = WorldsManager.Instance.GetWorld(body.World);
+            world.ClientHandler.OnChunkReceived(body.Position, body.Data);
         }
     }
 
@@ -46,14 +47,10 @@ namespace Network.Messages.Packets.World
             switch (body.Type)
             {
                 case ChunkRequestType.Request:
-                    WorldManager.GetWorld(body.World).ServerHandler.PlayerRequestChunks(header.Author, body.Positions);
+                    WorldsManager.Instance.GetWorld(body.World).ServerHandler.PlayerRequestChunks(header.Author, body.Positions);
                     break;
                 case ChunkRequestType.Drop:
-                    var handler = WorldManager.GetWorld(body.World).ServerHandler;
-                    foreach (var chunk in handler.Query.LazyGetChunks(body.Positions))
-
-                        handler.RemovePlayerFromChunk(chunk, header.Author);
-
+                    WorldsManager.Instance.GetWorld(body.World).ServerHandler.PlayerDropChunks(header.Author, body.Positions);
                     break;
             }
         }

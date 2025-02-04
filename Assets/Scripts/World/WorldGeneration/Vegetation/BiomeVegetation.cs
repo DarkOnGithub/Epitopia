@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using UnityEngine;
 using World.Blocks;
 using Random = System.Random;
@@ -19,22 +20,30 @@ namespace World.WorldGeneration.Vegetation
                     case "Flower":
                         component = new Flower(BlockRegistry.GetBlock(vegetationComponent.Block));
                         break;
+                    case "Tree":
+                        component = new Tree();
+                        break;
                 }
                 _vegetationComponents.TryAdd((vegetationComponent.Range[0], vegetationComponent.Range[1], vegetationComponent.Probability), component);
             }
         }
         
-        public void GenerateVegetation(IBlockState[] chunkIn, float noise, Vector2Int localPosition)
+        public void GenerateVegetation(IBlockState[] chunkIn, float noise, Vector2Int localPosition, Vector2Int position)
         {
+ 
             foreach (var (range, component) in _vegetationComponents)
             {
-                if (noise >= range.start && noise <= range.end && component.CanGenerateAt(chunkIn, localPosition))
+                if (noise >= range.start && noise <= range.end &&
+                    component.CanGenerateAt(chunkIn, localPosition, position))
                 {
                     var random = new Random(Seed.SeedValue + localPosition.x + localPosition.y);
                     if (random.NextDouble() <= range.prob)
-                        component.Generate(chunkIn, localPosition);
+                        component.Generate(chunkIn, localPosition, position);
                 }
             }
+        
+     
+      
         }
     }
 }

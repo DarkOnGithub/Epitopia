@@ -2,13 +2,11 @@
 
 namespace World.Blocks
 {
-    [Union(0, typeof(DefaultBlockState))]
-    [Union(1, typeof(Wall))]
     public interface IBlockState
     {
-        public int Id { get; }
-        public string Name { get; }
-        public BlockProperties Properties { get; }
-        public IBlock Block { get; }
+        //4 bytes RGB-Level
+        public int LightLevel { get; set; }
+        public byte WallId { get; set; }
+        public int Id { get;  } 
     }
 }
