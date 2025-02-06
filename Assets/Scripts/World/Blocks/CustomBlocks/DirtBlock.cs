@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Tiles;
+using UnityEngine;
 using World.Chunks;
 
 namespace World.Blocks.CustomBlocks
@@ -7,7 +8,7 @@ namespace World.Blocks.CustomBlocks
     {
         public DirtBlock(int id, string name, BlockProperties properties) : base(id, name, properties)
         {
-            
+            DefaultRuleTile.DirtTile = (RuleTile)Tile;
         }
 
         public override void OnPlace(Chunk chunkIn, Vector2Int localPosition, IBlockState state)

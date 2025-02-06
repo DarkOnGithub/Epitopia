@@ -147,3 +147,91 @@
 //         }
 //     }
 // }
+
+using System;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using Network.Messages.Packets.World;
+using Players;
+using UnityEngine;
+using Utils;
+using World.Chunks;
+
+namespace World
+{
+    public class Scanner : MonoBehaviour
+    {
+        public static Scanner Instance;
+        private Camera _camera;
+        private const int ScanPadding = 2;
+        private Vector2Int _scanRange = new();
+        private float _orthographicSize = 0f;
+        private readonly HashSet<Vector2Int> _scannedPositions = new();
+
+        public Scanner()
+        {
+            Instance = this;
+        }
+
+        
+        private void CalculateScanDimension()
+        {
+            var aspect = _camera.aspect;
+            var orthographicSize = _camera.orthographicSize;
+            if (Mathf.Abs(orthographicSize - _orthographicSize) < 0.01f)
+                return;
+            _orthographicSize = orthographicSize;
+            Vector2 screenDimensions = new(
+                orthographicSize * 2 * aspect,
+                orthographicSize * 2
+            );
+
+            var horizontal = Mathf.CeilToInt(screenDimensions.x / Chunk.ChunkSize) / 2 + ScanPadding;
+            var vertical = Mathf.CeilToInt(screenDimensions.y / Chunk.ChunkSize) / 2 + ScanPadding;
+            _scanRange = new(horizontal, vertical);
+        }
+        
+        
+        public void SetCamera(Camera camera)
+        {
+            _camera = camera;
+            CalculateScanDimension();
+        }
+        
+        public void FixedUpdate()
+        {
+            if (_camera is null) return;
+            CalculateScanDimension();
+            var localPlayer = PlayerManager.LocalPlayer;
+            var world = localPlayer.World;
+            if (localPlayer == null || world == null) return;
+            
+            var clientHandler = world.ClientHandler;
+            var query = clientHandler.Query;
+            
+            var playerPosition = localPlayer.Position;
+            var scannedPositionsCpy = new HashSet<Vector2Int>(_scannedPositions);
+            
+            _scannedPositions.Clear();
+            for(int x = -_scanRange.x; x <= _scanRange.x; x++)
+            for (int y = -_scanRange.y; y <= _scanRange.y; y++)
+            {
+                var chunkPosition = VectorUtils.GetNearestChunkPosition(
+                     playerPosition + new Vector2Int(x, y) * Chunk.ChunkSize
+                );
+
+                if (query.TryGetChunk(chunkPosition, out var chunk))
+                    chunk.Render();
+                else
+                    WorldsManager.Instance.EnqueueChunkRequest(chunkPosition, localPlayer.World.Identifier);
+                
+                _scannedPositions.Add(chunkPosition);
+                scannedPositionsCpy.Remove(chunkPosition);
+            }
+
+            foreach (var position in scannedPositionsCpy)
+                WorldsManager.Instance.EnqueueChunkRequest(position, world.Identifier, ChunkRequestType.Drop);
+            
+        }
+    }
+}

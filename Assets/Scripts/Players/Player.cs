@@ -19,7 +19,7 @@ namespace Players
             PlayerName = playerName;
             PlayerId = playerId;
             ClientId = clientId;
-            World = WorldManager.GetWorld(WorldIdentifier.Overworld);
+            World = WorldsManager.Instance.GetWorld(WorldIdentifier.Overworld);
             PlayerManager.Players.Add(this);
         }
 
@@ -27,7 +27,7 @@ namespace Players
         {
             if (NetworkManager.Singleton.IsHost)
             {
-                var y = World.WorldGenerator.GetHeightAt(0) + 4;
+                var y = World.ServerHandler.WorldGenerator.GetHeightAt(0) + 4;
                 PlayerGameObject =
                     Object.Instantiate(Resources.Load<GameObject>("Sprites/MainChar/PrefabChar/PlayerSwitchSide"));
                 _networkObject = PlayerGameObject.GetComponent<NetworkObject>();

@@ -137,34 +137,34 @@ namespace World
         
         public ServerWorldHandler(AbstractWorld worldIn)
         {
+            WorldGenerator = new(worldIn);
             Storage = new WorldStorage(worldIn.Identifier.GetWorldName());
             Query = new WorldQuery(worldIn);
             WorldIn = worldIn;
         }
 
-        public void SendChunkToClients(ulong[] clients, Chunk chunk)
-        {
-            var buffer = chunk.Serialize();
-            var packet = new ChunkTransferMessage
-                         {
-                             Position = chunk.Position,
-                             Data = buffer,
-                             World = WorldIn.Identifier
-                         };
-            MessageFactory.SendPacket(SendingMode.ServerToClient, packet, clients, null, NetworkDelivery.ReliableFragmentedSequenced);
-        }
+
         
         
         public void PlayerRequestChunks(ulong playerId, Vector2Int[] positions)
         {
+            
+            var worldsManager = WorldsManager.Instance;
             foreach (var (chunk, index) in Query.GetChunks(positions).Select((chunk, index) => (chunk, index)))
             {
+                if(index >= positions.Length)break;
                 var position = positions[index];
                 Chunk newChunk = chunk;
+                
                 if (newChunk is null && !TryGetChunkFromStorage(positions[index], out newChunk))
-                    newChunk = new Chunk(WorldIn, position);                       
+                {
+                    worldsManager.EnqueueChunkGeneration(WorldIn, position, playerId);
+                    return;
+                }  
+                
                 
                 newChunk.AddPlayer(playerId);
+                worldsManager.EnqueueChunkToDispatch(chunk);
             }
         }
 
@@ -185,7 +185,12 @@ namespace World
             chunk = null;
             return false;
         }
-        
+
+        //!TODO later
+        public void Destroy()
+        {
+            Query.Destroy();
+        }
         
     }
 }

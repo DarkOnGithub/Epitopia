@@ -35,15 +35,15 @@ namespace World.WorldGeneration.Biomes
             {
                 case "Block":
                     var block = BlockRegistry.GetBlock(jsonJObject["Argument"].Value<string>());
-                    AddLayer(rule.Height, () => block.GetDefaultState());
+                    AddLayer(rule.Height, () => block.CreateBlockState());
                     break;
                 case "Random":
                     var blockNames = jsonJObject["Argument"].Value<JArray>();
-                    var blocks = new IBlock[blockNames.Count];
+                    var blocks = new AbstractBlock[blockNames.Count];
                     for (var i = 0; i < blockNames.Count; i++)
                         blocks[i] = BlockRegistry.GetBlock(blockNames[i].Value<string>());
                     var random = new Random();
-                    AddLayer(rule.Height, () => blocks[random.Next(blocks.Length)].GetDefaultState());
+                    AddLayer(rule.Height, () => blocks[random.Next(blocks.Length)].CreateBlockState());
                     break;
                     
             }

@@ -12,7 +12,7 @@ using World.WorldGeneration;
 
 namespace Network.Server
 {
-    public class Server : IDisposable
+    public class Server
     {
         private static readonly object _lock = new();
         private static Server _instance;
@@ -39,12 +39,6 @@ namespace Network.Server
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         public void InitializeConfig()
         {
             FileUtils.CloneDirectory(Application.streamingAssetsPath + "/Config",
@@ -55,12 +49,11 @@ namespace Network.Server
         {
             Seed.Initialize(Info.ServerName.GetHashCode());
             InitializeConfig();
-
+            WorldsManager.Instance.Init();
             ConnectionPacket.OnPlayerAddedCallback += PlayerManager.OnPlayerConnected;
             ConnectionPacket.OnPlayerRemovedCallback += PlayerManager.OnPlayerDisconnected;
-            WorldManager.LoadWorlds();
+            WorldsManager.Instance.LoadWorlds();
 
-            StartServerThreads();
             await ConnectionPacket.TrySendPacket();
             new OnClientStart().Invoke();
         }
@@ -76,37 +69,7 @@ namespace Network.Server
             return _instance;
         }
 
-        private static void StartServerThreads()
-        {
-            new Thread(WorldManager.ChunksDispatcher).Start();
-        }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed) return;
-
-            if (disposing)
-            {
-                if (_worldThread != null && _worldThread.IsAlive)
-                {
-                    _worldThread.Abort();
-                    _worldThread = null;
-                }
-
-                WorldManager.UnloadWorlds();
-            }
-
-            _disposed = true;
-            lock (_lock)
-            {
-                _instance = null;
-            }
-        }
-
-        ~Server()
-        {
-            Dispose(false);
-        }
     }
 
     public struct ServerInfo

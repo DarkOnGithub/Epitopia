@@ -63,6 +63,7 @@
 // }
 
 using Unity.Netcode;
+using UnityEngine;
 
 namespace World
 {
@@ -77,6 +78,7 @@ namespace World
             
         protected AbstractWorld(WorldIdentifier identifier)
         {
+            Debug.Log($"Created new world {identifier}");
             _isHost = NetworkManager.Singleton.IsHost;
             
             Identifier = identifier;
@@ -85,6 +87,9 @@ namespace World
             if (_isHost)
                 ServerHandler = new ServerWorldHandler(this);
         }
+        
+        
+        
     }
 }
     

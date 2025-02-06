@@ -5,18 +5,9 @@ namespace Tiles
 {
     public class DefaultTile : AbstractTile
     {
-        public static RuleTile DirtRuleTile;
 
-        public DefaultTile(Texture2D texture, bool mergeWithDirt, string name) : base(texture)
+        public DefaultTile(string path, bool mergeWithDirt = false) : base(GetTexture(path))
         {
-            if (name == "Dirt")
-            {
-                DirtRuleTile = RuleTile;
-                DefaultRuleTile.DirtTile = RuleTile;
-            }
-
-            if (name == "Test")
-                Test = true;
             // RegisterTileGroup(new[]
             //                   {
             //                       (1, 0),

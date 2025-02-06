@@ -7,7 +7,7 @@ using World;
 
 namespace Network.Client
 {
-    public class Client : IDisposable
+    public class Client
     {
         private static readonly object _lock = new();
         private static Client _instance;
@@ -19,7 +19,6 @@ namespace Network.Client
         {
         }
 
-        // Singleton property for controlled access
         public static Client Instance
         {
             get
@@ -31,19 +30,12 @@ namespace Network.Client
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-
         public async void Initialize()
         {
             ConnectionPacket.OnPlayerAddedCallback += PlayerManager.OnPlayerConnected;
             ConnectionPacket.OnPlayerRemovedCallback += PlayerManager.OnPlayerDisconnected;
 
-            WorldManager.LoadWorlds();
+            WorldsManager.Instance.LoadWorlds();
             await ConnectionPacket.TrySendPacket();
 
             new OnClientStart().Invoke();
@@ -61,27 +53,5 @@ namespace Network.Client
             return _instance;
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed) return;
-
-            if (disposing)
-                if (_clientThread != null && _clientThread.IsAlive)
-                {
-                    _clientThread.Abort();
-                    _clientThread = null;
-                }
-
-            _disposed = true;
-            lock (_lock)
-            {
-                _instance = null;
-            }
-        }
-
-        ~Client()
-        {
-            Dispose(false);
-        }
     }
 }

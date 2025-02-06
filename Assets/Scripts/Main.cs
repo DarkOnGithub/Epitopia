@@ -20,6 +20,7 @@ public class Main : MonoBehaviour
 
     private IEnumerator Temp()
     {
+        var useless = BlockRegistry.BlockAir;
         yield return new WaitForFixedUpdate();
         // while (true)
         // {

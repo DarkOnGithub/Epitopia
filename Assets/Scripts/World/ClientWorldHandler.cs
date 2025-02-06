@@ -76,7 +76,14 @@
 //     }
 // }
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Network.Messages;
+using Network.Messages.Packets.World;
 using UnityEngine;
+using UnityEngine.UI;
+using Utils;
 using World.Blocks;
 using World.Chunks;
 
@@ -86,6 +93,9 @@ namespace World
     {
         public readonly AbstractWorld WorldIn;
         public readonly WorldQuery Query;
+
+
+        
         public ClientWorldHandler(AbstractWorld worldIn)
         {
             Query = new WorldQuery(worldIn);
@@ -97,7 +107,12 @@ namespace World
             var chunk = Chunk.Deserialize(WorldIn, chunkPosition, blockStates);
             Query.AddChunk(chunk);
         }
+
         
+        public void Destroy()
+        {
+            Query.Destroy();
+        }
         
     }
 }

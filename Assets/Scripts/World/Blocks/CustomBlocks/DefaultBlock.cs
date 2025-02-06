@@ -1,24 +1,28 @@
-﻿namespace World.Blocks.CustomBlocks
+﻿using MessagePack;
+using Tiles;
+
+namespace World.Blocks.CustomBlocks
 {
+    [MessagePackObject]
     public struct DefaultBlockState : IBlockState
     {
-        public int LightLevel { get; set; }
-        public byte WallId { get; set; }
-        public int Id { get; }
-        public DefaultBlockState(int id, byte wallId, int lightLevel)
-        {
-            Id = id;
-            LightLevel = lightLevel;
-            WallId = wallId;
-        }
+        [Key(0)]public int LightLevel { get; set; }
+        [Key(1)]public byte WallId { get; set; }
+        [Key(2)]public int Id { get; set; }
+        
     }
     public class DefaultBlock : AbstractBlock
     {
         public DefaultBlock(int id, string name, BlockProperties properties) : base(id, name, properties)
         {
-               
+            Tile = new DefaultTile(properties.SpritePath, properties.MergeWithDirt).RuleTile;
         }
 
-        public override IBlockState CreateBlockState(int? state = null, byte wallId = 0, int lightLevel = 0) => new DefaultBlockState(BlockId, wallId, lightLevel);
+        public override IBlockState CreateBlockState(int? state = null, byte wallId = 0, int lightLevel = 0) => new DefaultBlockState
+        {
+            Id = BlockId, 
+            WallId = wallId, 
+            LightLevel = lightLevel
+        };
     }
 }

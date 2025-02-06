@@ -97,6 +97,9 @@
 // }
 
 using System.Collections.Generic;
+using Tiles;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 using World.Blocks.CustomBlocks;
 
 namespace World.Blocks
@@ -105,17 +108,26 @@ namespace World.Blocks
     {
         public static DefaultBlock BlockAir;
         public static DefaultBlock BlockNull;
-        
-        
+
+        public static HashSet<int> VegetationBlocks = new();
+        public static HashSet<int> WallBlocks = new();
+
+
+        public static readonly List<TileBase> WallTiles = new();
         private static readonly List<AbstractBlock> IdsRegistry = new();
         private static readonly Dictionary<string, AbstractBlock> NamesRegistry = new();
         static BlockRegistry()
         {
-            RegisterBlocks();    
+            if (IdsRegistry.Count == 0) 
+                RegisterBlocks();    
         }
         
         public static void RegisterBlocks()
         {
+            if (IdsRegistry.Count != 0)
+                return;
+            RegisterWall("Dirt");
+            RegisterWall("Stone");
             BlockAir = RegisterBlock<DefaultBlock>("Air", new BlockProperties
             {
                 SpritePath = null,
@@ -124,12 +136,44 @@ namespace World.Blocks
             
             BlockNull = RegisterBlock<DefaultBlock>("Null", new BlockProperties
             {
-                SpritePath = "Null"
+                SpritePath = "null"
             });
+
+            RegisterBlock<DefaultBlock>("Grass", new BlockProperties()
+            {
+                SpritePath = "Grass"
+            });
+            
+            RegisterBlock<DirtBlock>("Dirt", new BlockProperties()
+            {
+                SpritePath = "Dirt"
+            });
+            
+            RegisterBlock<DefaultBlock>("Stone", new BlockProperties()
+            {
+                SpritePath = "Stone"
+            });
+                                
+            RegisterBlock<DefaultBlock>("Sand", new BlockProperties()
+            {
+                SpritePath = "Sand"
+            });       
+                                       
+                           // RegisterBlock<DefaultBlock>("Flower", new BlockProperties()
+                           // {
+                           //     SpritePath = "Flower"
+                           // });
+        }
+
+        public static void RegisterWall(string wallName)
+        { 
+            WallTiles.Add(new WallTile(wallName).RuleTile);
         }
         
         public static T RegisterBlock<T>(string blockName, BlockProperties properties) where T : AbstractBlock
         {
+
+            Debug.Log(IdsRegistry.Count);
             var instance = System.Activator.CreateInstance(typeof(T), IdsRegistry.Count, blockName, properties);
 
             IdsRegistry.Add((AbstractBlock)instance);

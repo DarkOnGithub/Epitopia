@@ -17,9 +17,9 @@ namespace Renderer
             Vegetation
         }
 
-        private static readonly Tilemap WorldTilemap = WorldManager.Instance.worldTilemap;
-        private static readonly Tilemap BackgroundTilemap = WorldManager.Instance.backgroundTilemap;
-        private static readonly Tilemap VegetationTilemap = WorldManager.Instance.vegetationTilemap;
+        private static readonly Tilemap WorldTilemap = WorldsManager.Instance.worldTilemap;
+        private static readonly Tilemap BackgroundTilemap = WorldsManager.Instance.backgroundTilemap;
+        private static readonly Tilemap VegetationTilemap = WorldsManager.Instance.vegetationTilemap;
 
         public static void RenderChunk(Chunk chunk)
         {
@@ -46,25 +46,26 @@ namespace Renderer
             var vegetationPositions = new Vector3Int[Chunk.ChunkSizeSquared];
             var vegetationTiles = new TileBase[Chunk.ChunkSizeSquared];
             
-            var origin = chunk.Origin.ToVector3Int();
+            var origin = chunk.Position.ToVector3Int();
             var blocks = chunk.BlockStates;
             for (var i = 0; i < Chunk.ChunkSizeSquared; i++)
             {
                 var block = blocks[i];
-
-                if(BlockRegistry.Vegetation.Contains(block.Id))
+                if(block.Id != 0)
+                    Debug.Log(block.Id);
+                if(BlockRegistry.VegetationBlocks.Contains(block.Id))
                 {
                     vegetationPositions[i] = origin + i.ToVector3Int0();
-                    vegetationTiles[i] = block.Block.Tile;
+                    vegetationTiles[i] = BlockRegistry.GetBlock(block.Id).Tile;
                 }
                 else
                 {
                     worldPositions[i] = origin + i.ToVector3Int0();
-                    worldTiles[i] = block.Block.Tile;
+                    worldTiles[i] = BlockRegistry.GetBlock(block.Id).Tile;
                 }
 
                 backgroundPositions[i] = origin + i.ToVector3Int0();
-                backgroundTiles[i] = block.WallId == 0 ? null : BlockRegistry.WallTiles[block.WallId] ;
+                backgroundTiles[i] = block.WallId == 0 ? null : BlockRegistry.WallTiles[block.WallId];
                 
             }
 
@@ -78,7 +79,7 @@ namespace Renderer
 
         public static void UnRenderChunk(Chunk chunk)
         {
-            var origin = chunk.Origin.ToVector3Int();
+            var origin = chunk.Position.ToVector3Int();
             var positions = new Vector3Int[Chunk.ChunkSizeSquared];
             for (var i = 0; i < Chunk.ChunkSizeSquared; i++)
                 positions[i] = origin + i.ToVector3Int0();

@@ -99,9 +99,18 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using MessagePack;
+using Network.Messages;
+using Network.Messages.Packets.World;
+using Unity.Netcode;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using Utils;
+using World.Blocks;
 using World.Chunks;
 using Task = System.Threading.Tasks.Task;
 
@@ -109,20 +118,53 @@ namespace World
 {
     public class WorldsManager : MonoBehaviour
     {
-        
-        private SemaphoreSlim _chunkGenerationSemaphore = new(0, Environment.ProcessorCount / 4);
-        
         public static WorldsManager Instance { get; private set; }
         
+        private readonly SemaphoreSlim _chunkGenerationSemaphore = new(Mathf.Max(1, Environment.ProcessorCount / 4)); 
+        [SerializeField] public Tilemap worldTilemap;
+        [SerializeField] public Tilemap backgroundTilemap;
+        [SerializeField] public Tilemap vegetationTilemap;
         
-        private ConcurrentDictionary<WorldIdentifier, AbstractWorld> _worlds = new();
-        private ConcurrentQueue<Chunk> _chunksDispatcherQueue = new();
+        private readonly UniqueConcurrentQueue<Chunk> _chunksDispatcherQueue = new();
         private const float DispatchRate = 1 / 30f;
         private const int MaxDispatchPerTick = 30;
+        
+        private readonly Dictionary<WorldIdentifier, Queue<(Vector2Int, ChunkRequestType)>> _chunkRequestsQueue = new();
+        private readonly Dictionary<WorldIdentifier, Dictionary<Vector2Int, float>> _chunksRequested = new();
+        private const float RequestRate = 1 / 30f;
+        private const int MaxRequestPerTick = 100;
+        
+        private readonly ConcurrentDictionary<WorldIdentifier, AbstractWorld> _worlds = new();
+        private readonly Dictionary<WorldIdentifier, Type> _worldTypes = new();
         
         private void Awake()
         {
             Instance = this;
+        }
+
+        public void Init()
+        {
+            RegisterWorlds();
+            StartCoroutine(ChunkDispatcher());
+            StartCoroutine(ChunkRequester());
+        }
+        
+        private void RegisterWorlds()
+        {
+            RegisterWorlds(WorldIdentifier.Overworld, typeof(Overworld));
+        }
+
+        private void RegisterWorlds(WorldIdentifier identifier, Type worldType) =>_worldTypes[identifier] = worldType;
+
+        public void LoadWorlds()
+        {
+            foreach (var world in _worldTypes)
+            {
+                 var instance = (AbstractWorld)Activator.CreateInstance(world.Value, world.Key);
+                 _worlds[world.Key] = instance;
+                 _chunksRequested[world.Key] = new();
+                 _chunkRequestsQueue[world.Key] = new();
+            }
         }
        
         public AbstractWorld GetWorld(WorldIdentifier identifier)
@@ -130,35 +172,116 @@ namespace World
             if (_worlds.TryGetValue(identifier, out var world)) return world;
             throw new System.Exception($"World {identifier} not found");
         }
-        
-        public void RegisterWorld(AbstractWorld world) => _worlds[world.Identifier] = world;
 
-        private IEnumerable ChunkDispatcher()
+
+        public void EnqueueChunkRequest(Vector2 chunkPosition, WorldIdentifier worldIn,
+            ChunkRequestType requestType = ChunkRequestType.Request)
+        {
+            var position = VectorUtils.GetNearestChunkPosition(chunkPosition);
+            if (!_chunksRequested[worldIn].ContainsKey(position))
+            {
+                _chunkRequestsQueue[worldIn].Enqueue(
+                    (VectorUtils.GetNearestChunkPosition(chunkPosition), requestType)
+                );
+            }
+        } 
+        
+        private IEnumerator ChunkRequester()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(RequestRate);
+                foreach (WorldIdentifier worldIdentifier in Enum.GetValues(typeof(WorldIdentifier)))
+                {
+                    var queue = _chunkRequestsQueue[worldIdentifier];
+                    var batchRequest = new List<Vector2Int>();
+                    var batchDrop = new List<Vector2Int>();
+                    for (int i = 0; i < Math.Min(MaxRequestPerTick, queue.Count); i++)
+                    {
+                        var request = queue.Dequeue();
+                        var position = request.Item1;
+                        if (request.Item2 == ChunkRequestType.Request)
+                        {
+                            batchRequest.Add(position);
+                            _chunksRequested[worldIdentifier][position] = Time.realtimeSinceStartup;
+                        }
+                        else
+                            batchDrop.Add(position);                        
+                    }
+
+                    if(batchRequest.Count > 0)
+                        SendRequestPacket(batchRequest.ToArray(), ChunkRequestType.Request, worldIdentifier);
+                    if (batchDrop.Count > 0)
+                        SendRequestPacket(batchDrop.ToArray(), ChunkRequestType.Drop, worldIdentifier);
+                }
+            }
+        }
+
+        private void SendRequestPacket(Vector2Int[] batch, ChunkRequestType requestType, WorldIdentifier worldIn)
+        {
+            var packet = new ChunkRequestMessage
+            {
+                Positions = batch,
+                Type = requestType,
+                World = worldIn
+            };
+            MessageFactory.SendPacket(SendingMode.ClientToServer, packet);
+        }
+
+        public void EnqueueChunkToDispatch(Chunk chunk)
+        {
+            chunk.WorldIn.ServerHandler.Query.AddChunk(chunk);
+            _chunksDispatcherQueue.Enqueue(chunk);
+        }
+        
+        
+        private IEnumerator ChunkDispatcher()
         {
             while (true)
             {
                 yield return new WaitForSeconds(DispatchRate);
                 for (var i = 0; i < Mathf.Min(MaxDispatchPerTick, _chunksDispatcherQueue.Count); i++)
                     if (_chunksDispatcherQueue.TryDequeue(out var chunk))
-                        continue;
+                    {
+                        SendChunkToClients(chunk.Players.ToArray(), chunk);
+                    }
             }
         }
         
-        private void EnqueueChunkGeneration(AbstractWorld worldIn, Vector2Int position)
+        private void SendChunkToClients(ulong[] clients, Chunk chunk)
+        {
+            var buffer = chunk.Serialize();
+            var packet = new ChunkTransferMessage
+            {
+                Position = chunk.Position,
+                Data = buffer,
+                World = chunk.WorldIn.Identifier
+            };
+            MessageFactory.SendPacket(SendingMode.ServerToClient, packet, clients, null, NetworkDelivery.ReliableFragmentedSequenced);
+        }
+        
+        public void EnqueueChunkGeneration(AbstractWorld worldIn, Vector2Int position, ulong owner)
         {
             Task.Run(async () =>
             {
                 await _chunkGenerationSemaphore.WaitAsync();
+
                 try
                 {
-                    var chunkData = await worldIn.ServerHandler.WorldGenerator.GenerateChunk(position);
-                    new Chunk(worldIn, position, chunkData);
+                    var chunk = new Chunk(worldIn, position);
+                    await worldIn.ServerHandler.WorldGenerator.GenerateChunk(chunk);
+                    chunk.AddPlayer(owner);
+                    EnqueueChunkToDispatch(chunk);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.Log(e);
                 }
-                _chunkGenerationSemaphore.Release();
+                finally
+                {
+                    _chunkGenerationSemaphore.Release();
+                }
+
             });
         }
         

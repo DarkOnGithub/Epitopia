@@ -1,7 +1,9 @@
 ﻿using MessagePack;
+using World.Blocks.CustomBlocks;
 
 namespace World.Blocks
 {
+    [Union(0, typeof(DefaultBlockState))]
     public interface IBlockState
     {
         //4 bytes RGB-Level

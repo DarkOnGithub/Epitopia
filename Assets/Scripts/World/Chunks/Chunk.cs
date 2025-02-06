@@ -289,6 +289,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Core;
 using MessagePack;
+using MessagePack.Resolvers;
+using Renderer;
 using UnityEngine;
 using World.Blocks;
 
@@ -297,8 +299,9 @@ namespace World.Chunks
     public class Chunk
     {
         private static readonly MessagePackSerializerOptions SerializationOptions =
-            MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4BlockArray);
-
+            MessagePackSerializerOptions.Standard
+                .WithCompression(MessagePackCompression.Lz4BlockArray);
+        
         public const int ChunkSize = 16;
         public const int ChunkSizeSquared = ChunkSize * ChunkSize;
         public readonly AbstractWorld WorldIn;
@@ -306,7 +309,9 @@ namespace World.Chunks
         public Vector2Int Center => Position + new Vector2Int(ChunkSize / 2, ChunkSize / 2);
         public HashSet<ulong> Players = new();
 
-
+        private bool _shouldRender = true;
+        public event EventHandler OnBlockPlaced;
+        
         private readonly IBlockState[] _blockStates = new IBlockState[ChunkSizeSquared];
 
         public IBlockState[] BlockStates
@@ -319,6 +324,8 @@ namespace World.Chunks
             }
         }
 
+        public IBlockState[] BlockStatesRef => _blockStates;
+        
         public bool IsEmpty
         {
             get { return _blockStates.All((state) => state.Id == 0); }
@@ -331,9 +338,7 @@ namespace World.Chunks
             Position = position;
 
             for (var i = 0; i < ChunkSizeSquared; i++)
-            {
-                //_blockStates[i] = BlockRegistry.BLOCK_AIR.GetDefaultState();
-            }
+                _blockStates[i] = BlockRegistry.BlockAir.CreateBlockState();
         }
 
         public Chunk(AbstractWorld worldIn, Vector2Int position, IBlockState[] blockStates)
@@ -372,18 +377,28 @@ namespace World.Chunks
             OnPlayerUpdate(() => Players.Remove(player));
         }
 
+        public void Render()
+        {
+            if (!_shouldRender) return;
+            ChunkRenderer.RenderChunk(this);
+            _shouldRender = false;
+        }
+        
+        
         public byte[] Serialize()
         {
-            return MessagePackSerializer.Serialize(_blockStates, SerializationOptions);
+            return MessagePackSerializer.Serialize(_blockStates);
         }
 
         public static Chunk Deserialize(AbstractWorld worldIn, Vector2Int position, byte[] data)
         {
             return new Chunk(
                 worldIn, position,
-                MessagePackSerializer.Deserialize<IBlockState[]>(data, SerializationOptions)
+                MessagePackSerializer.Deserialize<IBlockState[]>(data)
             );
         }
+        
+        
 
         public void Save()
         {

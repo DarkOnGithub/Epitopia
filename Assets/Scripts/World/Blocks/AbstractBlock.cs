@@ -53,6 +53,7 @@ namespace World.Blocks
         public int BlockId;
         public string BlockName;
         public TileBase Tile;
+        
         protected AbstractBlock(int id, string name, BlockProperties properties)
         {
             BlockId = id;

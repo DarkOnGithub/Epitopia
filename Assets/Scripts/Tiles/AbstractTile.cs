@@ -46,8 +46,10 @@ namespace Tiles
        
         protected AbstractTile(Texture2D texture)
         {
+            if (texture = null) return;
             Sprites = SplitTexture(texture);
         }
+        
 
         protected virtual Vector2Int Padding { get; } = new(2, 2);
         protected virtual Vector2Int Size { get; } = new(16, 16);

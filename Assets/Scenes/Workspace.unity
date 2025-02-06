@@ -1976,7 +1976,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec70917a44e64e19aaa07f916d7246b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!4 &1754741873
 Transform:
   m_ObjectHideFlags: 0
@@ -2090,7 +2089,6 @@ MonoBehaviour:
   worldTilemap: {fileID: 1024322245}
   backgroundTilemap: {fileID: 10298467}
   vegetationTilemap: {fileID: 1456333988}
-  Grid: {fileID: 554415989}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

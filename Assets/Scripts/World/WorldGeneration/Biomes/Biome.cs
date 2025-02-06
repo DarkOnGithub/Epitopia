@@ -7,7 +7,6 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using UnityEngine;
 using Utils;
-using World.WorldGeneration.Structures;
 using World.WorldGeneration.Vegetation;
 
 namespace World.WorldGeneration.Biomes
@@ -26,7 +25,6 @@ namespace World.WorldGeneration.Biomes
 
         public string Name;
         public SurfaceRules SurfaceRules;
-        public StructurePlacement StructurePlacement;
         public BiomeVegetation Vegetation;
         
         public Biome(string name)
@@ -36,7 +34,7 @@ namespace World.WorldGeneration.Biomes
             var jsonText = File.ReadAllText(BiomesPath + name + ".json");
             var jObject = JObject.Parse(jsonText);
             SurfaceRules = new(biomeData.SurfaceRules, jObject["SurfaceRules"].ToObject<JArray>());
-            Vegetation = new(biomeData.Vegetation);
+//            Vegetation = new(biomeData.Vegetation);
             // StructurePlacement = new(new[]
             // {
             //     new FlowerVegetation(new()

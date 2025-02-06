@@ -5,5 +5,6 @@
         public bool IsTransparent = false;
         public bool IsSolid = true;
         public string SpritePath = "Null";
+        public bool MergeWithDirt = false;
     }
 }

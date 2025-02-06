@@ -21,7 +21,6 @@ namespace World.WorldGeneration.Vegetation
                         component = new Flower(BlockRegistry.GetBlock(vegetationComponent.Block));
                         break;
                     case "Tree":
-                        component = new Tree();
                         break;
                 }
                 _vegetationComponents.TryAdd((vegetationComponent.Range[0], vegetationComponent.Range[1], vegetationComponent.Probability), component);

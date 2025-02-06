@@ -99,7 +99,7 @@ namespace World
 {
     public class WorldQuery
     {
-        private readonly Dictionary<Vector2Int, Chunk> _chunks;
+        private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
         private readonly AbstractWorld _worldIn;
         
         public WorldQuery(AbstractWorld worldIn)
@@ -108,7 +108,7 @@ namespace World
         }
         
         public void RemoveChunk(Vector2Int chunkPosition) => _chunks.Remove(chunkPosition);
-        public void AddChunk(Chunk chunk) => _chunks.Add(chunk.Position, chunk);
+        public void AddChunk(Chunk chunk) => _chunks.TryAdd(chunk.Position, chunk);
         public bool HasChunk(Vector2Int chunkPosition) => _chunks.ContainsKey(chunkPosition);
         public bool TryGetChunk(Vector2Int worldPosition, out Chunk chunk) =>
             _chunks.TryGetValue(VectorUtils.GetNearestChunkPosition(worldPosition), out chunk);
@@ -122,6 +122,11 @@ namespace World
                     yield return chunk;
                 yield return null;
             }
+        }
+
+        public void Destroy()
+        {
+            _chunks.Clear();
         }
         
         

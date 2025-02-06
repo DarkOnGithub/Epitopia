@@ -20,7 +20,7 @@ namespace Players
                 LocalPlayer = player;
 
             if (NetworkManager.Singleton.IsHost) await SetPlayerInfos(player);
-            Scanner.Instance.InitializeScanner(UnityEngine.Camera.main);
+            Scanner.Instance.SetCamera(UnityEngine.Camera.main);
 
         }
 
@@ -31,7 +31,7 @@ namespace Players
 
         private static async Task SetPlayerInfos(Player player)
         {
-            player.World = WorldManager.GetWorld(WorldIdentifier.Overworld);
+            player.World = WorldsManager.Instance.GetWorld(WorldIdentifier.Overworld);
         }
     }
 }
