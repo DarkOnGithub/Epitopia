@@ -27,7 +27,7 @@ namespace World.WorldGeneration
         public string DefaultPath => Server.Instance.ConfigDirectory + "/WorldGen/";
         public string DensityFunctionsPath => DefaultPath + "DensityFunctions/";
         public string WorldSettingsPath => DefaultPath + "WorldSettings/";
-        private readonly NoiseGenerator _vegetationNoise = new("FwAAAIC/AACAPwAAAAAAAIA/BgA=", 0.07f);
+        private readonly NoiseGenerator _vegetationNoise = new("FwAAAIC/AACAPwAAAAAAAIA/BgA=", 0.7f);
         
         public AbstractWorld WorldIn;
         
@@ -53,7 +53,6 @@ namespace World.WorldGeneration
             var heightMapCache = HeightMap.CacheHeight(position);
             var carverCache = _carver.CacheDensityPoints(position);
             
-            var chunkData = chunk.BlockStatesRef;
             var biomeParametersGenerator =
                 BiomeProvider.Noises.GetCache(position, new Vector2Int(Chunk.ChunkSize, Chunk.ChunkSize));
             
@@ -78,18 +77,18 @@ namespace World.WorldGeneration
                         continue;
             
                     if (!carverCache.GetPoint(index, localY, lastLayerDepth))
-                        chunkData[index] = biome.SurfaceRules.GetRule(surfaceLevel - localY)();
-                    else
-                        chunkData[index] = BlockRegistry.BlockAir.CreateBlockState();
+                        chunk.SetBlockAt(index, biome.SurfaceRules.GetRule(surfaceLevel - localY)());
+
                     if (localY >= surfaceLevel - 2)
                         continue;
-                    chunkData[index].WallId = localY > surfaceLevel - 14 ? (byte)1 : (byte)2;
+                    chunk.GetBlockAt(index).WallId = localY > surfaceLevel - 14 ? (byte)1 : (byte)2;
                     
                  
                 }
-                // if (position.y <= surfaceLevel && surfaceLevel < position.y + Chunk.ChunkSize)
-                //     biome.Vegetation.GenerateVegetation(chunkData, vegetationCache[x],
-                //                                         new Vector2Int(x, surfaceLevel - position.y), position);
+
+                if (position.y <= surfaceLevel && surfaceLevel < position.y + Chunk.ChunkSize)
+                    biome.Vegetation.GenerateVegetation(chunk, vegetationCache[x],
+                                                        new Vector2Int(x, surfaceLevel - position.y), position);
             }
 
             //

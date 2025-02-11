@@ -291,7 +291,9 @@ using Core;
 using MessagePack;
 using MessagePack.Resolvers;
 using Renderer;
+using Unity.Netcode;
 using UnityEngine;
+using Utils;
 using World.Blocks;
 
 namespace World.Chunks
@@ -313,7 +315,10 @@ namespace World.Chunks
         public event EventHandler OnBlockPlaced;
         
         private readonly IBlockState[] _blockStates = new IBlockState[ChunkSizeSquared];
-
+        private static bool IsServerHost => NetworkManager.Singleton.IsHost;
+        private readonly ServerWorldHandler _serverHandler;
+        
+        private Texture2D _lightTexture;
         public IBlockState[] BlockStates
         {
             get
@@ -331,14 +336,19 @@ namespace World.Chunks
             get { return _blockStates.All((state) => state.Id == 0); }
         }
 
-
+        
         public Chunk(AbstractWorld worldIn, Vector2Int position)
         {
             WorldIn = worldIn;
             Position = position;
-
+            _serverHandler = worldIn.ServerHandler;
             for (var i = 0; i < ChunkSizeSquared; i++)
                 _blockStates[i] = BlockRegistry.BlockAir.CreateBlockState();
+            if(IsServerHost)
+            {
+                UpdateContent();
+                worldIn.ServerHandler.OnTick += OnTick;
+            }
         }
 
         public Chunk(AbstractWorld worldIn, Vector2Int position, IBlockState[] blockStates)
@@ -346,8 +356,36 @@ namespace World.Chunks
             WorldIn = worldIn;
             Position = position;
             _blockStates = blockStates;
+            _serverHandler = worldIn.ServerHandler;
+
+            if(IsServerHost)
+            {
+                UpdateContent();
+                worldIn.ServerHandler.OnTick += OnTick;
+            }
         }
 
+        private void UpdateContent()
+        {
+            if (WorldIn.ServerHandler.BlocksToPlace.TryGetValue(Position, out var blocks))
+            {
+                lock (blocks) 
+                {
+                    foreach (var (index, blockState, replace) in blocks)
+                        TryPlaceBlockAt(blockState, index, false, replace);
+                    blocks.Clear(); 
+                }
+            }
+            Update();
+        }
+
+        public void UpdateContent(IBlockState[] newContent)
+        {
+            for (var i = 0; i < ChunkSizeSquared; i++)
+                _blockStates[i] = newContent[i];
+            Update();
+        }
+        
         public IBlockState GetBlockAt(int index)
         {
             return _blockStates[index];
@@ -355,10 +393,43 @@ namespace World.Chunks
 
         public void SetBlockAt(int index, IBlockState blockState)
         {
+            // var localPosition = index.ToVector2Int();
+            // var x = Position.x + localPosition.x;
+            // var y = Position.y + localPosition.y;
+            // if (IsServerHost && !BlockRegistry.GetBlock(blockState.Id).Properties.IsTransparent)
+            // {
+            //     if (_serverHandler.HeightsPerColumn.TryGetValue(x, out var heights))
+            //         heights.TryAdd(y, 0);
+            //     else
+            //     {
+            //         _serverHandler.HeightsPerColumn[x] = new();
+            //         _serverHandler.HeightsPerColumn[x].TryAdd(y, 0);
+            //     }
+            // }
             _blockStates[index] = blockState;
         }
-        public void RemoveBlockAt(int index) => _blockStates[index] = BlockRegistry.BlockAir.CreateBlockState(null);
+        public void RemoveBlockAt(int index)
+        {
+            // var localPosition = index.ToVector2Int();
+            // var x = Position.x + localPosition.x;
+            // var y = Position.y + localPosition.y;
+            // if(_blockStates[index].Id != 0 && IsServerHost)
+            //     if (_serverHandler.HeightsPerColumn.TryGetValue(x, out var heights))
+            //         heights.TryRemove(y, out var _);
 
+            _blockStates[index] = BlockRegistry.BlockAir.CreateBlockState(null);
+        }
+
+        public void TryPlaceBlockAt(IBlockState blockState, int index, bool update = false, bool replace = false)
+        {
+            if(_blockStates[index].Id != 0 && !replace) return;
+            SetBlockAt(index, blockState);
+            if(update)
+                Update();
+            //OnBlockPlaced?.Invoke(this, EventArgs.Empty);
+        }
+            
+        
         private void OnPlayerUpdate(Action action)
         {
             action();
@@ -377,9 +448,47 @@ namespace World.Chunks
             OnPlayerUpdate(() => Players.Remove(player));
         }
 
+        private void OnTick(object sender, EventArgs e)
+        {
+            
+        }
+        
+        public void Update()
+        {
+            _shouldRender = true;
+        }
+        
+        private void InitializeLighting()
+        {
+            _lightTexture = new Texture2D(ChunkSize, ChunkSize);
+            var lightMapSource = Resources.Load<GameObject>("Prefabs/Lightmap");
+            lightMapSource.transform.position = new Vector3(Position.x, Position.y);
+            var lightMap = GameObject.Instantiate(lightMapSource);
+            lightMap.GetComponent<SpriteRenderer>().material.SetTexture("_Lightmap", _lightTexture);
+            _lightTexture.filterMode = FilterMode.Point;
+            _lightTexture.wrapMode = TextureWrapMode.Clamp;
+            _lightTexture.Apply();
+        }
+        
+        private void ComputeLightMap()
+        {
+            for (var x = 0; x < ChunkSize; x++)
+            {
+                for (var y = 0; y < ChunkSize; y++)
+                {
+                    var block = _blockStates[(x, y).ToIndex()];
+                    _lightTexture.SetPixel(x, y, new Color(0, 0, 0, 1 - block.LightLevel / 15f));
+                }
+            }
+            _lightTexture.Apply();
+        }
+        
         public void Render()
         {
             if (!_shouldRender) return;
+            if (_lightTexture == null)
+                InitializeLighting();
+            ComputeLightMap();
             ChunkRenderer.RenderChunk(this);
             _shouldRender = false;
         }

@@ -137,6 +137,8 @@ namespace World
         private readonly ConcurrentDictionary<WorldIdentifier, AbstractWorld> _worlds = new();
         private readonly Dictionary<WorldIdentifier, Type> _worldTypes = new();
         
+        private readonly ConcurrentQueue<Chunk> _lightingQueue = new();
+        private const int MaxLightingPerTick = 30;
         private void Awake()
         {
             Instance = this;
@@ -147,6 +149,7 @@ namespace World
             RegisterWorlds();
             StartCoroutine(ChunkDispatcher());
             StartCoroutine(ChunkRequester());
+       //     StartCoroutine(LightingManager());
         }
         
         private void RegisterWorlds()
@@ -183,6 +186,7 @@ namespace World
                 _chunkRequestsQueue[worldIn].Enqueue(
                     (VectorUtils.GetNearestChunkPosition(chunkPosition), requestType)
                 );
+                _chunksRequested[worldIn][position] = Time.realtimeSinceStartup;
             }
         } 
         
@@ -201,10 +205,7 @@ namespace World
                         var request = queue.Dequeue();
                         var position = request.Item1;
                         if (request.Item2 == ChunkRequestType.Request)
-                        {
                             batchRequest.Add(position);
-                            _chunksRequested[worldIdentifier][position] = Time.realtimeSinceStartup;
-                        }
                         else
                             batchDrop.Add(position);                        
                     }
@@ -234,7 +235,27 @@ namespace World
             _chunksDispatcherQueue.Enqueue(chunk);
         }
         
-        
+        // private IEnumerator LightingManager()
+        // {
+        //     while (true)
+        //     {
+        //         yield return new WaitForSeconds(1 / 30f);
+        //         for (var i = 0; i < Mathf.Min(MaxLightingPerTick, _lightingQueue.Count); i++)
+        //             if (_lightingQueue.TryDequeue(out var chunk))
+        //             {
+        //                 var chunks = chunk.WorldIn.ServerHandler.Query.GetSurroundingChunks(chunk.Position);
+        //                 if (chunks.Any(c => c == null))
+        //                 {
+        //                     _lightingQueue.Enqueue(chunk);
+        //                     EnqueueChunkToDispatch(chunk);
+        //                     continue;
+        //                 }
+        //
+        //                 chunk.WorldIn.ServerHandler.LightingManager.UpdateLighting(chunk, chunks[3], chunks[2], chunks[1], chunks[0]);
+        //                 EnqueueChunkToDispatch(chunk);
+        //             }
+        //     }
+        // }
         private IEnumerator ChunkDispatcher()
         {
             while (true)
@@ -250,6 +271,7 @@ namespace World
         
         private void SendChunkToClients(ulong[] clients, Chunk chunk)
         {
+            if(clients.Length == 0) return;
             var buffer = chunk.Serialize();
             var packet = new ChunkTransferMessage
             {
@@ -257,33 +279,33 @@ namespace World
                 Data = buffer,
                 World = chunk.WorldIn.Identifier
             };
+            
             MessageFactory.SendPacket(SendingMode.ServerToClient, packet, clients, null, NetworkDelivery.ReliableFragmentedSequenced);
         }
+        
         
         public void EnqueueChunkGeneration(AbstractWorld worldIn, Vector2Int position, ulong owner)
         {
             Task.Run(async () =>
             {
                 await _chunkGenerationSemaphore.WaitAsync();
-
                 try
                 {
                     var chunk = new Chunk(worldIn, position);
                     await worldIn.ServerHandler.WorldGenerator.GenerateChunk(chunk);
                     chunk.AddPlayer(owner);
                     EnqueueChunkToDispatch(chunk);
+                    _lightingQueue.Enqueue(chunk);
                 }
                 catch (Exception e)
                 {
-                    Debug.Log(e);
+                    Debug.LogError(e);
                 }
                 finally
                 {
                     _chunkGenerationSemaphore.Release();
                 }
-
             });
         }
-        
     }
 }

@@ -110,6 +110,9 @@
 //     }
 // }
 
+using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -119,6 +122,8 @@ using Network.Messages.Packets.World;
 using Storage;
 using Unity.Netcode;
 using UnityEngine;
+using Utils;
+using World.Blocks;
 using World.Chunks;
 using World.WorldGeneration;
 
@@ -130,38 +135,37 @@ namespace World
         public readonly WorldQuery Query;
         public readonly WorldStorage Storage;
         public WorldGenerator WorldGenerator;
+        //public readonly LightingManager LightingManager;
+        public event EventHandler OnTick;
         
+        //public readonly ConcurrentDictionary<int, ConcurrentDictionary<int, byte>> HeightsPerColumn = new();
         
         //Store the chunks that are currently loaded at any step including during generation
-        private HashSet<Vector2Int> _loadedChunks = new();
-        
+        public readonly ConcurrentDictionary<Vector2Int, List<(int, IBlockState, bool)>> BlocksToPlace = new();        
         public ServerWorldHandler(AbstractWorld worldIn)
         {
+          //  LightingManager = new LightingManager(worldIn);
             WorldGenerator = new(worldIn);
             Storage = new WorldStorage(worldIn.Identifier.GetWorldName());
             Query = new WorldQuery(worldIn);
             WorldIn = worldIn;
+            WorldsManager.Instance.StartCoroutine(ClockScheduler());
         }
-
-
-        
-        
+            
         public void PlayerRequestChunks(ulong playerId, Vector2Int[] positions)
         {
-            
             var worldsManager = WorldsManager.Instance;
-            foreach (var (chunk, index) in Query.GetChunks(positions).Select((chunk, index) => (chunk, index)))
+            var index = 0;
+            
+            foreach (var chunk in Query.GetChunks(positions))
             {
-                if(index >= positions.Length)break;
-                var position = positions[index];
+                var position = positions[index++];
                 Chunk newChunk = chunk;
-                
-                if (newChunk is null && !TryGetChunkFromStorage(positions[index], out newChunk))
+                if (newChunk is null && !TryGetChunkFromStorage(position, out newChunk))
                 {
                     worldsManager.EnqueueChunkGeneration(WorldIn, position, playerId);
-                    return;
+                    continue;
                 }  
-                
                 
                 newChunk.AddPlayer(playerId);
                 worldsManager.EnqueueChunkToDispatch(chunk);
@@ -186,6 +190,38 @@ namespace World
             return false;
         }
 
+        public void PlaceBlockFromWorldPosition(Vector2Int worldPosition, IBlockState blockState, bool replace = false)
+        {
+            var chunkPosition = VectorUtils.GetNearestChunkPosition(worldPosition);
+            var localPosition = VectorUtils.WorldPositionToLocalPosition(worldPosition, chunkPosition);
+            if (Query.TryGetChunk(chunkPosition, out var chunk))
+                chunk.TryPlaceBlockAt(blockState, localPosition.ToIndex(), false, replace);
+            else
+            {
+                BlocksToPlace.AddOrUpdate(
+                    chunkPosition,
+                    _ => new List<(int, IBlockState, bool)> { (localPosition.ToIndex(), blockState, replace) },
+                    (_, existingList) =>
+                    {
+                        lock (existingList) 
+                            existingList.Add((localPosition.ToIndex(), blockState, replace));
+                        return existingList;
+                    }
+                );
+            }
+            
+        }
+
+        public IEnumerator ClockScheduler()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(1 / 30f);
+                OnTick?.Invoke(this, EventArgs.Empty);
+            }
+        } 
+        
+        
         //!TODO later
         public void Destroy()
         {

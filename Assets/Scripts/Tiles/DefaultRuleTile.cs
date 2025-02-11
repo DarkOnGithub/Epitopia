@@ -28,7 +28,6 @@ namespace Tiles
                     return tile == DirtTile;
                 case Neighbors.Wall:
                     return tile != null && Walls.Contains(tile);
-        
                 // Consider adding these additional neighbor types from commented code
                 case Neighbors.Different:
                     return tile != null && tile != this;

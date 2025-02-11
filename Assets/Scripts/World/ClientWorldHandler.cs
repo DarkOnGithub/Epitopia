@@ -79,6 +79,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MessagePack;
 using Network.Messages;
 using Network.Messages.Packets.World;
 using UnityEngine;
@@ -104,8 +105,14 @@ namespace World
 
         public void OnChunkReceived(Vector2Int chunkPosition, byte[] blockStates)
         {
-            var chunk = Chunk.Deserialize(WorldIn, chunkPosition, blockStates);
-            Query.AddChunk(chunk);
+            Chunk chunk;
+            if(Query.TryGetChunk(chunkPosition, out chunk))
+                chunk.UpdateContent(MessagePackSerializer.Deserialize<IBlockState[]>(blockStates));
+            else
+            {
+                chunk = Chunk.Deserialize(WorldIn, chunkPosition, blockStates);
+                Query.AddChunk(chunk);
+            }
         }
 
         

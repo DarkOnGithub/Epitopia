@@ -1,24 +1,18 @@
-﻿using System;
-using System.Linq;
-using UnityEditor;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace Tiles
 {
-    public class FlowerTile : AbstractTile
+    public class FlowerTile : AutoTiles
     {
-        public FlowerTile(string path) : base()
+        public FlowerTile(string path) : base(path)
         {
-            var sprites = Resources.LoadAll<Sprite>(path);
             RegisterTileFromSprites(new()
                                     {
                                         null, null, null,
                                         null, null, null,
                                         null, null, null
-                                    }, sprites.ToList());
-            //
-            // AssetDatabase.CreateAsset(RuleTile, "Assets/TemporaryRuleTile.asset");
-            // AssetDatabase.SaveAssets();
+                                    }, Sprites.ToList());            
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Tiles
         protected const int AnySolidNotDirt = DefaultRuleTile.Neighbors.AnySolidNotDirt;  // 5
         protected const int EmptyOrNonSolid = DefaultRuleTile.Neighbors.EmptyOrNonSolid;  // 6
         protected const int Wall = DefaultRuleTile.Neighbors.Wall;        // 8
-        
+
         protected static Texture2D GetTexture(string spritePath) => Resources.Load<Texture2D>($"Sprites/Blocks/{spritePath}");
         
         public static readonly List<Vector3Int> LookUpTable = new()
@@ -38,15 +38,13 @@ namespace Tiles
 
         public readonly RuleTile RuleTile = ScriptableObject.CreateInstance<DefaultRuleTile>();
         protected Dictionary<Vector2Int, Sprite> Sprites;
-        public static List<(int, int)[]> Temp = new();
-        public static bool Test = false;
+
         protected AbstractTile()
         {
         }
        
         protected AbstractTile(Texture2D texture)
         {
-            if (texture = null) return;
             Sprites = SplitTexture(texture);
         }
         
@@ -71,19 +69,13 @@ namespace Tiles
 
                     var pixels = texture.GetPixels(x, correctedY, Size.x, Size.y);
 
-                    if (pixels.All(pixel => pixel.a == 0))
-                    {
-                        Console.WriteLine(texture.name +" skipping" + xIndex + " " + yIndex);
-                        xIndex++;
-                        continue; 
-                    }
-
                     var newTexture = new Texture2D(Size.x, Size.y);
                     newTexture.filterMode = FilterMode.Point;
                     newTexture.SetPixels(pixels);
                     newTexture.Apply();
 
                     var newSprite = Sprite.Create(newTexture, new Rect(0, 0, Size.x, Size.y), new Vector2(0.5f, 0.5f), 16);
+                    newSprite.name = $"({xIndex}, {yIndex})";
 
                     result[new Vector2Int(xIndex, yIndex)] = newSprite;
                     xIndex++;
@@ -137,13 +129,6 @@ namespace Tiles
                     group.Add(Sprites[position]);
             }
             if(group.Count == 0) return;
-
-            if (Test)
-            {
-                Temp.Add(coords);
-                Debug.Log(string.Join(' ', coords));
-            }
-
             RegisterTileFromSprites(neighbors, group, transform);
         }
     }

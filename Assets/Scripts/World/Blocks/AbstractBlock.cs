@@ -41,6 +41,7 @@
 // }
 
 using JetBrains.Annotations;
+using Tiles;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using World.Chunks;
@@ -52,17 +53,34 @@ namespace World.Blocks
         public BlockProperties Properties;
         public int BlockId;
         public string BlockName;
-        public TileBase Tile;
-        
+        private TileBase _tile;
+        public TileBase Tile
+        {
+            get
+            {
+                return _tile;
+            }
+            set
+            {
+                if(Properties.IsSolid)
+                    DefaultRuleTile.Solids.Add(value);
+                _tile = value;
+            }
+        }
+
         protected AbstractBlock(int id, string name, BlockProperties properties)
         {
             BlockId = id;
             BlockName = name;
             Properties = properties;
+            
+      
         }
 
         public abstract IBlockState CreateBlockState(int? state = null, byte wallId = 0, int lightLevel = 0);
         public virtual void OnPlace(Chunk chunkIn, Vector2Int localPosition, IBlockState state) { }
         public virtual void OnBreak(Chunk chunkIn, Vector2Int localPosition, IBlockState state) { }
+        public virtual string GetName() => BlockName;
+        
     } 
 }

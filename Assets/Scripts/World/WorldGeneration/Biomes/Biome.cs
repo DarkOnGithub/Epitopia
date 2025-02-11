@@ -34,7 +34,7 @@ namespace World.WorldGeneration.Biomes
             var jsonText = File.ReadAllText(BiomesPath + name + ".json");
             var jObject = JObject.Parse(jsonText);
             SurfaceRules = new(biomeData.SurfaceRules, jObject["SurfaceRules"].ToObject<JArray>());
-//            Vegetation = new(biomeData.Vegetation);
+            Vegetation = new(biomeData.Vegetation);
             // StructurePlacement = new(new[]
             // {
             //     new FlowerVegetation(new()

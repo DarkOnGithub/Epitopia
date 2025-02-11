@@ -58,8 +58,6 @@ namespace World.WorldGeneration.Biomes
         private static float GetKey(RNode<T> node, int parameterSpace)
         {
             float key = 0;
-            Debug.Log(parameterSpace);
-            Debug.Log(node.Space.Count);
             for (var i = 0; i < parameterSpace; i++) 
                 key += Math.Abs((node.Space[i].Min + node.Space[i].Max) / 2.0f);
             return key;

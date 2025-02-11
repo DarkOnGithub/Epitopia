@@ -96,6 +96,7 @@
 //     }
 // }
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Tiles;
 using UnityEngine;
@@ -109,13 +110,13 @@ namespace World.Blocks
         public static DefaultBlock BlockAir;
         public static DefaultBlock BlockNull;
 
-        public static HashSet<int> VegetationBlocks = new();
-        public static HashSet<int> WallBlocks = new();
+        public static ConcurrentDictionary<int, byte> VegetationBlocks = new();
+        public static ConcurrentDictionary<int, byte> WallBlocks = new();
+        
 
-
-        public static readonly List<TileBase> WallTiles = new();
-        private static readonly List<AbstractBlock> IdsRegistry = new();
-        private static readonly Dictionary<string, AbstractBlock> NamesRegistry = new();
+        public static readonly ConcurrentDictionary<int, TileBase> WallTiles = new();
+        private static readonly ConcurrentDictionary<int, AbstractBlock> IdsRegistry = new();
+        private static readonly ConcurrentDictionary<string, AbstractBlock> NamesRegistry = new();
         static BlockRegistry()
         {
             if (IdsRegistry.Count == 0) 
@@ -131,53 +132,85 @@ namespace World.Blocks
             BlockAir = RegisterBlock<DefaultBlock>("Air", new BlockProperties
             {
                 SpritePath = null,
-                IsSolid = false
+                IsSolid = false,
             });
             
             BlockNull = RegisterBlock<DefaultBlock>("Null", new BlockProperties
             {
-                SpritePath = "null"
-            });
+                SpritePath = null,
 
-            RegisterBlock<DefaultBlock>("Grass", new BlockProperties()
-            {
-                SpritePath = "Grass"
             });
-            
+            RegisterWithVariations<GrassBlock>("Grass", new[]{"Dry"}, new BlockProperties()
+            {
+                SpritePath = "Grass",
+                MergeWithDirt = true
+            });
+          
             RegisterBlock<DirtBlock>("Dirt", new BlockProperties()
             {
-                SpritePath = "Dirt"
+                SpritePath = "Dirt",
+                MergeWithDirt = true
+
             });
             
             RegisterBlock<DefaultBlock>("Stone", new BlockProperties()
             {
-                SpritePath = "Stone"
+                SpritePath = "Stone",
+                MergeWithDirt = true
             });
                                 
             RegisterBlock<DefaultBlock>("Sand", new BlockProperties()
             {
-                SpritePath = "Sand"
+                SpritePath = "Sand",
+                MergeWithDirt = true
+
             });       
-                                       
-                           // RegisterBlock<DefaultBlock>("Flower", new BlockProperties()
-                           // {
-                           //     SpritePath = "Flower"
-                           // });
+            RegisterWithVariations<FlowerBlock>("Flower", new []{"Dry"}, new BlockProperties()
+                                                                         {
+                                                                             SpritePath = "Flower"
+                                                                         });
+            
+           RegisterBlock<TreeBlock>("TreeLog", new BlockProperties()
+           {
+               SpritePath = "Tree_Log"
+           });
+            RegisterWithVariations<TreeLeaves>("", new[]{"Oak_Leaves","Savanna_Leaves"}, new BlockProperties()
+            {
+                SpritePath = "Tree"
+            });           
+            RegisterWithVariations<TreeTop>("", new[]{"Oak_Top","Savanna_Top"}, new BlockProperties()
+            {
+                SpritePath = "Tree"
+            });
         }
 
+        private static void RegisterWithVariations<T>(string baseName, string[] variations, BlockProperties properties) where T : AbstractBlock
+        {
+            if(baseName != "")
+                RegisterBlock<T>(baseName, properties);
+            foreach (var variation in variations)
+            {
+                var cpy = (BlockProperties)properties.Clone();
+                cpy.SpritePath = $"{cpy.SpritePath}_{variation}";
+                Debug.Log(cpy.SpritePath);
+                RegisterBlock<T>(baseName +" " + variation, cpy);
+                
+            }
+        }
+        
         public static void RegisterWall(string wallName)
-        { 
-            WallTiles.Add(new WallTile(wallName).RuleTile);
+        {
+            WallTiles.TryAdd(WallTiles.Count + 1, new WallTile(wallName).RuleTile);
+            DefaultRuleTile.Walls.Add(WallTiles[WallTiles.Count]);
         }
         
         public static T RegisterBlock<T>(string blockName, BlockProperties properties) where T : AbstractBlock
         {
 
-            Debug.Log(IdsRegistry.Count);
             var instance = System.Activator.CreateInstance(typeof(T), IdsRegistry.Count, blockName, properties);
 
-            IdsRegistry.Add((AbstractBlock)instance);
-            NamesRegistry[blockName.ToLower()] = (AbstractBlock)instance;
+            IdsRegistry.TryAdd(IdsRegistry.Count, (AbstractBlock)instance);
+            NamesRegistry[CleanString(blockName)] = (AbstractBlock)instance;
             return (T)instance;
         }
         
@@ -187,10 +220,14 @@ namespace World.Blocks
                 return null;
             return IdsRegistry[id];
         }
-        
+
+        private static string CleanString(string name)
+        {
+            return name.ToLower().Replace("_","").Replace(" ","");
+        }
         public static AbstractBlock GetBlock(string name)
         {
-            return NamesRegistry[name.ToLower()];
+            return NamesRegistry[CleanString(name)];
         }
     }
 }

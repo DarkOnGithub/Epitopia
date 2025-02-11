@@ -219,7 +219,6 @@ namespace World
                 var chunkPosition = VectorUtils.GetNearestChunkPosition(
                      playerPosition + new Vector2Int(x, y) * Chunk.ChunkSize
                 );
-
                 if (query.TryGetChunk(chunkPosition, out var chunk))
                     chunk.Render();
                 else

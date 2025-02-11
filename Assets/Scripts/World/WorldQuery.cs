@@ -89,7 +89,9 @@
 //     }
 // }
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using Utils;
@@ -99,7 +101,7 @@ namespace World
 {
     public class WorldQuery
     {
-        private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
+        private readonly ConcurrentDictionary<Vector2Int, Chunk> _chunks = new();
         private readonly AbstractWorld _worldIn;
         
         public WorldQuery(AbstractWorld worldIn)
@@ -107,14 +109,32 @@ namespace World
             _worldIn = worldIn;
         }
         
-        public void RemoveChunk(Vector2Int chunkPosition) => _chunks.Remove(chunkPosition);
+        public void RemoveChunk(Vector2Int chunkPosition) => _chunks.Remove(chunkPosition, out var _);
         public void AddChunk(Chunk chunk) => _chunks.TryAdd(chunk.Position, chunk);
         public bool HasChunk(Vector2Int chunkPosition) => _chunks.ContainsKey(chunkPosition);
         public bool TryGetChunk(Vector2Int worldPosition, out Chunk chunk) =>
             _chunks.TryGetValue(VectorUtils.GetNearestChunkPosition(worldPosition), out chunk);
+
+        [CanBeNull]
+        public Chunk GetChunk(Vector2Int chunkPosition) => _chunks.GetValueOrDefault(chunkPosition, null);
+        
+        public Chunk[] GetAllChunks() => _chunks.Values.ToArray();
         
         [ItemCanBeNull]
-        public IEnumerable<Chunk> GetChunks(IEnumerable<Vector2Int> chunkPositions)
+        public Chunk[] GetSurroundingChunks(Vector2Int position)
+        {
+            var chunks = new Chunk[4];
+            var chunkPosition = VectorUtils.GetNearestChunkPosition(position);
+            var x = chunkPosition.x;
+            var y = chunkPosition.y;
+            chunks[0] = GetChunk(new Vector2Int(x - Chunk.ChunkSize, y)); //left
+            chunks[1] = GetChunk(new Vector2Int(x + Chunk.ChunkSize, y)); //right
+            chunks[2] = GetChunk(new Vector2Int(x, y - Chunk.ChunkSize)); //bottom
+            chunks[3] = GetChunk(new Vector2Int(x, y + Chunk.ChunkSize)); //top
+            return chunks;
+        }
+        [ItemCanBeNull]
+        public IEnumerable<Chunk> GetChunks(Vector2Int[] chunkPositions)
         {
             foreach (var position in chunkPositions)
             {

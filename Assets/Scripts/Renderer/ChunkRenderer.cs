@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Utils;
@@ -21,13 +22,16 @@ namespace Renderer
         private static readonly Tilemap BackgroundTilemap = WorldsManager.Instance.backgroundTilemap;
         private static readonly Tilemap VegetationTilemap = WorldsManager.Instance.vegetationTilemap;
 
+        //Place tiles by batch is too laggy        
         public static void RenderChunk(Chunk chunk)
         {
+
             var tiles = ExtractTiles(chunk);
 
             SetAndRefreshTiles(WorldTilemap, tiles[TilemapType.World]);
             SetAndRefreshTiles(BackgroundTilemap, tiles[TilemapType.Background]);
             SetAndRefreshTiles(VegetationTilemap, tiles[TilemapType.Vegetation]);
+
         }
 
         private static void SetAndRefreshTiles(Tilemap tilemap, (Vector3Int[], TileBase[]) tileData)
@@ -51,9 +55,7 @@ namespace Renderer
             for (var i = 0; i < Chunk.ChunkSizeSquared; i++)
             {
                 var block = blocks[i];
-                if(block.Id != 0)
-                    Debug.Log(block.Id);
-                if(BlockRegistry.VegetationBlocks.Contains(block.Id))
+                if(BlockRegistry.VegetationBlocks.ContainsKey(block.Id))
                 {
                     vegetationPositions[i] = origin + i.ToVector3Int0();
                     vegetationTiles[i] = BlockRegistry.GetBlock(block.Id).Tile;
@@ -77,6 +79,8 @@ namespace Renderer
                    };
         }
 
+
+        
         public static void UnRenderChunk(Chunk chunk)
         {
             var origin = chunk.Position.ToVector3Int();

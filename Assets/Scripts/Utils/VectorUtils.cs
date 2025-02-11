@@ -39,5 +39,8 @@ namespace Utils
         
         public static Vector2Int WorldPositionToLocalPosition(Vector2Int worldPosition, Vector2Int chunkPosition)
             => worldPosition - chunkPosition;
+        
+        public static bool IsWithinChunkBounds(Vector2Int localPosition)
+            => localPosition.x >= 0 && localPosition.x < _chunkSize && localPosition.y >= 0 && localPosition.y < _chunkSize;
     }
 }

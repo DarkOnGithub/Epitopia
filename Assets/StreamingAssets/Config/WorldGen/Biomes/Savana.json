@@ -3,8 +3,8 @@
     "WaterLevel": 0,
     "SurfaceRules": [
         {
-            "Type": "DryGrass",
-            "Argument": "Grass",
+            "Type": "Block",
+            "Argument": "Grass Dry",
             "Height": 1
         },
         {
@@ -18,5 +18,17 @@
         }
     ],
     "Vegetation": [
+        {
+            "Type": "Tree",
+            "Range": [0.4, 0.7],
+            "Probability": 0.5,
+            "Block": "Savanna"
+        },
+        {
+            "Type": "Flower",
+            "Range": [0.4, 0.6],
+            "Probability": 0.6,
+            "Block": "Flower Dry"
+        }
     ]
 }

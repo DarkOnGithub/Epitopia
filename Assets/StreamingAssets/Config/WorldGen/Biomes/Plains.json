@@ -18,17 +18,18 @@
         }
     ],
     "Vegetation": [
-        {
-            "Type": "Flower",
-            "Range": [0.4, 0.4],
-            "Probability": 0.5,
-            "Block": "Flower"
-        },
+
         {
             "Type": "Tree",
-            "Range": [0.1, 0.9],
-            "Probability": 1,
-            "Block": "TreeBlock"
+            "Range": [0.4, 0.7],
+            "Probability": 0.66,
+            "Block": "Oak"
+        },
+        {
+            "Type": "Flower",
+            "Range": [0.4, 0.6],
+            "Probability": 0.82,
+            "Block": "Flower"
         }
     ]
 }
