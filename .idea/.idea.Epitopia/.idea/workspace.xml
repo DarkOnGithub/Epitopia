@@ -5,78 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Editor.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Editor/RuleTileExport.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Editor/RuleTileExport.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lighting.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lighting/LightingManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Lighting/LightingManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/AutoTiles.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/AutoTiles.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/TreeLeavesTile.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/TreeLeavesTile.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/TreeLogTile.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/TreeLogTile.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/TreeTopTile.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/TreeTopTile.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/FlowerBlock.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/FlowerBlock.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/GrassBlock.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/GrassBlock.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/TreeBlock.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/TreeBlock.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/TreeLeaves.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/TreeLeaves.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/TreeTop.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/TreeTop.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Vegetation/Tree.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Vegetation/Tree.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Entities.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/AI.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/AbstractEntity.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/AbstractEntity.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Entities/Enemies.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Lightmap.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Lightmap.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/Dirt.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/Dirt.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/DryGrass.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/DryGrass.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/Flowers.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/Flowers.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/TTGS.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Blocks/TTGS.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Test/Test.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/Test/Test.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Workspace.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Workspace.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Lightning.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Lightning/LightingManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Lightning/LightingManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Renderer/ChunkRenderer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Renderer/ChunkRenderer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tiles/AbstractTile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/AbstractTile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/DefaultTile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/DefaultTile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/FlowerTile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/FlowerTile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/FlowerTile.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/CustomTiles/FlowerTile.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tiles/DefaultRuleTile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tiles/DefaultRuleTile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils/VectorUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utils/VectorUtils.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/AbstractBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/AbstractBlock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/BlockProperties.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/BlockProperties.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/BlockRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/BlockRegistry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/DefaultBlock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/CustomBlocks/DefaultBlock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/IBlockState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Blocks/IBlockState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Chunks/Chunk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Chunks/Chunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/ClientWorldHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/ClientWorldHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/ServerWorldHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/ServerWorldHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Biome.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Biome.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Rtree.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Biomes/Rtree.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Vegetation/BiomeVegetation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Vegetation/BiomeVegetation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Vegetation/Flower.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Vegetation/Flower.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Vegetation/IVegetationComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/Vegetation/IVegetationComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldGeneration/WorldGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldQuery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/World/WorldsManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/World/WorldsManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Forest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Forest.json.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Mountains.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Mountains.json.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Ocean.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Ocean.json.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Plains.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Plains.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Savana.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/StreamingAssets/Config/WorldGen/Biomes/Savana.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +122,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;WorldGenPT2&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Entities&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
