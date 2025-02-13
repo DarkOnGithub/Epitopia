@@ -190,6 +190,19 @@ namespace World
             return false;
         }
 
+        public bool TryGetBlockFromWorldPosition(Vector2Int worldPosition, out IBlockState block)
+        {
+            var chunkPosition = VectorUtils.GetNearestChunkPosition(worldPosition);
+            var localPosition = VectorUtils.WorldPositionToLocalPosition(worldPosition, chunkPosition);
+            if (Query.TryGetChunk(chunkPosition, out var chunk))
+            {
+                block = chunk.GetBlockAt(localPosition.ToIndex());
+                return block != null;
+            }
+            block = null;
+            return false;
+        }
+        
         public void PlaceBlockFromWorldPosition(Vector2Int worldPosition, IBlockState blockState, bool replace = false)
         {
             var chunkPosition = VectorUtils.GetNearestChunkPosition(worldPosition);

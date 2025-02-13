@@ -486,9 +486,9 @@ namespace World.Chunks
         public void Render()
         {
             if (!_shouldRender) return;
-            if (_lightTexture == null)
-                InitializeLighting();
-            ComputeLightMap();
+            // if (_lightTexture == null)
+            //     InitializeLighting();
+            // ComputeLightMap();
             ChunkRenderer.RenderChunk(this);
             _shouldRender = false;
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Core;
+using Entities;
 using Events.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
