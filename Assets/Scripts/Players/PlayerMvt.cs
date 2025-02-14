@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-
 public class PlayerMvt : MonoBehaviour
 {
     public int speed;
