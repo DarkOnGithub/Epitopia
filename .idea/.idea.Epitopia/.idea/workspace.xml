@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="43619d1a-bcde-4a24-8d7e-fea0f2d0b09f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Epitopia/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Ennemies/Slime/SlimeTest.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/Ennemies/Slime/SlimeTest.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/Ennemies/Slime/SlimeTest.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/Ennemies/Slime/SlimeTest.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/img_perso/test.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Sprites/MainChar/img_perso/test.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerMvt.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Players/PlayerMvt.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +45,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/NetworkPacket.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Messages/NetworkUtils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Network/Server/Server.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/timot/Bureau/Git/PortableGit/Epita/Projet_jeu_1ere_Annee/test_epitopia/Epitopia/Assets/Scripts/Players/PlayerMvt.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Players/Mvt animation 1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Players/PlayerMvt.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/World/Overworld.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/World/Scanner.cs" root0="FORCE_HIGHLIGHTING" />
@@ -182,6 +186,10 @@
       <workItem from="1736804050842" duration="1319000" />
       <workItem from="1739260497367" duration="16000" />
       <workItem from="1739571490037" duration="389000" />
+      <workItem from="1739577396877" duration="172000" />
+      <workItem from="1739727045494" duration="3463000" />
+      <workItem from="1739741400490" duration="3008000" />
+      <workItem from="1739914579097" duration="3382000" />
     </task>
     <task id="LOCAL-00001" summary="added a few libs">
       <option name="closed" value="true" />
@@ -295,7 +303,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736713942093</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="lchqsoivqs">
+      <option name="closed" value="true" />
+      <created>1739577555287</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1739577555287</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -325,7 +341,8 @@
     <MESSAGE value="debut du mvt et sprite du perso" />
     <MESSAGE value="ngdfhrsz" />
     <MESSAGE value="1er final de mvt, perso peut bouger et change de direction" />
-    <option name="LAST_COMMIT_MESSAGE" value="1er final de mvt, perso peut bouger et change de direction" />
+    <MESSAGE value="lchqsoivqs" />
+    <option name="LAST_COMMIT_MESSAGE" value="lchqsoivqs" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
