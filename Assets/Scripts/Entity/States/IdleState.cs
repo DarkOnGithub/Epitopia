@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Entities.Entity;
 using UnityEngine;
 using UnityHFSM;
 
@@ -6,28 +7,27 @@ namespace Entities.States
 {
     public class IdleState : StateBase
     {
-        private Vector2 _range;
-        private List<Vector2Int> _path = new();
-        private AbstractEntity _entity;
+        private int _range;
+        private readonly AbstractEntity _entity;
         
-        public IdleState(AbstractEntity entity, Vector2 range, bool needsExitTime, bool isGhostState = false) : base(needsExitTime, isGhostState)
+        public IdleState(AbstractEntity entity, int xRange, bool needsExitTime, bool isGhostState = false) : base(needsExitTime, isGhostState)
         {
-            _range = range;
+            _range = xRange;
+            _entity = entity;
         }
 
         public override void OnEnter()
         {
-            Debug.Log("Idle");
+            Debug.Log($"{_entity.Name} is now idling");
         }
 
         public override void OnLogic()
         {
             base.OnLogic();
-            if (_path.Count == 0)
-            {
-                var destination = new Vector2(Random.Range(-_range.x, _range.x), Random.Range(-_range.y, _range.y));
-                _path = _entity.PathFinder.FindPath(_entity.Position, destination + _entity.Position);
-            }
+            var distanceFactor = Random.Range(-_range, _range);
+            var target = _entity.Position + new Vector2(distanceFactor, 0);
+            
+                
         }
     }
 }
