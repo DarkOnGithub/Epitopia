@@ -11,6 +11,7 @@ namespace Entities.Entity
         public DummyEntity(AbstractWorld worldIn) : base(worldIn, "Dummy")
         {
             StateMachine.AddState("Idle", new IdleState(this, 5, false));
+            StateMachine.SetStartState("Idle");
         }
     }
 }

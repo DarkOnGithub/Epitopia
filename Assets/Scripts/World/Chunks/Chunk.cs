@@ -393,30 +393,15 @@ namespace World.Chunks
 
         public void SetBlockAt(int index, IBlockState blockState)
         {
-            // var localPosition = index.ToVector2Int();
-            // var x = Position.x + localPosition.x;
-            // var y = Position.y + localPosition.y;
-            // if (IsServerHost && !BlockRegistry.GetBlock(blockState.Id).Properties.IsTransparent)
-            // {
-            //     if (_serverHandler.HeightsPerColumn.TryGetValue(x, out var heights))
-            //         heights.TryAdd(y, 0);
-            //     else
-            //     {
-            //         _serverHandler.HeightsPerColumn[x] = new();
-            //         _serverHandler.HeightsPerColumn[x].TryAdd(y, 0);
-            //     }
-            // }
+            if(IsServerHost)
+                _serverHandler.UpdateServerTilemap(Position + index.ToVector2Int(), blockState.Id);
             _blockStates[index] = blockState;
         }
         public void RemoveBlockAt(int index)
         {
-            // var localPosition = index.ToVector2Int();
-            // var x = Position.x + localPosition.x;
-            // var y = Position.y + localPosition.y;
-            // if(_blockStates[index].Id != 0 && IsServerHost)
-            //     if (_serverHandler.HeightsPerColumn.TryGetValue(x, out var heights))
-            //         heights.TryRemove(y, out var _);
-
+            if (IsServerHost)
+                _serverHandler.UpdateServerTilemap(Position + index.ToVector2Int(), 0);
+            
             _blockStates[index] = BlockRegistry.BlockAir.CreateBlockState(null);
         }
 

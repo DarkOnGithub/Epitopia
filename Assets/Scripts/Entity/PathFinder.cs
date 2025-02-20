@@ -9,8 +9,10 @@ namespace Entities
     {
         private AbstractWorld _worldIn;
 
+        // Movement costs – you can adjust these to balance your game.
         private const int NORMAL_COST = 1;
-        private const int JUMP_COST = 2; // jump moves cost more than normal moves
+        private const int JUMP_COST = 3; // higher cost for a jump move
+        private const int FALL_COST = 1; // cost per falling move
 
         public PathFinder(AbstractWorld worldIn)
         {
@@ -21,7 +23,7 @@ namespace Entities
         {
             var start = Vector2Int.RoundToInt(startPosition);
             var end = Vector2Int.RoundToInt(endPosition);
-            
+
             List<Node> openSet = new List<Node>();
             HashSet<Node> closedSet = new HashSet<Node>();
 
@@ -30,7 +32,7 @@ namespace Entities
             startNode.H = Heuristic(start, end);
             openSet.Add(startNode);
 
-            Node bestNodeSoFar = startNode; 
+            Node bestNodeSoFar = startNode;
 
             while (openSet.Count > 0)
             {
@@ -50,7 +52,8 @@ namespace Entities
                     Vector2Int neighborPos = neighborInfo.Position;
                     int moveCost = neighborInfo.MoveCost;
 
-                    if (closedSet.Contains(new Node(neighborPos)) || !IsAccessible(neighborPos, neighborInfo.IsJump))
+                    // Only consider nodes that are accessible (non-solid)
+                    if (closedSet.Contains(new Node(neighborPos)) || !IsAccessible(neighborPos))
                         continue;
 
                     int tentativeG = current.G + moveCost;
@@ -71,32 +74,85 @@ namespace Entities
                 }
             }
 
+            // Return best found path if no exact match was reached.
             return RetracePath(startNode, bestNodeSoFar);
         }
 
-
-        private bool IsAccessible(Vector2Int pos, bool isJump)
+        /// <summary>
+        /// Checks if the given tile is accessible (i.e. not blocked by a solid block).
+        /// </summary>
+        private bool IsAccessible(Vector2Int pos)
         {
-            if(!_worldIn.ServerHandler.TryGetBlockFromWorldPosition(pos, out var block))
+            if (!_worldIn.ServerHandler.TryGetBlockFromWorldPosition(pos, out var block))
                 return false;
-
             return !BlockRegistry.GetBlock(block.Id).Properties.IsSolid;
         }
 
+        /// <summary>
+        /// Determines whether there is solid ground (a block) immediately beneath the position.
+        /// </summary>
+        private bool IsGrounded(Vector2Int pos)
+        {
+            Vector2Int below = new Vector2Int(pos.x, pos.y - 1);
+            if (!_worldIn.ServerHandler.TryGetBlockFromWorldPosition(below, out var block))
+                return false;
+            return BlockRegistry.GetBlock(block.Id).Properties.IsSolid;
+        }
+
+        /// <summary>
+        /// Generates neighbor moves based on whether the entity is standing or falling.
+        /// </summary>
         private IEnumerable<NeighborInfo> GetNeighbors(Vector2Int pos)
         {
-            yield return new NeighborInfo(new Vector2Int(pos.x - 1, pos.y), NORMAL_COST, false);
-            yield return new NeighborInfo(new Vector2Int(pos.x + 1, pos.y), NORMAL_COST, false);
-            yield return new NeighborInfo(new Vector2Int(pos.x, pos.y - 1), NORMAL_COST, false);
-            yield return new NeighborInfo(new Vector2Int(pos.x, pos.y + 1), JUMP_COST, true);
+            bool grounded = IsGrounded(pos);
+
+            if (grounded)
+            {
+                // WALKING: horizontal moves from solid ground.
+                Vector2Int left = new Vector2Int(pos.x - 1, pos.y);
+                Vector2Int right = new Vector2Int(pos.x + 1, pos.y);
+                if (IsAccessible(left))
+                    yield return new NeighborInfo(left, NORMAL_COST, false);
+                if (IsAccessible(right))
+                    yield return new NeighborInfo(right, NORMAL_COST, false);
+
+                // JUMPING: allow upward moves only when on solid ground.
+                // Jump moves can include straight up or diagonally upward.
+                Vector2Int up = new Vector2Int(pos.x, pos.y + 1);
+                Vector2Int upLeft = new Vector2Int(pos.x - 1, pos.y + 1);
+                Vector2Int upRight = new Vector2Int(pos.x + 1, pos.y + 1);
+
+                // Check that not only the destination is free but also the space above it (simulating head clearance)
+                if (IsAccessible(up) && IsAccessible(new Vector2Int(pos.x, pos.y + 2)))
+                    yield return new NeighborInfo(up, JUMP_COST, true);
+                if (IsAccessible(upLeft) && IsAccessible(new Vector2Int(pos.x - 1, pos.y + 2)))
+                    yield return new NeighborInfo(upLeft, JUMP_COST, true);
+                if (IsAccessible(upRight) && IsAccessible(new Vector2Int(pos.x + 1, pos.y + 2)))
+                    yield return new NeighborInfo(upRight, JUMP_COST, true);
+            }
+            else
+            {
+                // FALLING: when not grounded, the entity should fall.
+                Vector2Int down = new Vector2Int(pos.x, pos.y - 1);
+                if (IsAccessible(down))
+                    yield return new NeighborInfo(down, FALL_COST, false);
+
+                // Optionally allow slight horizontal drift while falling.
+                Vector2Int downLeft = new Vector2Int(pos.x - 1, pos.y - 1);
+                Vector2Int downRight = new Vector2Int(pos.x + 1, pos.y - 1);
+                if (IsAccessible(downLeft))
+                    yield return new NeighborInfo(downLeft, FALL_COST, false);
+                if (IsAccessible(downRight))
+                    yield return new NeighborInfo(downRight, FALL_COST, false);
+            }
         }
 
         private int Heuristic(Vector2Int a, Vector2Int b)
         {
+            // Manhattan distance is still a good heuristic for grid-based movement.
             return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
         }
 
-        /// <summary>
         private Node GetLowestF(List<Node> openSet)
         {
             Node lowest = openSet[0];
@@ -105,7 +161,6 @@ namespace Entities
                     lowest = node;
             return lowest;
         }
-
 
         private List<Vector2Int> RetracePath(Node start, Node end)
         {
@@ -121,7 +176,7 @@ namespace Entities
         }
 
         /// <summary>
-        /// Stores information about neighbor nodes including move cost and jump flag.
+        /// Encapsulates neighbor information including move cost and whether the move is a jump.
         /// </summary>
         private struct NeighborInfo
         {
@@ -138,13 +193,13 @@ namespace Entities
         }
 
         /// <summary>
-        /// Internal class representing a node in the pathfinding grid.
+        /// Represents a node in the pathfinding grid.
         /// </summary>
         private class Node
         {
             public Vector2Int Position;
-            public int G; // cost from start
-            public int H; // heuristic cost to destination
+            public int G; // cost from the start node
+            public int H; // heuristic cost to the destination
             public Node Parent;
 
             public int F => G + H;

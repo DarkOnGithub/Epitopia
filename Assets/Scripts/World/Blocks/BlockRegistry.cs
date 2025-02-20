@@ -115,8 +115,8 @@ namespace World.Blocks
         
 
         public static readonly ConcurrentDictionary<int, TileBase> WallTiles = new();
-        private static readonly ConcurrentDictionary<int, AbstractBlock> IdsRegistry = new();
-        private static readonly ConcurrentDictionary<string, AbstractBlock> NamesRegistry = new();
+        public static readonly ConcurrentDictionary<int, AbstractBlock> IdsRegistry = new();
+        public static readonly ConcurrentDictionary<string, AbstractBlock> NamesRegistry = new();
         static BlockRegistry()
         {
             if (IdsRegistry.Count == 0) 

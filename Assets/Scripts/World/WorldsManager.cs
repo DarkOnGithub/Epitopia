@@ -103,6 +103,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using MessagePack;
+using NavMeshPlus.Components;
 using Network.Messages;
 using Network.Messages.Packets.World;
 using Unity.Netcode;
@@ -124,6 +125,9 @@ namespace World
         [SerializeField] public Tilemap worldTilemap;
         [SerializeField] public Tilemap backgroundTilemap;
         [SerializeField] public Tilemap vegetationTilemap;
+
+        [SerializeField] public Tilemap serverTilemap;
+        
         
         private readonly UniqueConcurrentQueue<Chunk> _chunksDispatcherQueue = new();
         private const float DispatchRate = 1 / 30f;
@@ -149,8 +153,9 @@ namespace World
             RegisterWorlds();
             StartCoroutine(ChunkDispatcher());
             StartCoroutine(ChunkRequester());
-       //     StartCoroutine(LightingManager());
+            //     StartCoroutine(LightingManager());
         }
+
         
         private void RegisterWorlds()
         {

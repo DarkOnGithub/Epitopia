@@ -116,12 +116,18 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using JetBrains.Annotations;
+using NavMeshPlus.Components;
+using Network;
 using Network.Messages;
 using Network.Messages.Packets.World;
+using PimDeWitte.UnityMainThreadDispatcher;
 using Storage;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Utils;
 using World.Blocks;
 using World.Chunks;
@@ -134,13 +140,16 @@ namespace World
         public readonly AbstractWorld WorldIn;
         public readonly WorldQuery Query;
         public readonly WorldStorage Storage;
-        public WorldGenerator WorldGenerator;
+        public readonly WorldGenerator WorldGenerator;
+        public readonly Tilemap ServerTilemap;
+        
+        public bool ShouldUpdateTilemap = true;
+        
         //public readonly LightingManager LightingManager;
         public event EventHandler OnTick;
         
         //public readonly ConcurrentDictionary<int, ConcurrentDictionary<int, byte>> HeightsPerColumn = new();
         
-        //Store the chunks that are currently loaded at any step including during generation
         public readonly ConcurrentDictionary<Vector2Int, List<(int, IBlockState, bool)>> BlocksToPlace = new();        
         public ServerWorldHandler(AbstractWorld worldIn)
         {
@@ -150,6 +159,27 @@ namespace World
             Query = new WorldQuery(worldIn);
             WorldIn = worldIn;
             WorldsManager.Instance.StartCoroutine(ClockScheduler());
+
+            ServerTilemap = WorldsManager.Instance.serverTilemap;
+            
+            // var navMesh = ServerTilemap.GetComponentInParent<NavMeshModifierTilemap>();
+            //
+            //
+            // FieldInfo fieldInfo = typeof(NavMeshModifierTilemap).GetField("m_TileModifiers", BindingFlags.NonPublic | BindingFlags.Instance);
+            // if (fieldInfo != null)
+            // {
+            //     var tileModifiers = (List<NavMeshModifierTilemap.TileModifier>)fieldInfo.GetValue(navMesh);
+            //     foreach (var (id, block) in BlockRegistry.IdsRegistry)
+            //     {
+            //         tileModifiers.Add(new()
+            //         {
+            //             tile = block.Tile,
+            //             overrideArea = true,
+            //             area = block.Properties.IsSolid ? 1 : 0
+            //         });
+            //     }       
+            // }
+         
         }
             
         public void PlayerRequestChunks(ulong playerId, Vector2Int[] positions)
@@ -225,6 +255,19 @@ namespace World
             
         }
 
+        public void UpdateServerTilemap(Vector2Int position, int tileId)
+        {
+            var tile = BlockRegistry.GetBlock(tileId).Tile;
+
+            UnityMainThreadDispatcher.Instance().Enqueue(() =>
+            {
+                ServerTilemap.SetTile(position.ToVector3Int(), tile);
+                ShouldUpdateTilemap = true;
+            });
+        }
+        
+        
+        
         public IEnumerator ClockScheduler()
         {
             while (true)
