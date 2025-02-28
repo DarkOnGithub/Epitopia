@@ -1,0 +1,19 @@
+Index: Assets/Scenes/MenuController.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System.Collections.Generic;\r\nusing NUnit.Framework;\r\nusing UnityEngine;\r\nusing UnityEngine.SceneManagement;\r\n\r\npublic enum PanelType\r\n{\r\n    None,\r\n    Main,\r\n    Option,\r\n    Credits,\r\n}\r\npublic class MenuController : MonoBehaviour\r\n{\r\n    [Header(\"Panels\")]\r\n    [SerializeField] private List<MenuPanel> panelsList = new List<MenuPanel>();\r\n    private Dictionary<PanelType, MenuPanel> panelsDict = new Dictionary<PanelType, MenuPanel>();\r\n\r\n    private GameManager gameManager;\r\n\r\n    private void Start()\r\n    {\r\n        gameManager = GameManager.instance;\r\n\r\n        foreach (MenuPanel _panel in panelsList) \r\n        {\r\n            if (_panel)\r\n            {\r\n                panelsDict.Add(_panel.GetPanelType(), _panel);\r\n            }\r\n        }\r\n\r\n\r\n    OpenOnePanel(PanelType.Main);\r\n    }\r\n\r\n    private void OpenOnePanel(PanelType _type)\r\n    {\r\n        foreach (MenuPanel _panel in panelsList)\r\n        {\r\n            _panel.ChangeState(false);\r\n        }\r\n\r\n        if (_type != PanelType.None)\r\n        {\r\n            panelsDict[_type].ChangeState(true);\r\n        }\r\n    }\r\n    public void OpenPanel(PanelType _type)\r\n    {\r\n        OpenOnePanel(_type);\r\n    }\r\n    public void ChangeScene(string _sceneName)\r\n   {\r\n        SceneManager.LoadScene(_sceneName);\r\n   }\r\n\r\n    public void Quit()\r\n    {\r\n        gameManager.Quit();\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/Assets/Scenes/MenuController.cs b/Assets/Scenes/MenuController.cs
+--- a/Assets/Scenes/MenuController.cs	(revision feca86ff5270595a5ca6bb9731e159392080f65e)
++++ b/Assets/Scenes/MenuController.cs	(date 1736629104514)
+@@ -29,9 +29,7 @@
+                 panelsDict.Add(_panel.GetPanelType(), _panel);
+             }
+         }
+-
+-
+-    OpenOnePanel(PanelType.Main);
++        OpenOnePanel(PanelType.Main);
+     }
+ 
+     private void OpenOnePanel(PanelType _type)
